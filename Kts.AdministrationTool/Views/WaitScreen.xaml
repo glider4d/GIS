@@ -1,0 +1,39 @@
+﻿<Window x:Class="Kts.AdministrationTool.Views.WaitScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Kts.AdministrationTool.Views"
+        ResizeMode="NoResize"
+    SizeToContent="WidthAndHeight"
+    WindowStartupLocation="CenterScreen"
+    ShowInTaskbar="False"
+    Background="#333"
+    mc:Ignorable="d"
+        >
+    <Border
+        BorderThickness="2"
+        BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}"
+        >
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="Auto" />
+            </Grid.RowDefinitions>
+            
+            <TextBlock
+                Grid.Row="0"
+                MaxWidth="300"
+                Foreground="AliceBlue"
+                Text="{Binding Content}"
+                TextWrapping="Wrap" />
+            <ProgressBar
+                Grid.Row="1"
+                IsIndeterminate="True"
+                Margin="10" />
+
+        </Grid>
+    </Border>
+</Window>

@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="testXamarin.Views.AutorizationView"
+             Title ="Авторизация" >
+    <ContentPage.Content>
+
+        <Grid BackgroundColor="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackLayout Margin="0,35,0,10" Grid.Row="0">
+
+                <Label
+                Text="Сервер:" />
+                <!--<Editor Margin="0,5,0,0"/>
+                ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SqlConnectionString}"
+                -->
+                
+                <!--SelectedItem="{Binding Path=SelectedServer}"
+                
+                SelectedItem="{Binding Path=SelectedServer, Mode=TwoWay}"
+                -->
+                <!--<Picker Title="Selected" ItemsSource="{Binding Servers}"  ItemDisplayBinding="{Binding Name}"  />-->
+                <!--<Picker  Title="Select" ItemsSource="{Binding CitiesList}" ItemDisplayBinding="{Binding Value}" SelectedItem="{Binding selectedCity}"/>-->
+                <Picker Title="Select" ItemsSource="{Binding Servers}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedServer}"/>
+                <!--<Picker ItemsSource="{Binding Servers}" >
+                    
+                    
+                </Picker>
+                -->
+            </StackLayout>
+
+
+            <StackLayout Margin="0,0,0,10" Grid.Row="1">
+
+                <Label
+                Text="Логин:" />
+                <!--
+                    <Picker Title="-Selected user" ItemsSource="{Binding Logins}"  ItemDisplayBinding="{Binding Name}"/>
+                
+                <Entry  Margin="0,5,0,0" Text="{Binding login}"/>
+                -->
+                <Picker Title="Selected user" ItemsSource="{Binding Logins}" ItemDisplayBinding="{Binding Name}"/>
+                <!--<Picker Title="Select" ItemsSource="{Binding Logins}" ItemDisplayBinding="{Binding Name}" SelectedItem="{Binding SelectedLogin}"/>-->
+            </StackLayout>
+
+            <StackLayout Margin="0,0,0,10" Grid.Row="2">
+
+                <Label
+                Text="Пароль:" />
+                <Editor Margin="0,5,0,0"  Placeholder="Password"/>
+                <Button Text="Войти" Command="{Binding CheckPasswordCommand}"/>
+            </StackLayout>
+        </Grid>
+        
+    </ContentPage.Content>
+</ContentPage>

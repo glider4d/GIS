@@ -1,0 +1,42 @@
+﻿<Window x:Class="Kts.AdministrationTool.Views.RegionsDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Kts.AdministrationTool.Views"
+        mc:Ignorable="d"
+    Title="RegionsDialog"
+    Height="{Binding ySizeWindow}"
+    Width="{Binding xSizeWindow}" Background="#333">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="82*"></RowDefinition>
+            <RowDefinition
+                Height="18*"></RowDefinition>
+           
+        </Grid.RowDefinitions>
+        <ListBox
+                
+                Margin="15"
+                Grid.Row="0"
+                ItemsSource="{Binding regionModelList}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel
+                            Orientation="Horizontal">
+                            <CheckBox
+                            
+                                Content="{Binding Path=regionName}" 
+                                IsChecked="{Binding check}"
+                              />
+                            
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
+            </ListBox>
+            <Button Margin="0,0,25,20" Command="{Binding saveChange}" IsEnabled="{Binding needUpdate}" Grid.Row="1" HorizontalAlignment="Right"  Width="100" Height="32">Сохранить</Button>
+        
+    </Grid>
+</Window>

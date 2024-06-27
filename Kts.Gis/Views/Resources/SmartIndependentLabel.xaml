@@ -1,0 +1,9 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:views="clr-namespace:Kts.Gis.Views"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Стиль умной, независимой от других объектов надписи -->
+    <Style
+        BasedOn="{StaticResource {x:Type views:SmartLabel}}"
+        TargetType="{x:Type views:SmartIndependentLabel}" />
+</ResourceDictionary>

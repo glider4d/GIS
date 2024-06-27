@@ -1,0 +1,140 @@
+﻿<Window x:Class="Kts.AdministrationTool.Views.AutorizationAdminToolView"
+        
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+        xmlns:local="clr-namespace:Kts.AdministrationTool.Views"
+        mc:Ignorable="d"
+        Title="AutorizationAdminToolView" Height="300" Width="300"
+        WindowStartupLocation="CenterScreen"
+        FocusManager.FocusedElement="{Binding ElementName=passwordBox}"
+    Background="#333"
+    
+        >
+    <Window.Resources>
+        <Style
+            TargetType="TextBlock">
+
+
+            <Setter
+                Property="Foreground"
+                Value="#FF32EBFB" />
+        </Style>
+    </Window.Resources>
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel
+            Margin="0,0,0,10" Grid.Row="0">
+            <TextBlock
+                Text="Сервер:" />
+            <ComboBox
+                ItemsSource="{Binding Servers}"
+                Margin="0,5,0,0"
+                SelectedItem="{Binding Path=SelectedServer, Mode=TwoWay}"
+                DropDownClosed="ComboBox_DropDownClosed"
+                DropDownOpened="ComboBox_DropDownOpened">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock
+                            Text="{Binding Name}">
+                            <TextBlock.Style>
+                                <Style
+                                    TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding Server}"
+                                            Value="-1">
+                                            <Setter
+                                                Property="FontStyle"
+                                                Value="Italic" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </StackPanel>
+        <StackPanel
+            Grid.Row="1"
+            IsEnabled="True">
+            <TextBlock
+                Text="Логин:" />
+            <ComboBox
+                DisplayMemberPath="Name"
+                ItemsSource="{Binding Logins}"
+                Margin="0,5,0,0"
+                SelectedItem="{Binding Path=SelectedLogin, Mode=TwoWay}"
+                 />
+        </StackPanel>
+
+
+
+
+
+        <StackPanel
+            Grid.Row="2"
+            IsEnabled="{Binding HasSelectedServer}"
+            Margin="0,10,0,0">
+
+            <TextBlock
+                Foreground="#FF32EBFB"
+                Text="Пароль:" />
+            <Grid>
+                <PasswordBox
+                    x:Name="passwordBox"
+                    Margin="0,5,0,0"
+                    PasswordChanged="passwordBox_PasswordChanged">
+                    <PasswordBox.InputBindings>
+                        <KeyBinding
+                            Command="{Binding CheckPasswordCommand}"
+                            Key="Return" />
+                    </PasswordBox.InputBindings>
+
+
+                </PasswordBox>
+                <Grid
+                    Height="28"
+                    Width="28"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Right"
+                    Margin="0,0,4,0">
+                    <Path
+                        Width="20.7781"
+                        Height="20.7781"
+                        Stretch="Fill"
+                        Fill="{StaticResource FillPath}"
+                        Data="{StaticResource lockStyle0}" />
+                </Grid>
+            </Grid>
+            <!--
+            <PasswordBox
+                x:Name="passwordBox"
+                Margin="0,5,0,0">
+                <PasswordBox.InputBindings>
+                    <KeyBinding
+                        Key="Return" />
+                </PasswordBox.InputBindings>
+            </PasswordBox>-->
+        </StackPanel>
+        <Button
+            Command="{Binding CheckPasswordCommand}"
+            Grid.Row="3"
+            HorizontalAlignment="Right"
+            IsEnabled="{Binding HasSelectedServer}"
+            Margin="0,10,0,0"
+            Padding="30,3">Войти</Button>
+    </Grid>
+</Window>

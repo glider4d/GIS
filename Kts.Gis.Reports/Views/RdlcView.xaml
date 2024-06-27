@@ -1,0 +1,36 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    mc:Ignorable="d"
+    x:Class="Kts.Gis.Reports.Views.RdlcView"
+    ResizeMode="NoResize"
+    ShowInTaskbar="False"
+    SizeToContent="Height"
+    Title="Просмотр формы"
+    UseLayoutRounding="True"
+    Width="700"
+    WindowStartupLocation="CenterScreen">
+    <!--xmlns:rv="clr-namespace:Microsoft.Reporting.WinForms;assembly=Microsoft.ReportViewer.WinForms"-->
+    <Grid
+        Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+        </Grid.RowDefinitions>
+        <WindowsFormsHost
+            Height="600">
+            <!--<rv:ReportViewer
+                x:Name="reportViewer" />-->
+        </WindowsFormsHost>
+        <Button
+            Grid.Row="1"
+            HorizontalAlignment="Right"
+            IsCancel="True"
+            Margin="0,10,0,0"
+            Padding="30,3">Закрыть</Button>
+    </Grid>
+</Window>

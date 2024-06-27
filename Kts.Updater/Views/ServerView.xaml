@@ -1,0 +1,56 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    mc:Ignorable="d"
+    x:Class="Kts.Updater.Views.ServerView"
+    x:ClassModifier="internal"
+    FocusManager.FocusedElement="{Binding ElementName=buttonNext}"
+    Icon="/Icons/Main.ico"
+    ResizeMode="NoResize"
+    SizeToContent="Height"
+    Title="Обновлятор"
+    UseLayoutRounding="True"
+    Width="260"
+    WindowStartupLocation="CenterScreen">
+    <Grid
+        Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock
+            Text="Сервер:" />
+        <ComboBox
+            DisplayMemberPath="Name"
+            Grid.Row="1"
+            ItemsSource="{Binding Servers}"
+            Margin="0,5,0,0"
+            SelectedItem="{Binding Path=SelectedServer, Mode=TwoWay}" />
+        <TextBlock
+            Grid.Row="2"
+            Margin="0,10,0,0"
+            Text="База данных:" />
+        <ComboBox
+            Grid.Row="3"
+            ItemsSource="{Binding Databases}"
+            Margin="0,5,0,0"
+            SelectedItem="{Binding Path=SelectedDatabase, Mode=TwoWay}" />
+        <Button
+            x:Name="buttonNext"
+            Command="{Binding NextCommand}"
+            Grid.Row="4"
+            HorizontalAlignment="Right"
+            Margin="0,10,0,0"
+            Padding="30,3">Далее</Button>
+    </Grid>
+</Window>

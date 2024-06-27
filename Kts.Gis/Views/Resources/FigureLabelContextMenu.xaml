@@ -1,0 +1,39 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ContextMenu
+        x:Key="FigureLabelContextMenu">
+        <MenuItem
+            StaysOpenOnClick="True">
+            <MenuItem.Header>
+                <StackPanel>
+                    <TextBlock
+                        Text="Размер:" />
+                    <Grid
+                        Margin="0,10,0,0"
+                        MinWidth="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition
+                                Width="*" />
+                            <ColumnDefinition
+                                Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <RepeatButton
+                            Command="{Binding DecreaseLabelCommand}"
+                            Delay="200"
+                            Margin="0,0,5,0">-</RepeatButton>
+                        <RepeatButton
+                            Command="{Binding IncreaseLabelCommand}"
+                            Delay="200"
+                            Grid.Column="1"
+                            Margin="5,0,0,0">+</RepeatButton>
+                    </Grid>
+                </StackPanel>
+            </MenuItem.Header>
+        </MenuItem>
+        <Separator />
+        <MenuItem
+            Command="{Binding ResetLabelCommand}"
+            Header="Сбросить" />
+    </ContextMenu>
+</ResourceDictionary>

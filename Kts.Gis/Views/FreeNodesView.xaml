@@ -1,0 +1,83 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    mc:Ignorable="d"
+    x:Class="Kts.Gis.Views.FreeNodesView"
+    x:ClassModifier="internal"
+    Icon="/Icons/Main.ico"
+    ResizeMode="NoResize"
+    ShowInTaskbar="False"
+    SizeToContent="Height"
+    Title="Неподключенные узлы"
+    UseLayoutRounding="True"
+    Width="400"
+    WindowStartupLocation="CenterScreen"
+    Style="{DynamicResource WindowStyle}"
+    >
+    <Grid
+        Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition
+                Height="Auto" />
+        </Grid.RowDefinitions>
+        <DataGrid
+            Style="{DynamicResource modernGrid}"
+            AutoGenerateColumns="False"
+            CanUserReorderColumns="False"
+            CanUserResizeRows="False"
+            GridLinesVisibility="None"
+            Height="400"
+            IsReadOnly="True"
+            ItemsSource="{Binding Nodes}"
+            RowHeaderWidth="0"
+            SelectedItem="{Binding Path=SelectedNode, Mode=TwoWay}"
+            SelectionMode="Single">
+            <DataGrid.CellStyle>
+                <Style
+                    TargetType="{x:Type DataGridCell}">
+                    <Style.Triggers>
+                        <Trigger
+                            Property="IsSelected"
+                            Value="True">
+                            <Setter
+                                Property="FontWeight"
+                                Value="Bold" />
+                        </Trigger>
+                    </Style.Triggers>
+                    <Setter
+                        Property="BorderThickness"
+                        Value="0" />
+                    <Setter
+                        Property="FocusVisualStyle"
+                        Value="{x:Null}" />
+                    <Setter
+                        Property="FontWeight"
+                        Value="Normal" />
+                    <EventSetter
+                        Event="MouseDoubleClick"
+                        Handler="DataGridCell_MouseDoubleClick" />
+                </Style>
+            </DataGrid.CellStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Binding="{Binding Id}"
+                    Header="Идентификатор"
+                    Width="150" />
+                <DataGridTextColumn
+                    Binding="{Binding ConnectedLinesType.SingularName}"
+                    Header="Принадлежность"
+                    Width="*" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <!-- Кнопка закрытия -->
+        <Button
+            Grid.Row="1"
+            HorizontalAlignment="Right"
+            Margin="0,10,0,0"
+            Padding="30,3"
+            Click="Button_Click">Закрыть</Button>
+    </Grid>
+</Window>

@@ -1,0 +1,25 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:views="clr-namespace:Kts.Gis.Views"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Конвертеры -->
+    <views:BoolToVisibilityConverter
+        x:Key="BoolToVisibilityConverter" />
+    <!-- Контекстное меню редактирования фигуры -->
+    <ContextMenu
+        x:Key="FigureEditContextMenu">
+        <MenuItem
+            Command="{Binding CopyCommand}"
+            Header="Копировать"
+            InputGestureText="Ctrl+C" />
+        <Separator />
+        <MenuItem
+            Command="{Binding DeleteCommand}"
+            Header="Удалить"
+            InputGestureText="Del" />
+        <MenuItem
+            Command="{Binding FullDeleteCommand}"
+            Header="Удалить безвозвратно"
+            Visibility="{Binding Path=CanBeDeleted, Converter={StaticResource BoolToVisibilityConverter}}" />
+    </ContextMenu>
+</ResourceDictionary>

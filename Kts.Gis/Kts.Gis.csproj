@@ -1,0 +1,999 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FF5E506B-AC27-4527-8478-244650F7BF21}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Kts.Gis</RootNamespace>
+    <AssemblyName>Kts.Gis</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <TargetFrameworkProfile />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <PublishUrl>\\172.16.4.58\Gis\Publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Unc</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>true</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <TargetCulture>ru</TargetCulture>
+    <ProductName>Инженерно-картографическая система</ProductName>
+    <PublisherName>Коммунтеплосбыт</PublisherName>
+    <SuiteName>Инженерно-картографическая система</SuiteName>
+    <MinimumRequiredVersion>1.3.3.27</MinimumRequiredVersion>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>publish.htm</WebPage>
+    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+    <ApplicationRevision>30</ApplicationRevision>
+    <ApplicationVersion>1.3.3.30</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <CreateDesktopShortcut>true</CreateDesktopShortcut>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <BootstrapperComponentsLocation>Relative</BootstrapperComponentsLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;RELEASE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Kts.Gis.App</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>App.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icons\Main.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>04E5386D2A0A3EF4959A555784E778A9BFED3822</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="RevertibleActions\AddRemoveChildAction.cs" />
+    <Compile Include="RevertibleActions\AddRemoveCustomLayerAction.cs" />
+    <Compile Include="RevertibleActions\AddRemoveCustomObjectAction.cs" />
+    <Compile Include="RevertibleActions\AddRemoveFigureAction.cs" />
+    <Compile Include="RevertibleActions\AddRemoveLabelAction.cs" />
+    <Compile Include="RevertibleActions\ChangeCustomLayerAction.cs" />
+    <Compile Include="RevertibleActions\ChangeLineBendPointsAction.cs" />
+    <Compile Include="RevertibleActions\ChangePolygonPointsAction.cs" />
+    <Compile Include="RevertibleActions\ConnectToFigureAction.cs" />
+    <Compile Include="RevertibleActions\DeactivateObjectAction.cs" />
+    <Compile Include="RevertibleActions\DeleteNodeAction.cs" />
+    <Compile Include="RevertibleActions\MoveObjectsAction.cs" />
+    <Compile Include="RevertibleActions\PasteObjectAction.cs" />
+    <Compile Include="RevertibleActions\RenameCustomLayerAction.cs" />
+    <Compile Include="RevertibleActions\ReplaceNodeAction.cs" />
+    <Compile Include="RevertibleActions\AddRemoveLineAction.cs" />
+    <Compile Include="RevertibleActions\AddRemoveObjectAction.cs" />
+    <Compile Include="RevertibleActions\ChangeLabelStyleAction.cs" />
+    <Compile Include="RevertibleActions\ChangeLineParameterAction.cs" />
+    <Compile Include="RevertibleActions\ChangeLinePointsAction.cs" />
+    <Compile Include="RevertibleActions\ChangeParameterAction.cs" />
+    <Compile Include="RevertibleActions\ChangeParametersAction.cs" />
+    <Compile Include="RevertibleActions\ChangeScaleAction.cs" />
+    <Compile Include="RevertibleActions\DivideLineAction.cs" />
+    <Compile Include="RevertibleActions\GroupLinesAction.cs" />
+    <Compile Include="RevertibleActions\PasteParametersAction.cs" />
+    <Compile Include="RevertibleActions\RotateObjectsAction.cs" />
+    <Compile Include="RevertibleActions\ScaleObjectsAction.cs" />
+    <Compile Include="RevertibleActions\SetPropertyAction.cs" />
+    <Compile Include="Service References\ServiceReference1\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Services\AccessService.cs" />
+    <Compile Include="Services\BaseMapBindingService.cs" />
+    <Compile Include="Services\DrawGeometryMapBindingService.cs" />
+    <Compile Include="Services\Enums\CollisionSearchMode.cs" />
+    <Compile Include="Services\Interfaces\IMapBindingService.cs" />
+    <Compile Include="Services\Interfaces\IMapSettingService.cs" />
+    <Compile Include="Services\ShapeMapBindingService.cs" />
+    <Compile Include="Services\SqlMapSettingService.cs" />
+    <Compile Include="ViewModels\AddBadgeViewModel.cs" />
+    <Compile Include="ViewModels\AddChildViewModel.cs" />
+    <Compile Include="ViewModels\AddDocumentViewModel.cs" />
+    <Compile Include="ViewModels\AddLineViewModel.cs" />
+    <Compile Include="ViewModels\ApprovedHeaderEditViewModel.cs" />
+    <Compile Include="ViewModels\ApprovedHeaderViewModel.cs" />
+    <Compile Include="ViewModels\AuthorizationViewModel.cs" />
+    <Compile Include="ViewModels\AutoLegendViewModel.cs" />
+    <Compile Include="ViewModels\BadgeViewModel.cs" />
+    <Compile Include="ViewModels\BendNodesViewModel.cs" />
+    <Compile Include="ViewModels\BoilerInfoViewModel.cs" />
+    <Compile Include="ViewModels\BuildingInfoViewModel.cs" />
+    <Compile Include="ViewModels\CaptionManageViewModel.cs" />
+    <Compile Include="ViewModels\ChangeLengthViewModel.cs" />
+    <Compile Include="ViewModels\ChangePasswordViewModel.cs" />
+    <Compile Include="ViewModels\CitySelectionViewModel.cs" />
+    <Compile Include="ViewModels\CityViewModel.cs" />
+    <Compile Include="ViewModels\Classes\AddBadgeRequestedEventArgs.cs" />
+    <Compile Include="ViewModels\Classes\BoolResultEventArgs.cs" />
+    <Compile Include="ViewModels\Classes\ChangeLengthViewRequestedEventArgs.cs" />
+    <Compile Include="ViewModels\Classes\ClipboardManager.cs" />
+    <Compile Include="ViewModels\Classes\CustomLayerVisibilityChangedEventArgs.cs" />
+    <Compile Include="ViewModels\Classes\ImportExportRequestedEventArgs.cs" />
+    <Compile Include="ViewModels\Classes\LineSegment.cs" />
+    <Compile Include="ViewModels\Classes\ManageLabelLayerEventArgs.cs" />
+    <Compile Include="ViewModels\Classes\MapSettingsViewRequestedEventArgs.cs" />
+    <Compile Include="ViewModels\Classes\NeedBoilerEventArgs.cs" />
+    <Compile Include="ViewModels\Classes\ValueInputViewRequestedEventArgs.cs" />
+    <Compile Include="ViewModels\DisableObjectViewModel.cs" />
+    <Compile Include="ViewModels\DocumentsViewModel.cs" />
+    <Compile Include="ViewModels\DocumentViewModel.cs" />
+    <Compile Include="ViewModels\HydraulicsErrorViewModel.cs" />
+    <Compile Include="ViewModels\IJSViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\ICustomLayerObject.cs" />
+    <Compile Include="ViewModels\JurKvpCompletedListViewModel.cs" />
+    <Compile Include="ViewModels\KtsLeftoversViewModel.cs" />
+    <Compile Include="ViewModels\LengthPerDiameterTableViewModel.cs" />
+    <Compile Include="ViewModels\ManageCustomObjectLayerViewModel.cs" />
+    <Compile Include="ViewModels\MapSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Classes\NodeConnection.cs" />
+    <Compile Include="ViewModels\Classes\ObjectIdRequestedEventArgs.cs" />
+    <Compile Include="ViewModels\Classes\ParameterSelectRequestedEventArgs.cs" />
+    <Compile Include="ViewModels\Classes\PasteRequestedEventArgs.cs" />
+    <Compile Include="ViewModels\Classes\PrinterSelectionRequestedEventArgs.cs" />
+    <Compile Include="ViewModels\Classes\SchemeRequestedEventArgs.cs" />
+    <Compile Include="ViewModels\Classes\ShowOnMapRequestedEventArgs.cs" />
+    <Compile Include="ViewModels\Classes\StartGroupEditEventArgs.cs" />
+    <Compile Include="ViewModels\Classes\ValueInputRequestedEventArgs.cs" />
+    <Compile Include="ViewModels\ContainerObjectViewModel.cs" />
+    <Compile Include="ViewModels\CustomLayersViewModel.cs" />
+    <Compile Include="ViewModels\CustomLayerViewModel.cs" />
+    <Compile Include="ViewModels\EllipseViewModel.cs" />
+    <Compile Include="ViewModels\Enums\ImageFormat.cs" />
+    <Compile Include="ViewModels\Enums\ImageSize.cs" />
+    <Compile Include="ViewModels\Enums\LayerType.cs" />
+    <Compile Include="ViewModels\Enums\LengthUpdateOption.cs" />
+    <Compile Include="ViewModels\Enums\Tool.cs" />
+    <Compile Include="ViewModels\ExpandableObjectViewModel.cs" />
+    <Compile Include="ViewModels\FastSearchViewModel.cs" />
+    <Compile Include="ViewModels\FigureViewModel.cs" />
+    <Compile Include="ViewModels\FilterViewModel.cs" />
+    <Compile Include="ViewModels\FindObjectViewModel.cs" />
+    <Compile Include="ViewModels\FreeNodesViewModel.cs" />
+    <Compile Include="ViewModels\FreezeViewModel.cs" />
+    <Compile Include="ViewModels\FuelInfoViewModel.cs" />
+    <Compile Include="ViewModels\GlobalMapViewModel.cs" />
+    <Compile Include="ViewModels\GroupAreaToolBarViewModel.cs" />
+    <Compile Include="ViewModels\GroupedTypeViewModel.cs" />
+    <Compile Include="ViewModels\GroupViewModel.cs" />
+    <Compile Include="ViewModels\HydraulicsViewModel.cs" />
+    <Compile Include="ViewModels\ImageExportViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IChildObjectViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IContainerObjectViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\ICopyableObjectViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IDeletableObjectViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IEditableObjectViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IExpandableObjectViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IHighlightableObjectViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\ILayerHolder.cs" />
+    <Compile Include="ViewModels\Interfaces\IMapObjectViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\INamedObjectViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IObjectViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IParameterizedObjectViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\ISavableObjectViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\ISelectableObjectViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\ISetterIgnorer.cs" />
+    <Compile Include="ViewModels\Interfaces\ITypedObjectViewModel.cs" />
+    <Compile Include="ViewModels\LabelEditViewModel.cs" />
+    <Compile Include="ViewModels\LabelViewModel.cs" />
+    <Compile Include="ViewModels\LayersSettingsViewModel.cs" />
+    <Compile Include="ViewModels\LayerViewModel.cs" />
+    <Compile Include="ViewModels\LineInfoViewModel.cs" />
+    <Compile Include="ViewModels\LineTypeViewModel.cs" />
+    <Compile Include="ViewModels\LineViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\MapViewModel.cs" />
+    <Compile Include="ViewModels\MeterInfoViewModel.cs" />
+    <Compile Include="ViewModels\MetersViewModel.cs" />
+    <Compile Include="ViewModels\NamedObjectViewModel.cs" />
+    <Compile Include="ViewModels\NewRulerViewModel.cs" />
+    <Compile Include="ViewModels\NodeViewModel.cs" />
+    <Compile Include="ViewModels\NonVisualObjectViewModel.cs" />
+    <Compile Include="ViewModels\ObjectListViewModel.cs" />
+    <Compile Include="ViewModels\ObjectSelectViewModel.cs" />
+    <Compile Include="ViewModels\ObjectViewModel.cs" />
+    <Compile Include="ViewModels\ParameterGridViewModel.cs" />
+    <Compile Include="ViewModels\ParameterHistoryEntryViewModel.cs" />
+    <Compile Include="ViewModels\ParameterHistoryViewModel.cs" />
+    <Compile Include="ViewModels\ParameterSelectionViewModel.cs" />
+    <Compile Include="ViewModels\ParameterValueSetViewModel.cs" />
+    <Compile Include="ViewModels\ParameterViewModel.cs" />
+    <Compile Include="ViewModels\PartitionActViewModel.cs" />
+    <Compile Include="ViewModels\PolygonViewModel.cs" />
+    <Compile Include="ViewModels\PolylineViewModel.cs" />
+    <Compile Include="ViewModels\PrinterSelectionViewModel.cs" />
+    <Compile Include="ViewModels\RectangleViewModel.cs" />
+    <Compile Include="ViewModels\RegionSelectionViewModel.cs" />
+    <Compile Include="ViewModels\RegionViewModel.cs" />
+    <Compile Include="ViewModels\RPViewModel.cs" />
+    <Compile Include="ViewModels\RulerViewModel.cs" />
+    <Compile Include="ViewModels\ErrorsViewModel.cs" />
+    <Compile Include="ViewModels\ErrorViewModel.cs" />
+    <Compile Include="ViewModels\SavedErrorsViewModel.cs" />
+    <Compile Include="ViewModels\SchemaSelectionViewModel.cs" />
+    <Compile Include="ViewModels\SearchEntryViewModel.cs" />
+    <Compile Include="ViewModels\SearchingParameterViewModel.cs" />
+    <Compile Include="ViewModels\SearchTermViewModel.cs" />
+    <Compile Include="ViewModels\SearchViewModel.cs" />
+    <Compile Include="ViewModels\SelectableBoilerViewModel.cs" />
+    <Compile Include="ViewModels\SelectableParameterViewModel.cs" />
+    <Compile Include="ViewModels\SelectBoilerViewModel.cs" />
+    <Compile Include="ViewModels\SelectChildViewModel.cs" />
+    <Compile Include="ViewModels\SelectDpiViewModel.cs" />
+    <Compile Include="ViewModels\ServicedViewModel.cs" />
+    <Compile Include="ViewModels\StorageInfoViewModel.cs" />
+    <Compile Include="ViewModels\TableEditViewModel.cs" />
+    <Compile Include="ViewModels\ToolBarViewModel.cs" />
+    <Compile Include="ViewModels\UOViewModel.cs" />
+    <Compile Include="ViewModels\VisualRegionInfoViewModel.cs" />
+    <Compile Include="ViewModels\VisualRegionViewModel.cs" />
+    <Compile Include="ViewModels\YearDiffViewModel.cs" />
+    <Compile Include="Views\AddBadgeView.xaml.cs">
+      <DependentUpon>AddBadgeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddDocumentView.xaml.cs">
+      <DependentUpon>AddDocumentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AuthorizationView.xaml.cs">
+      <DependentUpon>AuthorizationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\BendNodesView.xaml.cs">
+      <DependentUpon>BendNodesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CaptionManageView.xaml.cs">
+      <DependentUpon>CaptionManageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChangeLengthView.xaml.cs">
+      <DependentUpon>ChangeLengthView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChangePasswordView.xaml.cs">
+      <DependentUpon>ChangePasswordView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ChangeTheme.xaml.cs">
+      <DependentUpon>ChangeTheme.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Classes\AngleChangedEventArgs.cs" />
+    <Compile Include="Views\Classes\Animator.cs" />
+    <Compile Include="Views\Classes\AuthorizationCompletedEventArgs.cs" />
+    <Compile Include="Views\Classes\AutoLegend.cs" />
+    <Compile Include="Views\Classes\DrawingCompletedEventArgs.cs" />
+    <Compile Include="Views\Classes\DrawingEventArgs.cs" />
+    <Compile Include="Views\Classes\DrawingPanel.cs" />
+    <Compile Include="Views\Classes\EllipseResizeThumb.cs" />
+    <Compile Include="Views\Classes\FigureResizeThumb.cs" />
+    <Compile Include="Views\Classes\GroupArea.cs" />
+    <Compile Include="Views\Classes\LabelPastedEventArgs.cs" />
+    <Compile Include="Views\Classes\LabelResizeButton.cs" />
+    <Compile Include="Views\Classes\LabelRotateThumb.cs" />
+    <Compile Include="Views\Classes\LinePointThumb.cs" />
+    <Compile Include="Views\Classes\MapPaginator.cs" />
+    <Compile Include="Views\Classes\Minimap.cs" />
+    <Compile Include="Views\Classes\NewRuler.cs" />
+    <Compile Include="Views\Classes\OpenObjectRequestedEventArgs.cs" />
+    <Compile Include="Views\Classes\PolygonVertexThumb.cs" />
+    <Compile Include="Views\Classes\PositionChangedEventArgs.cs" />
+    <Compile Include="Views\Classes\PrintArea.cs" />
+    <Compile Include="Views\Classes\PrintAreaLineThumb.cs" />
+    <Compile Include="Views\Classes\PrintAreaResizeThumb.cs" />
+    <Compile Include="Views\Classes\PrintAreaSetter.cs" />
+    <Compile Include="Views\Classes\RectangleResizeThumb.cs" />
+    <Compile Include="Views\Classes\FigureRotateThumb.cs" />
+    <Compile Include="Views\Classes\IndentableCanvas.cs" />
+    <Compile Include="Views\Classes\InteractiveBadge.cs" />
+    <Compile Include="Views\Classes\InteractiveEllipse.cs" />
+    <Compile Include="Views\Classes\InteractiveFigure.cs" />
+    <Compile Include="Views\Classes\InteractiveLine.cs" />
+    <Compile Include="Views\Classes\InteractiveNode.cs" />
+    <Compile Include="Views\Classes\InteractivePolygon.cs" />
+    <Compile Include="Views\Classes\InteractiveRectangle.cs" />
+    <Compile Include="Views\Classes\InteractiveShape.cs" />
+    <Compile Include="Views\Classes\Map.cs" />
+    <Compile Include="Views\Classes\Polyline.cs" />
+    <Compile Include="Views\Classes\Ruler.cs" />
+    <Compile Include="Views\Classes\ScaleChangedEventArgs.cs" />
+    <Compile Include="Views\Classes\SelectionRectangle.cs" />
+    <Compile Include="Views\Classes\ShiftClickedEventArgs.cs" />
+    <Compile Include="Views\Classes\SmartFigureLabel.cs" />
+    <Compile Include="Views\Classes\SmartImage.cs" />
+    <Compile Include="Views\Classes\SmartIndependentLabel.cs" />
+    <Compile Include="Views\Classes\SmartLabel.cs" />
+    <Compile Include="Views\Classes\SmartLineLabel.cs" />
+    <Compile Include="ViewModels\Classes\SqlReconnector.cs" />
+    <Compile Include="Views\ConnectionFailView.xaml.cs">
+      <DependentUpon>ConnectionFailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Converters\BooleansToVisibilityConverter.cs" />
+    <Compile Include="Views\Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Views\Converters\DoubleToGridLengthConverter.cs" />
+    <Compile Include="Views\Converters\DoubleToVisibilityConverter.cs" />
+    <Compile Include="Views\Converters\MapActionToCanBeMovedConverter.cs" />
+    <Compile Include="Views\Converters\ObjectCountToVisibilityConverter.cs" />
+    <Compile Include="Views\Converters\PageMediaSizeNameToStringConverter.cs" />
+    <Compile Include="Views\Converters\StringToNotEmptyConverter.cs" />
+    <Compile Include="Views\Converters\ToolToIsCheckedConverter.cs" />
+    <Compile Include="Views\Converters\ToolToMapActionConverter.cs" />
+    <Compile Include="Views\CustomLayersView.xaml.cs">
+      <DependentUpon>CustomLayersView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CustomObjects\ApprovedHeader.cs" />
+    <Compile Include="Views\CustomObjects\ApprovedHeaderEditView.xaml.cs">
+      <DependentUpon>ApprovedHeaderEditView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CustomObjects\LengthPerDiameterTable.cs" />
+    <Compile Include="Views\CustomObjects\TableEditView.xaml.cs">
+      <DependentUpon>TableEditView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DocumentsView.xaml.cs">
+      <DependentUpon>DocumentsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Enums\GroupAreaPointType.cs" />
+    <Compile Include="Views\Enums\LineStyle.cs" />
+    <Compile Include="Views\Enums\MapAction.cs" />
+    <Compile Include="Views\FindObjectView.xaml.cs">
+      <DependentUpon>FindObjectView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FreeNodesView.xaml.cs">
+      <DependentUpon>FreeNodesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FreezeView.xaml.cs">
+      <DependentUpon>FreezeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GroupAreaToolBarView.xaml.cs">
+      <DependentUpon>GroupAreaToolBarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ImageExportView.xaml.cs">
+      <DependentUpon>ImageExportView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Interfaces\IDrawableObject.cs" />
+    <Compile Include="Views\Interfaces\IEditableObject.cs" />
+    <Compile Include="Views\Interfaces\IInteractiveShape.cs" />
+    <Compile Include="Views\Interfaces\ILabeledObject.cs" />
+    <Compile Include="Views\Interfaces\IMapObject.cs" />
+    <Compile Include="Views\JurCompletedListView.xaml.cs">
+      <DependentUpon>JurCompletedListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\KtsLeftoversView.xaml.cs">
+      <DependentUpon>KtsLeftoversView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LabelEditView.xaml.cs">
+      <DependentUpon>LabelEditView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LayersSettingsView.xaml.cs">
+      <DependentUpon>LayersSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainView.xaml.cs">
+      <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GlobalMapView.xaml.cs">
+      <DependentUpon>GlobalMapView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ManageCustomObjectLayerView.xaml.cs">
+      <DependentUpon>ManageCustomObjectLayerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MapSettingsView.xaml.cs">
+      <DependentUpon>MapSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MetersView.xaml.cs">
+      <DependentUpon>MetersView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ObjectListView.xaml.cs">
+      <DependentUpon>ObjectListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ObjectSelectView.xaml.cs">
+      <DependentUpon>ObjectSelectView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ParameterHistoryView.xaml.cs">
+      <DependentUpon>ParameterHistoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ErrorsView.xaml.cs">
+      <DependentUpon>ErrorsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ParameterSelectionView.xaml.cs">
+      <DependentUpon>ParameterSelectionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PartitionActDialog.xaml.cs">
+      <DependentUpon>PartitionActDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PrinterSelectionView.xaml.cs">
+      <DependentUpon>PrinterSelectionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PrintToolBarView.xaml.cs">
+      <DependentUpon>PrintToolBarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Resources\DarkTheme\ClassicTheme.cs" />
+    <Compile Include="Views\Resources\DarkTheme\Core.cs" />
+    <Compile Include="Views\SavedErrorsView.xaml.cs">
+      <DependentUpon>SavedErrorsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SchemaSelectionView.xaml.cs">
+      <DependentUpon>SchemaSelectionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SearchView.xaml.cs">
+      <DependentUpon>SearchView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SelectBoilerView.xaml.cs">
+      <DependentUpon>SelectBoilerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SelectDpiView.xaml.cs">
+      <DependentUpon>SelectDpiView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UpdateInfoView.xaml.cs">
+      <DependentUpon>UpdateInfoView.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Kts.XpsToImg.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="Properties\DataSources\Kts.Gis.Data.Packet.datasource" />
+    <None Include="Properties\DataSources\Kts.Gis.Models.LoginModel.datasource" />
+    <None Include="Properties\DataSources\Kts.Utilities.SqlConnectionString.datasource" />
+    <None Include="Service References\ServiceReference1\item.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServiceReference1\item1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServiceReference1\item2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServiceReference1\item3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServiceReference1\item4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServiceReference1\item5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServiceReference1\WcfFigureAccessService.wsdl" />
+    <Resource Include="Reports\IntegrationStats.xslt" />
+    <Resource Include="Reports\DiffObjects.xslt">
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Reports\Kts.xslt">
+      <SubType>Designer</SubType>
+    </Resource>
+    <None Include="Service References\ServiceReference1\item.disco" />
+    <None Include="Service References\ServiceReference1\configuration91.svcinfo" />
+    <None Include="Service References\ServiceReference1\configuration.svcinfo" />
+    <None Include="Service References\ServiceReference1\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <Content Include="xps2img.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Images\AddPages.png" />
+    <Resource Include="Images\RemovePages.png" />
+    <Resource Include="Images\RotateLeft.png" />
+    <Resource Include="Images\RotateRight.png" />
+    <Resource Include="Images\Clear.png" />
+    <None Include="ClassDiagram1.cd" />
+    <None Include="Reports\Hydraulics.xslt" />
+    <Resource Include="Images\PrintArea.png" />
+    <Resource Include="Images\NewRuler.png" />
+    <Resource Include="Images\ResetLabels.png" />
+    <Resource Include="Images\GroupArea.png" />
+    <Resource Include="Images\Ungroup.png" />
+    <Resource Include="Images\Group.png" />
+    <Resource Include="Images\FontDown.png" />
+    <Resource Include="Images\FontUp.png" />
+    <Resource Include="Icons\Main.ico" />
+    <Resource Include="Images\Label.png" />
+    <None Include="Packages.config" />
+    <None Include="Reports\AddedObjectInfo.xslt">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Reports\TechSpec.xslt">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="App.config" />
+    <None Include="App.manifest" />
+    <None Include="Docs\Руководство пользователя.docx" />
+    <Content Include="Docs\Руководство пользователя.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Editor.png" />
+    <Resource Include="Images\Ellipse.png" />
+    <Resource Include="Images\Line.png" />
+    <Resource Include="Images\Polygon.png" />
+    <Resource Include="Images\Rectangle.png" />
+    <Resource Include="Images\Ruler.png" />
+    <Resource Include="Images\Selector.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Views\ChangeTheme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MetersView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\DarkTheme\Brushes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddBadgeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddDocumentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AuthorizationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\BendNodesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CaptionManageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ChangeLengthView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ChangePasswordView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ConnectionFailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CustomLayersView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CustomObjects\ApprovedHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CustomObjects\ApprovedHeaderEditContextMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CustomObjects\ApprovedHeaderEditView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CustomObjects\LengthPerDiameterTable.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CustomObjects\TableEditView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DocumentsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FindObjectView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FreeNodesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FreezeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\GroupAreaToolBarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ImageExportView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\JurCompletedListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\KtsLeftoversView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LabelEditView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LayersSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\GlobalMapView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ManageCustomObjectLayerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MapSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ObjectListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ObjectSelectView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ParameterHistoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ParameterSelectionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PartitionActDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PrinterSelectionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PrintToolBarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\AddChildMenuItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\AutoLegend.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\BadgeEditContextMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\DarkTheme\classicTheme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\DarkTheme\Core.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\DarkTheme\Icons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\EllipseResizeThumb.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\FigureContextMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\FigureEditContextMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\FigureLabelContextMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\GroupArea.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\LabelEditContextMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\LabelResizeButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\LabelRotateThumb.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\LineLabelContextMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\LinePointContextMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\LinePointThumb.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\Minimap.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\NodeEditContextMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\PolygonVertexThumb.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\PrintArea.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\PrintAreaLineThumb.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\PrintAreaResizeThumb.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\PrintAreaSetter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\RectangleResizeThumb.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\FigureRotateThumb.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\LineContextMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\LineEditContextMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\Map.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\SelectChildMenuItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\SelectionRectangle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\SmartFigureLabel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\SmartIndependentLabel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\SmartLabel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\SmartLineLabel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ErrorsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CustomObjects\TableEditContextMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Resources\VertexContextMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SavedErrorsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SchemaSelectionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SearchView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SelectBoilerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SelectDpiView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UpdateInfoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Threading.Tasks, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="ReachFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Printing" />
+    <Reference Include="System.Runtime, Version=2.6.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.1.1.10\lib\net40\System.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Threading.Tasks, Version=2.6.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.1.1.10\lib\net40\System.Threading.Tasks.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kts.Gis.Data\Kts.Gis.Data.csproj">
+      <Project>{920479B2-F0A8-462E-A0B3-150222F178DF}</Project>
+      <Name>Kts.Gis.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kts.Gis.Models\Kts.Gis.Models.csproj">
+      <Project>{FA353771-8B38-4C9E-B506-A730D95B42DB}</Project>
+      <Name>Kts.Gis.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kts.Gis.Reports\Kts.Gis.Reports.csproj">
+      <Project>{3FF9B974-DB03-44B0-A771-DC4EFA5062CD}</Project>
+      <Name>Kts.Gis.Reports</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kts.Gis.Substrates\Kts.Gis.Substrates.csproj">
+      <Project>{879C6CFE-357A-4F45-95C7-B5390FCA1097}</Project>
+      <Name>Kts.Gis.Substrates</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kts.History\Kts.History.csproj">
+      <Project>{F444599D-728E-4B15-8262-770E4ED0198F}</Project>
+      <Name>Kts.History</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kts.Importer.Data\Kts.Importer.Data.csproj">
+      <Project>{6F39C75C-E04D-4497-92A8-2446C7E996D7}</Project>
+      <Name>Kts.Importer.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kts.Messaging\Kts.Messaging.csproj">
+      <Project>{8C83E690-7CA1-49EB-ABF3-2DF9260316E9}</Project>
+      <Name>Kts.Messaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kts.ParameterGrid\Kts.ParameterGrid.csproj">
+      <Project>{806dcaf5-056f-4c53-b671-6057211b4830}</Project>
+      <Name>Kts.ParameterGrid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kts.Settings\Kts.Settings.csproj">
+      <Project>{544C78C8-B95C-4465-BD0F-049D13282E49}</Project>
+      <Name>Kts.Settings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kts.Utilities\Kts.Utilities.csproj">
+      <Project>{9975DA8F-AA06-45E2-A010-7382B85083CA}</Project>
+      <Name>Kts.Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kts.WpfUtilities\Kts.WpfUtilities.csproj">
+      <Project>{866dacb2-dfda-47a0-a9fd-49b8a5ccbd7f}</Project>
+      <Name>Kts.WpfUtilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\ServiceReference1\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+  </Target>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+</Project>

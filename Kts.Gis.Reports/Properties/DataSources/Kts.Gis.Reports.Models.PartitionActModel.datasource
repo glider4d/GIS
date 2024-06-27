@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<GenericObjectDataSource DisplayName="PartitionActModel" Version="1.0" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+   <TypeInfo>Kts.Gis.Reports.Models.PartitionActModel, Kts.Gis.Reports, Version=1.1.0.1, Culture=neutral, PublicKeyToken=null</TypeInfo>
+</GenericObjectDataSource>

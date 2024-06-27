@@ -1,0 +1,103 @@
+﻿<Application
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:Class="Kts.Gis.App"
+    x:ClassModifier="internal"
+    DispatcherUnhandledException="Application_DispatcherUnhandledException"
+    Exit="Application_Exit"
+    Startup="Application_Startup">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary
+                    Source="Views/CustomObjects/ApprovedHeader.xaml" />
+                <ResourceDictionary
+                    Source="Views/CustomObjects/ApprovedHeaderEditContextMenu.xaml" />
+                <ResourceDictionary
+                    Source="Views/CustomObjects/LengthPerDiameterTable.xaml" />
+                <ResourceDictionary
+                    Source="Views/CustomObjects/TableEditContextMenu.xaml" />
+                <!-- Словарь, указанный ниже, должен быть загружен одним из первых -->
+                <ResourceDictionary
+                    Source="Views/Resources/SelectChildMenuItem.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/AddChildMenuItem.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/AutoLegend.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/BadgeEditContextMenu.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/EllipseResizeThumb.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/FigureContextMenu.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/FigureEditContextMenu.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/FigureLabelContextMenu.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/FigureRotateThumb.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/GroupArea.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/LabelEditContextMenu.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/LabelResizeButton.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/LabelRotateThumb.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/LineContextMenu.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/LineEditContextMenu.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/LineLabelContextMenu.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/LinePointContextMenu.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/LinePointThumb.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/NodeEditContextMenu.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/Map.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/Minimap.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/PolygonVertexThumb.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/PrintArea.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/PrintAreaLineThumb.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/PrintAreaResizeThumb.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/PrintAreaSetter.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/RectangleResizeThumb.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/SelectionRectangle.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/VertexContextMenu.xaml" />
+                <!-- Для словарей, указанных ниже, важен порядок подключения -->
+                <ResourceDictionary
+                    Source="Views/Resources/SmartLabel.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/SmartIndependentLabel.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/SmartFigureLabel.xaml" />
+                <ResourceDictionary
+                    Source="Views/Resources/SmartLineLabel.xaml" />
+
+                <ResourceDictionary 
+                    Source="Views/Resources/DarkTheme/classicTheme.xaml"/>
+                
+                <!--
+                <ResourceDictionary 
+                    Source="Views/Resources/DarkTheme/Brushes.xaml"/>
+                <ResourceDictionary
+                    Source="Views/Resources/DarkTheme/Core.xaml"/>
+                <ResourceDictionary
+                    Source="Views/Resources/DarkTheme/Icons.xaml"/>
+                -->
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

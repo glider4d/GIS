@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FA353771-8B38-4C9E-B506-A730D95B42DB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Kts.Gis.Models</RootNamespace>
+    <AssemblyName>Kts.Gis.Models</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccessModel.cs" />
+    <Compile Include="ApprovedHeaderModel.cs" />
+    <Compile Include="BadgeGeometryModel.cs" />
+    <Compile Include="BadgeModel.cs" />
+    <Compile Include="BoilerMeterReportModel.cs" />
+    <Compile Include="Classes\ContainerObjectModelHelper.cs" />
+    <Compile Include="Classes\MapObjectModelHelper.cs" />
+    <Compile Include="Classes\NamedObjectModelHelper.cs" />
+    <Compile Include="Classes\NodeConnectionData.cs" />
+    <Compile Include="Classes\ObjectType.cs" />
+    <Compile Include="Classes\ParameterFormat.cs" />
+    <Compile Include="CustomLayerModel.cs" />
+    <Compile Include="DocumentModel.cs" />
+    <Compile Include="Enums\AccessKind.cs" />
+    <Compile Include="Enums\Alias.cs" />
+    <Compile Include="Enums\ApprovedHeaderType.cs" />
+    <Compile Include="Enums\DocumentType.cs" />
+    <Compile Include="Enums\FigureType.cs" />
+    <Compile Include="Enums\LoadLevel.cs" />
+    <Compile Include="Enums\NodeConnectionSide.cs" />
+    <Compile Include="Enums\ObjectKind.cs" />
+    <Compile Include="Enums\Themes.cs" />
+    <Compile Include="FigureModel.cs" />
+    <Compile Include="FuelInfoModel.cs" />
+    <Compile Include="FuelModel.cs" />
+    <Compile Include="FuelStorageModel.cs" />
+    <Compile Include="Interfaces\IContainerObjectModel.cs" />
+    <Compile Include="Interfaces\IMapObjectModel.cs" />
+    <Compile Include="Interfaces\INamedObjectModel.cs" />
+    <Compile Include="Interfaces\IObjectModel.cs" />
+    <Compile Include="LabelModel.cs" />
+    <Compile Include="LengthPerDiameterTableModel.cs" />
+    <Compile Include="LineModel.cs" />
+    <Compile Include="LoginModel.cs" />
+    <Compile Include="MapSettingsModel.cs" />
+    <Compile Include="MeterInfoModel.cs" />
+    <Compile Include="NodeModel.cs" />
+    <Compile Include="NonVisualObjectModel.cs" />
+    <Compile Include="ObjectModel.cs" />
+    <Compile Include="Enums\Operator.cs" />
+    <Compile Include="ParameterHistoryEntryModel.cs" />
+    <Compile Include="ParameterModel.cs" />
+    <Compile Include="ParameterValueSetModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SchemaModel.cs" />
+    <Compile Include="SearchEntryModel.cs" />
+    <Compile Include="SearchTermModel.cs" />
+    <Compile Include="SubstrateModel.cs" />
+    <Compile Include="TableEntryModel.cs" />
+    <Compile Include="TableModel.cs" />
+    <Compile Include="VisualRegionInfoModel.cs" />
+    <Compile Include="VisualRegionModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kts.Utilities\Kts.Utilities.csproj">
+      <Project>{9975da8f-aa06-45e2-a010-7382b85083ca}</Project>
+      <Name>Kts.Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

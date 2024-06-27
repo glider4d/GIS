@@ -1,0 +1,190 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    mc:Ignorable="d"
+    x:Class="Kts.Gis.Reports.Views.KtsReportView"
+    ResizeMode="NoResize"
+    ShowInTaskbar="False"
+    SizeToContent="Height"
+    Title="{Binding Title}"
+    UseLayoutRounding="True"
+    Width="300"
+    WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <CollectionViewSource
+            x:Key="AllBoilers"
+            Source="{Binding RegionSelectionViewModel.AllBoilers}" />
+        <CollectionViewSource
+            x:Key="AllCities"
+            Source="{Binding RegionSelectionViewModel.AllCities}" />
+        <CollectionViewSource
+            x:Key="Boilers"
+            Source="{Binding RegionSelectionViewModel.Boilers}" />
+        <CollectionViewSource
+            x:Key="Cities"
+            Source="{Binding RegionSelectionViewModel.Cities}" />
+    </Window.Resources>
+    <Grid
+        Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+        </Grid.RowDefinitions>
+        <!-- Группа выбора региона -->
+        <GroupBox
+            Header="Регион"
+            Padding="10">
+            <ComboBox
+                DisplayMemberPath="Name"
+                Height="24"
+                ItemsSource="{Binding RegionSelectionViewModel.Regions}"
+                SelectedItem="{Binding Path=RegionSelectionViewModel.SelectedRegion, Mode=TwoWay}"
+                VerticalAlignment="Stretch"
+                VerticalContentAlignment="Center" />
+        </GroupBox>
+        <!-- Группа выбора населенного пункта -->
+        <GroupBox
+            Grid.Row="1"
+            Header="Населенный пункт"
+            Padding="10">
+            <ComboBox
+                Height="24"
+                SelectedItem="{Binding Path=RegionSelectionViewModel.SelectedCity, Mode=TwoWay}"
+                VerticalAlignment="Stretch"
+                VerticalContentAlignment="Center">
+                <ComboBox.ItemContainerStyle>
+                    <Style
+                        TargetType="{x:Type ComboBoxItem}">
+                        <Setter
+                            Property="FontStyle"
+                            Value="Normal" />
+                        <Setter
+                            Property="HorizontalContentAlignment"
+                            Value="Stretch" />
+                    </Style>
+                </ComboBox.ItemContainerStyle>
+                <ComboBox.ItemsSource>
+                    <CompositeCollection>
+                        <CollectionContainer
+                            Collection="{Binding Source={StaticResource AllCities}}" />
+                        <ComboBoxItem
+                            IsEnabled="False">
+                            <Border
+                                BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
+                                BorderThickness="1"
+                                Height="1"
+                                Margin="0,4" />
+                        </ComboBoxItem>
+                        <CollectionContainer
+                            Collection="{Binding Source={StaticResource Cities}}" />
+                    </CompositeCollection>
+                </ComboBox.ItemsSource>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock
+                            Text="{Binding Name}">
+                            <TextBlock.Style>
+                                <Style
+                                    TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding Id}"
+                                            Value="-1">
+                                            <Setter
+                                                Property="FontStyle"
+                                                Value="Italic" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </GroupBox>
+        <!-- Группа выбора котельной -->
+        <GroupBox
+            Grid.Row="2"
+            Header="Котельная"
+            IsEnabled="{Binding RegionSelectionViewModel.CanSelectBoiler}"
+            Padding="10"
+            Visibility="{Binding Path=RegionSelectionViewModel.CanSelectBoiler, Converter={StaticResource BoolToVisibilityConverter}}">
+            <ComboBox
+                Height="24"
+                SelectedItem="{Binding Path=RegionSelectionViewModel.SelectedBoiler, Mode=TwoWay}"
+                VerticalAlignment="Stretch"
+                VerticalContentAlignment="Center">
+                <ComboBox.ItemContainerStyle>
+                    <Style
+                        TargetType="{x:Type ComboBoxItem}">
+                        <Setter
+                            Property="FontStyle"
+                            Value="Normal" />
+                        <Setter
+                            Property="HorizontalContentAlignment"
+                            Value="Stretch" />
+                    </Style>
+                </ComboBox.ItemContainerStyle>
+                <ComboBox.ItemsSource>
+                    <CompositeCollection>
+                        <CollectionContainer
+                            Collection="{Binding Source={StaticResource AllBoilers}}" />
+                        <ComboBoxItem
+                            IsEnabled="False">
+                            <Border
+                                BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"
+                                BorderThickness="1"
+                                Height="1"
+                                Margin="0,4" />
+                        </ComboBoxItem>
+                        <CollectionContainer
+                            Collection="{Binding Source={StaticResource Boilers}}" />
+                    </CompositeCollection>
+                </ComboBox.ItemsSource>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock
+                            Text="{Binding Name}">
+                            <TextBlock.Style>
+                                <Style
+                                    TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding Id}"
+                                            Value="00000000-0000-0000-0000-000000000000">
+                                            <Setter
+                                                Property="FontStyle"
+                                                Value="Italic" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </GroupBox>
+        <!-- Панель управления -->
+        <StackPanel
+            Grid.Row="3"
+            HorizontalAlignment="Right"
+            Margin="0,10,0,0"
+            Orientation="Horizontal">
+            <Button
+                Command="{Binding GenerateCommand}"
+                Padding="30,3">Сформировать</Button>
+            <Button
+                IsCancel="True"
+                Margin="10,0,0,0"
+                Padding="30,3">Отмена</Button>
+        </StackPanel>
+    </Grid>
+</Window>

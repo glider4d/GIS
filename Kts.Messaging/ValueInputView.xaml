@@ -1,0 +1,106 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:Kts.Messaging"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    mc:Ignorable="d"
+    x:Class="Kts.Messaging.ValueInputView"
+    FocusManager.FocusedElement="{Binding ElementName=textBox}"
+    ResizeMode="NoResize"
+    SizeToContent="Height"
+    Title="{Binding Caption}"
+    UseLayoutRounding="True"
+    Width="300"
+    WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <local:BoolToVisibilityConverter
+            x:Key="BoolToVisibilityConverter" />
+    </Window.Resources>
+    <Grid
+        Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+        </Grid.RowDefinitions>
+        <!-- Панель ввода значения -->
+        <StackPanel>
+            <TextBlock
+                Text="{Binding Content}"
+                TextWrapping="Wrap" />
+            <TextBox
+                x:Name="textBox"
+                Margin="0,5,0,0"
+                Text="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}"
+                GotFocus="textBox_GotFocus">
+                <TextBox.InputBindings>
+                    <KeyBinding
+                        Command="{Binding CheckValueCommand}"
+                        Key="Return" />
+                </TextBox.InputBindings>
+            </TextBox>
+        </StackPanel>
+        <!-- Панель дополнительного выбора -->
+        <TextBlock
+            Grid.Row="1"
+            Margin="0,10,0,0"
+            Text="{Binding AdditionalOptionsText}"
+            Visibility="{Binding Path=HasAdditionalOptions, Converter={StaticResource BoolToVisibilityConverter}}" />
+        <ComboBox
+            DisplayMemberPath="Name"
+            Grid.Row="2"
+            ItemsSource="{Binding AdditionalOptions}"
+            Margin="0,5,0,0"
+            SelectedItem="{Binding Path=SelectedAdditionalOption, Mode=TwoWay}"
+            Visibility="{Binding Path=HasAdditionalOptions, Converter={StaticResource BoolToVisibilityConverter}}" />
+        <!-- Панель дополнительных опций -->
+        <ItemsControl
+            Grid.Row="3"
+            ItemsSource="{Binding Options}"
+            Margin="0,5,0,0">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <RadioButton
+                        Content="{Binding Name}"
+                        GroupName="Options"
+                        IsChecked="{Binding Path=IsSelected, Mode=TwoWay}"
+                        Margin="0,5,0,0" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <!-- Текст с предупреждением -->
+        <TextBlock
+            Grid.Row="4"
+            FontStyle="Italic"
+            FontWeight="Bold"
+            Margin="0,10,0,0"
+            Text="{Binding Warning}"
+            TextWrapping="Wrap"
+            Visibility="{Binding Path=HasWarning, Converter={StaticResource BoolToVisibilityConverter}}" />
+        <StackPanel
+            Grid.Row="5"
+            HorizontalAlignment="Right"
+            Margin="0,10,0,0"
+            Orientation="Horizontal">
+            <!-- Кнопка ввода -->
+            <Button
+                Command="{Binding CheckValueCommand}"
+                Padding="30,3">ОК</Button>
+            <!-- Кнопка отмены -->
+            <Button
+                IsCancel="True"
+                Margin="10,0,0,0"
+                Padding="30,3">Отмена</Button>
+        </StackPanel>
+    </Grid>
+</Window>

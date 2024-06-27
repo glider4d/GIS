@@ -1,0 +1,54 @@
+﻿<Window x:Class="Kts.Gis.Views.ChangeTheme"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Kts.Gis.Views"
+      mc:Ignorable="d" 
+      d:DesignHeight="200" d:DesignWidth="120"
+        WindowStartupLocation="CenterScreen"
+      Title="Тема оформления"
+        Width="300"
+        Height="170"
+        >
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Margin="10"
+            Grid.Row="0"
+            Style="{DynamicResource TextBlockStyle}"
+            Text="Выбор темы:" />
+        <ComboBox Margin="10"
+            Grid.Row="1"
+                  ItemsSource="{Binding Path=ThemeList, Mode=TwoWay}" Text="Выбор темы..."
+                  SelectionChanged="ComboBox_SelectionChanged"
+                  SelectedItem="{Binding CurrentTheme}"
+            ></ComboBox>
+        <Grid Grid.Row="2">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                
+            </Grid.ColumnDefinitions>
+            <Button Margin="10" Grid.Column ="0"
+                    Click="Button_Click">
+            OK
+            </Button>
+            <Button Margin="10" Grid.Column="1"
+                    Click="Button_Click_1">
+                Отмена
+            </Button>
+        </Grid>
+    </Grid>
+</Window>

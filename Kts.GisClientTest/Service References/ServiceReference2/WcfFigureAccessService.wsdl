@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="WcfFigureAccessService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="NetTcpBinding_IWcfFigureAccessService_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <msb:BinaryEncoding xmlns:msb="http://schemas.microsoft.com/ws/06/2004/mspolicy/netbinary1" />
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <msf:WindowsTransportSecurity xmlns:msf="http://schemas.microsoft.com/ws/2006/05/framing/policy">
+                  <msf:ProtectionLevel>EncryptAndSign</msf:ProtectionLevel>
+                </msf:WindowsTransportSecurity>
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Kts.Utilities" />
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/Kts.Gis.Data" />
+      <xsd:import schemaLocation="http://localhost:8080/?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/Kts.Gis.Models" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IWcfFigureAccessService_DoWork_InputMessage">
+    <wsdl:part name="parameters" element="tns:DoWork" />
+  </wsdl:message>
+  <wsdl:message name="IWcfFigureAccessService_DoWork_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DoWorkResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWcfFigureAccessService_DoIt_InputMessage">
+    <wsdl:part name="parameters" element="tns:DoIt" />
+  </wsdl:message>
+  <wsdl:message name="IWcfFigureAccessService_DoIt_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DoItResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWcfFigureAccessService_DoArray_InputMessage">
+    <wsdl:part name="parameters" element="tns:DoArray" />
+  </wsdl:message>
+  <wsdl:message name="IWcfFigureAccessService_DoArray_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DoArrayResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWcfFigureAccessService_DoDictionary_InputMessage">
+    <wsdl:part name="parameters" element="tns:DoDictionary" />
+  </wsdl:message>
+  <wsdl:message name="IWcfFigureAccessService_DoDictionary_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DoDictionaryResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWcfFigureAccessService_getServerList2_InputMessage">
+    <wsdl:part name="parameters" element="tns:getServerList2" />
+  </wsdl:message>
+  <wsdl:message name="IWcfFigureAccessService_getServerList2_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getServerList2Response" />
+  </wsdl:message>
+  <wsdl:message name="IWcfFigureAccessService_getServerList_InputMessage">
+    <wsdl:part name="parameters" element="tns:getServerList" />
+  </wsdl:message>
+  <wsdl:message name="IWcfFigureAccessService_getServerList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getServerListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWcfFigureAccessService_getPacket_InputMessage">
+    <wsdl:part name="parameters" element="tns:getPacket" />
+  </wsdl:message>
+  <wsdl:message name="IWcfFigureAccessService_getPacket_OutputMessage">
+    <wsdl:part name="parameters" element="tns:getPacketResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWcfFigureAccessService_Initialize_InputMessage">
+    <wsdl:part name="parameters" element="tns:Initialize" />
+  </wsdl:message>
+  <wsdl:message name="IWcfFigureAccessService_Initialize_OutputMessage">
+    <wsdl:part name="parameters" element="tns:InitializeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWcfFigureAccessService_GetSqlDataService_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSqlDataService" />
+  </wsdl:message>
+  <wsdl:message name="IWcfFigureAccessService_GetSqlDataService_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetSqlDataServiceResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWcfFigureAccessService_GetLogins_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetLogins" />
+  </wsdl:message>
+  <wsdl:message name="IWcfFigureAccessService_GetLogins_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetLoginsResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IWcfFigureAccessService">
+    <wsdl:operation name="DoWork">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWcfFigureAccessService/DoWork" message="tns:IWcfFigureAccessService_DoWork_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWcfFigureAccessService/DoWorkResponse" message="tns:IWcfFigureAccessService_DoWork_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DoIt">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWcfFigureAccessService/DoIt" message="tns:IWcfFigureAccessService_DoIt_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWcfFigureAccessService/DoItResponse" message="tns:IWcfFigureAccessService_DoIt_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DoArray">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWcfFigureAccessService/DoArray" message="tns:IWcfFigureAccessService_DoArray_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWcfFigureAccessService/DoArrayResponse" message="tns:IWcfFigureAccessService_DoArray_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DoDictionary">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWcfFigureAccessService/DoDictionary" message="tns:IWcfFigureAccessService_DoDictionary_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWcfFigureAccessService/DoDictionaryResponse" message="tns:IWcfFigureAccessService_DoDictionary_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getServerList2">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWcfFigureAccessService/getServerList2" message="tns:IWcfFigureAccessService_getServerList2_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWcfFigureAccessService/getServerList2Response" message="tns:IWcfFigureAccessService_getServerList2_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getServerList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWcfFigureAccessService/getServerList" message="tns:IWcfFigureAccessService_getServerList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWcfFigureAccessService/getServerListResponse" message="tns:IWcfFigureAccessService_getServerList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="getPacket">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWcfFigureAccessService/getPacket" message="tns:IWcfFigureAccessService_getPacket_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWcfFigureAccessService/getPacketResponse" message="tns:IWcfFigureAccessService_getPacket_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Initialize">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWcfFigureAccessService/Initialize" message="tns:IWcfFigureAccessService_Initialize_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWcfFigureAccessService/InitializeResponse" message="tns:IWcfFigureAccessService_Initialize_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSqlDataService">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWcfFigureAccessService/GetSqlDataService" message="tns:IWcfFigureAccessService_GetSqlDataService_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWcfFigureAccessService/GetSqlDataServiceResponse" message="tns:IWcfFigureAccessService_GetSqlDataService_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLogins">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWcfFigureAccessService/GetLogins" message="tns:IWcfFigureAccessService_GetLogins_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWcfFigureAccessService/GetLoginsResponse" message="tns:IWcfFigureAccessService_GetLogins_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IWcfFigureAccessService" type="tns:IWcfFigureAccessService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="DoWork">
+      <soap:operation soapAction="http://tempuri.org/IWcfFigureAccessService/DoWork" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DoIt">
+      <soap:operation soapAction="http://tempuri.org/IWcfFigureAccessService/DoIt" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DoArray">
+      <soap:operation soapAction="http://tempuri.org/IWcfFigureAccessService/DoArray" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DoDictionary">
+      <soap:operation soapAction="http://tempuri.org/IWcfFigureAccessService/DoDictionary" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getServerList2">
+      <soap:operation soapAction="http://tempuri.org/IWcfFigureAccessService/getServerList2" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getServerList">
+      <soap:operation soapAction="http://tempuri.org/IWcfFigureAccessService/getServerList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getPacket">
+      <soap:operation soapAction="http://tempuri.org/IWcfFigureAccessService/getPacket" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Initialize">
+      <soap:operation soapAction="http://tempuri.org/IWcfFigureAccessService/Initialize" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSqlDataService">
+      <soap:operation soapAction="http://tempuri.org/IWcfFigureAccessService/GetSqlDataService" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLogins">
+      <soap:operation soapAction="http://tempuri.org/IWcfFigureAccessService/GetLogins" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="NetTcpBinding_IWcfFigureAccessService" type="tns:IWcfFigureAccessService">
+    <wsp:PolicyReference URI="#NetTcpBinding_IWcfFigureAccessService_policy" />
+    <soap12:binding transport="http://schemas.microsoft.com/soap/tcp" />
+    <wsdl:operation name="DoWork">
+      <soap12:operation soapAction="http://tempuri.org/IWcfFigureAccessService/DoWork" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DoIt">
+      <soap12:operation soapAction="http://tempuri.org/IWcfFigureAccessService/DoIt" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DoArray">
+      <soap12:operation soapAction="http://tempuri.org/IWcfFigureAccessService/DoArray" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DoDictionary">
+      <soap12:operation soapAction="http://tempuri.org/IWcfFigureAccessService/DoDictionary" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getServerList2">
+      <soap12:operation soapAction="http://tempuri.org/IWcfFigureAccessService/getServerList2" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getServerList">
+      <soap12:operation soapAction="http://tempuri.org/IWcfFigureAccessService/getServerList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getPacket">
+      <soap12:operation soapAction="http://tempuri.org/IWcfFigureAccessService/getPacket" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Initialize">
+      <soap12:operation soapAction="http://tempuri.org/IWcfFigureAccessService/Initialize" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSqlDataService">
+      <soap12:operation soapAction="http://tempuri.org/IWcfFigureAccessService/GetSqlDataService" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLogins">
+      <soap12:operation soapAction="http://tempuri.org/IWcfFigureAccessService/GetLogins" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WcfFigureAccessService">
+    <wsdl:port name="BasicHttpBinding_IWcfFigureAccessService" binding="tns:BasicHttpBinding_IWcfFigureAccessService">
+      <soap:address location="http://localhost:8080/Kts.Gis.Data.WcfFigureAccessService" />
+    </wsdl:port>
+    <wsdl:port name="NetTcpBinding_IWcfFigureAccessService" binding="tns:NetTcpBinding_IWcfFigureAccessService">
+      <soap12:address location="net.tcp://localhost:45617/Kts.Gis.Data.WcfFigureAccessService" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>net.tcp://localhost:45617/Kts.Gis.Data.WcfFigureAccessService</wsa10:Address>
+        <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
+          <Upn>shkulev_ki@jkhrs.ru</Upn>
+        </Identity>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

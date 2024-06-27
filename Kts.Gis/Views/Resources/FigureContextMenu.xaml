@@ -1,0 +1,58 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:views="clr-namespace:Kts.Gis.Views"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Меню генерации формы -->
+    <Style
+        x:Key="GenerateFormMenuItemStyle"
+        TargetType="{x:Type MenuItem}">
+        <Setter
+            Property="Command"
+            Value="{Binding Item2}" />
+        <Setter
+            Property="Header"
+            Value="{Binding Item1}" />
+    </Style>
+    <!-- Контекстное меню фигуры -->
+    <ContextMenu
+        x:Key="FigureContextMenu">
+        <ContextMenu.Resources>
+            <views:ObjectCountToVisibilityConverter
+                x:Key="ObjectCountToVisibilityConverter" />
+        </ContextMenu.Resources>
+        <MenuItem
+            Command="{Binding ShowDocuments}"
+            Header="Прикрепленные документы..." />
+        <MenuItem
+            Header="Сгенерировать"
+            ItemContainerStyle="{StaticResource GenerateFormMenuItemStyle}"
+            ItemsSource="{Binding FormGeneratorForms}" />
+        <Separator />
+        <MenuItem
+            Header="Добавить"
+            ItemContainerStyle="{StaticResource AddChildMenuItemStyle}"
+            ItemsSource="{Binding AddChildViewModels}"
+            Visibility="{Binding Path=AddChildViewModels.Count, Converter={StaticResource ObjectCountToVisibilityConverter}}" />
+        <Separator
+            Visibility="{Binding Path=AddChildViewModels.Count, Converter={StaticResource ObjectCountToVisibilityConverter}}" />
+        <MenuItem
+            Command="{Binding CopyParametersCommand}"
+            Header="Копировать параметры" />
+        <MenuItem
+            Command="{Binding PasteParametersCommand}"
+            Header="Вставить параметры" />
+        <Separator />
+        <MenuItem
+            Header="Выбрать"
+            ItemContainerStyle="{StaticResource SelectChildMenuItemStyle}"
+            ItemsSource="{Binding SelectChildViewModels}"
+            Visibility="{Binding Path=SelectChildViewModels.Count, Converter={StaticResource ObjectCountToVisibilityConverter}}" />
+        <MenuItem
+            Command="{Binding SelectConnectionsCommand}"
+            Header="Выбрать все сети" />
+        <Separator />
+        <MenuItem
+            Command="{Binding DeactivateCommand}"
+            Header="{Binding DeactivateText}" />
+    </ContextMenu>
+</ResourceDictionary>

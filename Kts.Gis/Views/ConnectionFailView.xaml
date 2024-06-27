@@ -1,0 +1,33 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    mc:Ignorable="d"
+    x:Class="Kts.Gis.Views.ConnectionFailView"
+    x:ClassModifier="internal"
+    Icon="/Icons/Main.ico"
+    ResizeMode="NoResize"
+    ShowInTaskbar="False"
+    SizeToContent="WidthAndHeight"
+    Title="Ошибка соединения"
+    UseLayoutRounding="True"
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="None"
+    Style="{DynamicResource WindowStyle}"
+    >
+    <Border
+        BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}"
+        BorderThickness="1">
+        <StackPanel x:Name="stackPanel">
+            <!--Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"-->
+            <TextBlock
+                Style="{DynamicResource WindowBlockStyle}"
+                
+                Margin="10"
+                MaxWidth="300"
+                Text="Возникла ошибка при соединении с источником данных. Пожалуйста подождите, пока будут выполняться попытки повторного подключения..."
+                TextWrapping="Wrap" />
+        </StackPanel>
+    </Border>
+</Window>

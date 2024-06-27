@@ -1,0 +1,73 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    mc:Ignorable="d"
+    x:Class="Kts.Importer.Views.MainView"
+    x:ClassModifier="internal"
+    Icon="/Icons/Main.ico"
+    ResizeMode="NoResize"
+    SizeToContent="Height"
+    Title="Импортер данных"
+    UseLayoutRounding="True"
+    Width="500"
+    WindowStartupLocation="CenterScreen">
+    <Grid
+        Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+        </Grid.RowDefinitions>
+        <!-- Панель выбора файла-источника данных -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition
+                    Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox
+                IsEnabled="False"
+                Text="{Binding Path=SourcePath, Mode=TwoWay}"
+                VerticalAlignment="Center" />
+            <Button
+                Grid.Column="1"
+                Margin="10,0,0,0"
+                Padding="30,3"
+                Click="Button_Click">...</Button>
+        </Grid>
+        <!-- Панель выбора типа объектов -->
+        <Grid
+            Grid.Row="1"
+            Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition
+                    Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <TextBlock
+                Text="Тип объектов:"
+                VerticalAlignment="Center" />
+            <ComboBox
+                DisplayMemberPath="Name"
+                Grid.Column="1"
+                Height="32"
+                ItemsSource="{Binding Types}"
+                Margin="10,0,0,0"
+                MinWidth="200"
+                SelectedItem="{Binding Path=SelectedType, Mode=TwoWay}"
+                VerticalContentAlignment="Center" />
+        </Grid>
+        <!-- Кнопка начала импортирования -->
+        <Button
+            Command="{Binding StartImportCommand}"
+            Grid.Row="2"
+            HorizontalAlignment="Right"
+            Margin="0,10,0,0"
+            Padding="30,3">Начать импортирование</Button>
+    </Grid>
+</Window>

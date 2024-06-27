@@ -1,0 +1,147 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:pg="clr-namespace:Kts.ParameterGrid;assembly=Kts.ParameterGrid"
+    xmlns:views="clr-namespace:Kts.Gis.Views"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    mc:Ignorable="d"
+    x:Class="Kts.Gis.Views.ObjectSelectView"
+    x:ClassModifier="internal"
+    x:Name="window"
+    Height="768"
+    Icon="/Icons/Main.ico"
+    ResizeMode="CanResizeWithGrip"
+    Title="Выбор объекта"
+    UseLayoutRounding="True"
+    Width="1024"
+    WindowStartupLocation="CenterScreen"
+    Closed="window_Closed"
+    Loaded="window_Loaded"
+    Style="{DynamicResource WindowStyle}"
+    >
+    <!-- Шорткаты для команд -->
+    <Window.InputBindings>
+        <KeyBinding
+            Command="{Binding MapViewModel.ShowHideSubstrateCommand}"
+            Key="F6" />
+    </Window.InputBindings>
+    <Window.Resources>
+        <!-- Конвертеры -->
+        <views:BoolToVisibilityConverter
+            x:Key="BoolToVisibilityConverter" />
+        <views:DoubleToGridLengthConverter
+            x:Key="DoubleToGridLengthConverter" />
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition />
+            <RowDefinition
+                Height="Auto" />
+        </Grid.RowDefinitions>
+        <!-- Меню -->
+        <Menu
+            Background="{Binding ElementName=window, Path=Background}">
+            <MenuItem
+                Header="Файл">
+                <MenuItem
+                    Command="{Binding CloseCommand}"
+                    Header="Выход" />
+            </MenuItem>
+            <MenuItem
+                Header="Вид">
+                <MenuItem
+                    Command="{Binding MapViewModel.ShowHideSubstrateCommand}"
+                    Header="Подложка"
+                    InputGestureText="F6"
+                    IsChecked="{Binding MapViewModel.IsSubstrateVisible}" />
+                <Separator />
+                <MenuItem
+                    IsEnabled="{Binding MapViewModel.HasSubstrate}">
+                    <MenuItem.Header>
+                        <StackPanel>
+                            <TextBlock
+                                Text="Прозрачность подложки:" />
+                            <Slider
+                                Grid.Column="1"
+                                Margin="0,10,0,0"
+                                Maximum="1"
+                                MinWidth="150"
+                                Value="{Binding Path=MapViewModel.SubstrateOpacity, Mode=TwoWay}" />
+                        </StackPanel>
+                    </MenuItem.Header>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+        <!-- Две разделенные области -->
+        <Grid
+            Grid.Row="1"
+            Margin="5,5,5,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition
+                    MinWidth="250"
+                    Width="{Binding Path=SettingService.Settings[LeftSideColumnWidth], Mode=TwoWay, Converter={StaticResource DoubleToGridLengthConverter}}" />
+                <ColumnDefinition
+                    Width="5" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <!-- Панель с сеткой параметров -->
+            <TabControl
+                Padding="0">
+                <TabItem
+                    Header="Параметры">
+                    <pg:ParameterGrid
+                        HeaderColumnWidth="{Binding Path=ParameterGridViewModel.HeaderColumnWidth, Mode=TwoWay}"
+                        HideEmpty="{Binding Path=ParameterGridViewModel.HideEmptyParameters, Mode=TwoWay}"
+                        Margin="5"
+                        Parameters="{Binding ParameterGridViewModel.SelectedParameterValues.Parameters}"
+                        Title="{Binding ParameterGridViewModel.SelectedParameterValuesTitle}"
+                        ValueColumnWidth="{Binding Path=ParameterGridViewModel.ValueColumnWidth, Mode=TwoWay}"
+                        Visibility="{Binding Path=ParameterGridViewModel.HasSelectedParameterValues, Converter={StaticResource BoolToVisibilityConverter}}" />
+                </TabItem>
+            </TabControl>
+            <!-- Разделитель левой и правой областей -->
+            <GridSplitter
+                Background="{Binding ElementName=window, Path=Background}"
+                Grid.Column="1"
+                HorizontalAlignment="Stretch" />
+            <!-- Карта -->
+            <views:Map
+                x:Name="map"
+                Grid.Column="2"
+                EnableContextMenus="False"
+                IsDataLoaded="{Binding MapViewModel.IsReady}"
+                IsLegendVisible="{Binding MapViewModel.IsLegendVisible}"
+                IsPrintAreaVisible="{Binding MapViewModel.IsPrintAreaVisible}"
+                IsSubstrateVisible="{Binding MapViewModel.IsSubstrateVisible}"
+                LayerIds="{Binding MapViewModel.Types}"
+                MapAction="Select"
+                SelectedPrinter="{Binding MapViewModel.SelectedPrinter}"
+                SubstrateDimension="{Binding MapViewModel.SubstrateDimension}"
+                SubstrateOpacity="{Binding MapViewModel.SubstrateOpacity}"
+                SubstrateSize="{Binding MapViewModel.SubstrateSize}"
+                SubstrateTiles="{Binding MapViewModel.SubstrateTiles}"
+                ThumbnailPath="{Binding MapViewModel.ThumbnailPath}"
+                Visibility="{Binding Path=IsDataLoaded, Converter={StaticResource BoolToVisibilityConverter}}" />
+        </Grid>
+        <!-- Кнопки управления -->
+        <StackPanel
+            Grid.Row="2"
+            HorizontalAlignment="Right"
+            Margin="15"
+            Orientation="Horizontal">
+            <!-- Кнопка выбора -->
+            <Button
+                Command="{Binding SelectCommand}"
+                Padding="30,3">Выбрать</Button>
+            <!-- Кнопка отмены -->
+            <Button
+                Command="{Binding CloseCommand}"
+                IsCancel="True"
+                Margin="10,0,0,0"
+                Padding="30,3">Отмена</Button>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,769 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    mc:Ignorable="d"
+    x:Class="Kts.Gis.Views.UpdateInfoView"
+    x:ClassModifier="internal"
+    Height="500"
+    Icon="/Icons/Main.ico"
+    ResizeMode="NoResize"
+    Title="Информация об обновлении"
+    UseLayoutRounding="True"
+    Width="500"
+    WindowStartupLocation="CenterScreen"
+    Style="{DynamicResource WindowStyle}"
+    >
+    <Grid
+        Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition
+                Height="Auto" />
+        </Grid.RowDefinitions>
+        <RichTextBox
+            ContextMenu="{x:Null}"
+            IsReadOnly="True"
+            IsUndoEnabled="False"
+            VerticalScrollBarVisibility="Visible">
+            <FlowDocument
+                FontSize="14">
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.3.3.21:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Исправлен поиск неисправных узлов.</Paragraph>
+                        <Paragraph>Исправлен поиск неподключенных узлов.</Paragraph>
+                        <Paragraph>Добавлен отчет измерительных приборов.</Paragraph>
+                        <Paragraph>Добавлен вывод параметров тепла, объема, массы по счетчикам.</Paragraph>
+                        <Paragraph>Добавлены параметры к мусорным контейнерам.</Paragraph>
+                        <Paragraph>Добавлены отчеты водоснабжения и водоотведения.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.3.3.13:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Обновлен протокол взаимодействия с ЛЭРС УЧЕТ.</Paragraph>
+                        <Paragraph>Исправлены ошибки сериализации данных.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.3.3.12:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Дополнен отчет о жилищном фонде и договорных подключениях.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.3.3.11:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Исправлены ошибки с заголовками объектов;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлен отчет ТХ5.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.3.3.10:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Добавлен тип объекта "Мусорный контейнер";</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлена возможность привязки жилых объектов к мусорным контейнерам.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.3.3.9:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Добавлено взаимодействие с системой диспетчеризации ЛЭРС УЧЕТ.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.3.3.8:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Изменен слой гидравлики.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.3.3.7:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Добавлен слой несопоставленных объектов;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Теперь можно вручную убирать/добавлять объекты с правой стороны сопоставления;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлено формирование отчета ТХ2.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.3.3.6:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Теперь при сопоставлении можно разбивать объекты по котельным.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.3.3.5:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Добавлена возможность формирования отчета об общем сопоставлении;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлена возможность формирования отчета о несопоставленных объектах;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлен тип объекта "Жилое помещение".</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.3.3.4:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Исправлено определение наличия несопоставленных объектов.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.3.3.3:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Добавлена возможность сопоставления объектов с объектами программы "Квартплата";</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлен просмотр и редактирование объектов, сопоставленных с объектами программы "Квартплата";</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Исправлена ошибка, из-за которой параметры объекта отображались только после их повторного вызова;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Реализовано получение данных со сторонних программ.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.3.3.2:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Исправлена редкая ошибка, возникающая при отображении параметров объекта;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлен просмотр и редактирование сопоставленных объектов.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.3.3.1:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Разблокировано сопоставление объектов.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.3.3.0:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Исправлена ошибка, из-за которой названия труб некорректно отображались в дереве объектов;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлена возможность сопоставления объектов с объектами программы "Расчеты с юридическими лицами";</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлена возможность выделения труб РП другим цветом с помощью слоя;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлен экспорт выбранной области схемы в PNG-изображение.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.3.2.0:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Исправлено раскрашивание зданий в соответствии с их внутренними объектами;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлена вставка заголовков утверждения и согласования. Для этого выберите пункт меню "Правка" - "Вставить" и нужный тип заголовка;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлена возможность прикрепления документов к объектам;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Теперь в названиях объектов не отображается прочерк при отсутствии значения параметра.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.3.1.0:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Добавлена возможность ручного определения параметров, участвующих в составлении названий объектов. Для каждого населенного пункта и каждого пользователя сохраняются свои отдельные настройки.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.3.0.0:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Теперь нельзя сменить тип объекта, если у него есть дочерние объекты;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Изменена система группировки параметров. Теперь каждый тип объекта имеет свои группы параметров;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Исправлена работа с отчетами в плановых схемах.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.18.7:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Добавлена возможность вставки таблицы свода труб по диаметрам. Для этого выберите пункт меню "Правка" - "Вставить объект" - "Свод труб по диаметрам" и при необходимости задайте таблице нужный слой;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Уменьшен размер узлов;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Теперь можно вручную указывать угол поворота надписи в окне ее редактирования;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Теперь инструменты изменения размера надписей доступны всем пользователям.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.18.6:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Исправлено условие блокировки инструмента "Линейка".</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.18.5:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Добавлена возможность масштабирования карты при помощи комбинации клавиш Ctrl+ и Ctrl-.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.18.4:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Небольшие правки;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Исправлено разделение линий.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.18.3:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Исправлено удаление узлов;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Теперь надписи обновляются только при изменении;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлена возможность работы с дополнительными слоями. На данный момент на эти слои можно перенести только надписи.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.18.2:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Добавлена возможность восстановления отсутствующих узлов;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Исправлено удаление узлов.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.18.1:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Исправлено открытие схемы отдельной котельной;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Исправлено неправильное чтение данных узлов.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.18.0:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Переработана система хранения данных узлов, что позволит избежать появления многих ошибок при открытии схем;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлено автоматическое исправление проблем с узлами;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Переработана работа со схемами. Теперь нет разделения на фактические и плановые схемы. Есть только схемы, разделенные по годам.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.17.0:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Небольшие правки пользовательского интерфейса;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Исправлены ошибки с интеграцией с другими программами;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Исправлен вылет программы из-за ошибки при поиске объектов;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Переработана система поиска объектов.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.16.0:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Исправлена ошибка, приводящая к возможности добавления параметра в поиске объектов повторно;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Исправлена ошибка с интеграцией с другими программами;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Исправлена ошибка, из-за которой не отображалось контекстное меню независимой надписи;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Возвращено редактирование надписей линий.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.15.0:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Заблокирована смена планируемости объектов в зафиксированных населенных пунктах;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлена возможность изменения настроек вида схемы по населенным пунктам;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Теперь кнопки уменьшения/увеличения надписей объектов позволяют зажимать их.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.14.3:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Исправлено формирование отчета ТХ8.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.14.2:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Теперь отчет ТХ8 формируется в расширенном виде;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Окно отчета о технических характеристках теперь не будет автоматически закрываться после формирования;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлено контекстное меню для редактирования надписей фигур.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.14.1:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Добавлен выбор населенного пункта и котельной при формировании отчетов о технических характеристиках;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Теперь дочерние объекты могут иметь свои дочерние объекты;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Переработана система определения выбора объектов, слоев и групп. Это позволит сэкономить немного памяти;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Исправлена ошибка, из-за которой нельзя было открыть схему, если она не содержала ни одной котельной;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Теперь при добавлении задвижки или любого другого дочернего объекта трубы, ему будет присвоен диаметр родителя;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Исправлена ошибка, которая возникает при копировании объекта, содержащего дочерние объекты;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлено изменение окраски зданий в зависимости от помещений;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Реализованы отмена/повтор вставки объекта.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.14.0:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Добавлено отображение общей мощности силовых агрегатов при выборе группы электрооборудования;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлена новая группа объектов: "Отключенные";</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Теперь можно отключать объекты не удаляя их из источника данных;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Исправлены некоторые ограничения ролей пользователей;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлена сортировка списка типов внутренних объектов;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлена сортировка списка внутренних объектов;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Теперь дочерние объекты не наследуют планируемость и активность родительского объекта.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.13.0:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Изменен способ изменения размера области печати по ее вершинам;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлена возможность изменения размера области печати по боковым границам;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Теперь элементы управления размером области печати имеют одинаковый размер вне зависимости от текущего масштаба карты;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Теперь при возникновении ошибки во время печати карта не будет ломаться;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлен второй способ печати на принтере - печать через XPS-файл;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Теперь при открытии окна выбора принтера будет выбран принтер по умолчанию;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Исправлено неправильное изменение размера области печати при повороте ее на произвольный угол;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Исправлена редкая ошибка, приводящая к отмене загрузки параметров выбранного объекта, слоя или группы;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлена возможность удаления задвижек и прочих внутренних объектов труб напрямую через их контекстное меню;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлена возможность загрузки схемы нескольких котельных одновременно;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Исправлена ошибка, приводящая к неправильному расположению надписей при загрузке схемы;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Исправлена ошибка, приводящая к дублированию надписей при повторном сохранении схемы;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Теперь при выборе инструмента "Область печати" будет запрашиваться выбор принтера;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Реализован выбор участка трубы через его начало и конец при удерживании клавиши Shift;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Исправлена ошибка, возникающая при выборе всей сети здания.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.12.2:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Добавлена функция прикрепления неподключенных узлов к фигурам;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлен перехват ошибок, возникающих при печати.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.12.1:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Добавлена возможность выбора типа линий, длины которых будут пересчитаны линейкой;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Теперь линейкой можно менять длины только планируемых труб;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлено отлавливание ошибки, связанное с выбором нескольких объектов.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.12.0:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Добавлен выбор печатаемых листов в области печати;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Изменен слой разделения труб по годам;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Теперь можно самому задать цвет труб в слое разделения по годам;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлено формирование отчета ТХ7;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Исправлено формирование отчета ТХ8.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.11.0:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Убрана возможность выбора района;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлено окно управления областью печати;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлена возможность поворота области печати на произвольный угол;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлена возможность отключения всплывающих окон с информацией о котельной и о топливном складе;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Исправлена ошибка с названиями резервных источников питания;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Теперь в качестве названий электрооборудований берутся значения параметров "Тип" и "Наименование";</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Исправлена ошибка, из-за которой неверно отображалась протяженность труб в котельной;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлена возможность группового изменения фиксированности протяженностей труб при групповом редактировании объектов;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Исправлена ошибка при печати в XPS-файл.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.10.2:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Исправлена ошибка в истории изменений.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.10.1:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Исправлена ошибка, из-за которой не отображался параметр "Зольность топлива по сертификату";</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Исправлена ошибка, из-за которой нельзя было поменять значение параметра "Марка топлива".</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.10.0:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Добавлена проверка интеграции со следующими программами: "Квартплата", "Расчеты с юридическими лицами" и "Учет потребления топлива".</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.9.1:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Исправлена ошибка, возникающая при наведении курсора мыши на некоторые трубы;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Убрана защита от подключения трубы к своей сети;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Исправлена ошибка, возникающая при отсутствии данных в программе "Топливо".</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.9.0:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Исправлена ошибка, приводящая к поломке узлов, если были изменены/удалены сохраненные узлы.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.8.0:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Исправлена ошибка, приводящая к поломке узлов, если с карты была удалена сохраненная труба.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.7.0:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Добавлена поддержка смены типов помещений.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.6.0:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Исправлено удаление надписей;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлен поиск неподключенных узлов. Для того, что выполнить его, необходимо выбрать пункт меню "Найти неподключенные узлы" в меню "Сервис";</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлен быстрый поиск объектов через дерево объектов. Можно искать по нескольким ключевым словам, для этого отделите их пробелом.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.5.0:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Слой гидравлики теперь можно отобразить только в режиме выбора объектов;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлен слой разделения труб по годам ввода в эксплуатацию;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Изменен способ отображения данных на глобальной карте.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.4.1:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Выполнена внутренняя оптимизация кода;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Исправлена ошибка, возникающая при попытке поиска объектов при некоторых значениях;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлена цветовая индикация несоответствия рассчитанного диаметра и фактического;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Отключены функции импорта/экспорта данных;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Выполнена перепланировка пунктов меню;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлена обработка исключений, возникающих при отображении параметров объекта;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлена возможность поиска объекта по его идентификатору.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.4.0:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Добавлена возможность скрытия параметров с пустыми значениями;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Добавлено отображение единиц измерения значений параметров;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Теперь в истории изменений значения параметра в качестве начальной даты по умолчанию выбирается первый день текущего года.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.3.3:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Исправлена ошибка, из-за которой не отображались значения параметров внутренних объектов и значков труб.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.3.2:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Исправлена ошибка, возникающая на некоторых машинах из-за предыдущего обновления.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.3.1:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Исправлена ошибка, из-за которой нельзя было массово изменить размеры надписей у групп объектов через дерево объектов;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Реализована асинхронная загрузка информации о котельной и ее топливе;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Реализована асинхронная загрузка значений параметров объектов;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Исправлена ошибка, возникающая при открытии отдельной котельной.</Paragraph>
+                    </ListItem>
+                </List>
+                <Paragraph
+                    FontSize="16"
+                    FontWeight="Medium">О версии 1.2.3.0:</Paragraph>
+                <List>
+                    <ListItem>
+                        <Paragraph>Теперь новую схему можно будет добавить только для зафиксированного населенного пункта;</Paragraph>
+                    </ListItem>
+                    <ListItem>
+                        <Paragraph>Теперь при возникновении ошибки, пользователю будет предложено выполнить сохранение изменений.</Paragraph>
+                    </ListItem>
+                </List>
+            </FlowDocument>
+        </RichTextBox>
+        <Button
+            Grid.Row="1"
+            HorizontalAlignment="Right"
+            IsCancel="True"
+            IsDefault="True"
+            Margin="0,10,0,0"
+            Padding="30,3">ОК</Button>
+    </Grid>
+</Window>

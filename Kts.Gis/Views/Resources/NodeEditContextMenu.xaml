@@ -1,0 +1,23 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Контекстное меню редактирования узла -->
+    <ContextMenu
+        x:Key="NodeEditContextMenu">
+        <MenuItem
+            Command="{Binding DisconnectCommand}"
+            Header="Отсоединить узел" />
+        <MenuItem
+            Command="{Binding UnpinCommand}"
+            Header="Открепить узел" />
+        <Separator />
+        <MenuItem
+            Command="{Binding DeleteCommand}"
+            Header="Удалить узел" />
+        <Separator />
+        <MenuItem
+            Header="Игнорировать автоопределение положения узла"
+            IsCheckable="True"
+            IsChecked="{Binding Path=IgnoreStick, Mode=TwoWay}" />
+    </ContextMenu>
+</ResourceDictionary>

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Kts.Gis.Models\Kts.Gis.Models.csproj" />
+    <ProjectReference Include="..\Kts.Gis.TestData\Kts.Gis.TestData.csproj" />
+    <ProjectReference Include="..\Kts.Utilities\Kts.Utilities.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Classes\" />
+  </ItemGroup>
+
+</Project>

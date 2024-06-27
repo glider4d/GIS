@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7E1349D9-2171-42AE-95FC-C4EE961D91F7}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Kts.LerpService</RootNamespace>
+    <AssemblyName>Kts.LerpService</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Lers.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=e7c6d6299713498c, processorArchitecture=MSIL" />
+    <Reference Include="Lers.System, Version=3.0.0.0, Culture=neutral, PublicKeyToken=e7c6d6299713498c, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ProjectInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ProjectInstaller.Designer.cs">
+      <DependentUpon>ProjectInstaller.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Service1.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Service1.Designer.cs">
+      <DependentUpon>Service1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ProjectInstaller.resx">
+      <DependentUpon>ProjectInstaller.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kts.Gis.Data\Kts.Gis.Data.csproj">
+      <Project>{920479b2-f0a8-462e-a0b3-150222f178df}</Project>
+      <Name>Kts.Gis.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kts.Gis.Models\Kts.Gis.Models.csproj">
+      <Project>{fa353771-8b38-4c9e-b506-a730d95b42db}</Project>
+      <Name>Kts.Gis.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kts.Gis.Substrates\Kts.Gis.Substrates.csproj">
+      <Project>{879c6cfe-357a-4f45-95c7-b5390fca1097}</Project>
+      <Name>Kts.Gis.Substrates</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kts.Gis\Kts.Gis.csproj">
+      <Project>{ff5e506b-ac27-4527-8478-244650f7bf21}</Project>
+      <Name>Kts.Gis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kts.Importer.Data\Kts.Importer.Data.csproj">
+      <Project>{6f39c75c-e04d-4497-92a8-2446c7e996d7}</Project>
+      <Name>Kts.Importer.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kts.Messaging\Kts.Messaging.csproj">
+      <Project>{8c83e690-7ca1-49eb-abf3-2df9260316e9}</Project>
+      <Name>Kts.Messaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kts.Settings\Kts.Settings.csproj">
+      <Project>{544c78c8-b95c-4465-bd0f-049d13282e49}</Project>
+      <Name>Kts.Settings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kts.Updater\Kts.Updater.csproj">
+      <Project>{09f0aba6-0a95-480d-8e1c-d8cf3f8afd7c}</Project>
+      <Name>Kts.Updater</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kts.Utilities\Kts.Utilities.csproj">
+      <Project>{9975da8f-aa06-45e2-a010-7382b85083ca}</Project>
+      <Name>Kts.Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LersConsole\LersConsole.csproj">
+      <Project>{be12c86a-5e55-4e82-8c89-d2f31e85eef2}</Project>
+      <Name>LersConsole</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WpfCustomMessageBox\WpfCustomMessageBox.csproj">
+      <Project>{94e7da94-5a44-4716-ac55-1aeacbca4fab}</Project>
+      <Name>WpfCustomMessageBox</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,456 @@
+﻿<Window x:Class="Kts.AdministrationTool.Views.MainAdminWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        
+        xmlns:view="clr-namespace:Kts.AdministrationTool.Views"
+        xmlns:viewmodel="clr-namespace:Kts.AdministrationTool.ViewModels"
+    
+    
+        mc:Ignorable="d"
+        Title="MainAdminWindow"
+    Background="#333"
+    ResizeMode="CanResizeWithGrip"
+    WindowState="Maximized"
+    MinHeight="480"
+        MinWidth="640"
+    >
+
+    <Window.Resources>
+        
+        
+        
+    </Window.Resources>
+
+        <Grid x:Name="layoutRoot">
+
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="auto"></RowDefinition>
+            <RowDefinition
+                Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+
+
+        <ToolBar
+            Grid.Row="0"
+            VerticalAlignment="Top">
+            <Button
+                ToolTip="Добавить"
+                Command="{Binding AddUser}"
+                >
+                <Path
+                    Width="18"
+                    Height="22"
+                    Stretch="Fill"
+                    Fill="{StaticResource FillPath}"
+                    Data="{StaticResource user_addStyle0}" />
+            </Button>
+            <Button
+                ToolTip="Сменить пароль"
+                Command="{Binding EditUser}"
+                >
+                <Path
+                    Width="20"
+                    Height="20"
+                    Stretch="Fill"
+                    Fill="{StaticResource FillPath}"
+                    Data="{StaticResource interface_passwordStyle0}" />
+            </Button>
+            
+            
+            
+            
+            
+            <Separator />
+        </ToolBar>
+        <TabControl  Grid.Row="1"
+            Margin="0,6,0,10" SelectionChanged="TabControl_SelectionChanged">
+            <TabItem
+                x:Name="sessions"
+                Header="Сессии"
+                Width="100"
+                Height="40">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="5*"></RowDefinition>
+                        <RowDefinition Height="90*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <DataGrid Grid.Row="1"
+                        Style="{StaticResource modernGrid}"
+                        x:Name="Sessions"
+                        ItemsSource="{Binding sessionModels}"
+                        AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Header="ID"
+                                Binding="{Binding id}" />
+                            <DataGridTextColumn
+                                Header="IP"
+                                Binding="{Binding ip}" />
+                            <DataGridTextColumn
+                                Header="version"
+                                Binding="{Binding version}" />
+                            <DataGridTextColumn
+                                Header="date_in"
+                                Binding="{Binding date_in}" />
+                            <DataGridTextColumn
+                                
+                                Header="date_ex"
+                                Binding="{Binding date_ex}" />
+
+
+                            <DataGridTemplateColumn
+                                Header="Права!"
+                                
+                                >
+
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate >
+                                        <Button
+                                            Command="{Binding RelativeSource={RelativeSource FindAncestor,  AncestorType={x:Type Window}}, Path=DataContext.sessionClose}"
+                                            CommandParameter="{Binding ElementName=Sessions, Path=CurrentCell}"
+                                            >
+                                            
+                                            Закрыть 
+                                        </Button>
+                                        <!--
+                                        <ComboBox
+                                            x:Name="comboboxAccessLevel"
+                                            ItemsSource="{Binding accessLevelDictionary}"
+                                            DisplayMemberPath="Value"
+                                            SelectedValuePath="Key"
+                                            SelectedValue="{Binding Path=accessLevel, UpdateSourceTrigger=PropertyChanged}"
+                                            MinWidth="150">
+                                        </ComboBox>
+                                        -->
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            <TabItem
+                x:Name="users"
+                Header="Пользователи"
+                Width="100"
+                Height="40">
+                
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="5*"></RowDefinition>
+                            <RowDefinition Height="95*"></RowDefinition>
+                            <RowDefinition Height="10*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                    
+                    <DataGrid 
+                                Style="{StaticResource modernGrid}"
+                              Grid.Row="1"
+                        x:Name="userGrid"
+                        ItemsSource="{Binding m_loginModels}" AutoGenerateColumns="False">
+                        <DataGrid.InputBindings>
+                            <MouseBinding
+                                Gesture="LeftDoubleClick"
+                                Command="{Binding AddCommand}"
+                                CommandParameter="{Binding ElementName=userGrid, Path=CurrentCell}"
+                                 />
+                        </DataGrid.InputBindings>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                Header="ID"
+                                Binding="{Binding Id}" />
+                            <DataGridTextColumn
+                                Header="Имя пользователя"
+                                Binding="{Binding Name}" />
+                            <DataGridTextColumn 
+                                Header="Имя"
+                                Binding="{Binding fName}"/>
+                            <DataGridTextColumn
+                                Header="Фамилия"
+                                Binding="{Binding sName}" />
+                            <DataGridTextColumn
+                                Header="Отчество"
+                                Binding="{Binding tName}" />
+                            <DataGridTextColumn
+                                
+                                Header="Телефон"
+                                Binding="{Binding phoneNumber}" />
+                          
+                            <DataGridTemplateColumn
+                                Header="Права!"
+                                >
+
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ComboBox
+                                            x:Name="comboboxAccessLevel"
+                                            ItemsSource="{Binding accessLevelDictionary}"
+                                            DisplayMemberPath="Value"
+                                            SelectedValuePath="Key"
+                                            SelectedValue="{Binding Path=accessLevel, UpdateSourceTrigger=PropertyChanged}"
+                                            MinWidth="150">
+                                        </ComboBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                
+                            </DataGridTemplateColumn>
+
+                            <DataGridComboBoxColumn
+                                ItemsSource="{Binding Path=accessLevelDictionary, Mode=TwoWay}"
+                                
+                                SelectedValuePath="Key"
+                                DisplayMemberPath="Value"
+                                MinWidth="100"
+                                
+                                Header="Права">
+                                
+
+
+
+                            </DataGridComboBoxColumn>
+
+                            <!--
+                                Binding="{Binding accessLevel}" />
+                                -->
+                                
+                            <DataGridCheckBoxColumn
+                                Header="Активный"
+                                Binding="{Binding activity, UpdateSourceTrigger=PropertyChanged}"
+                                
+                                >
+                                <DataGridCheckBoxColumn.ElementStyle>
+                                    <Style
+                                        TargetType="{x:Type CheckBox}"
+                                        BasedOn="{StaticResource {x:Type CheckBox}}">
+                                        <Setter
+                                            Property="HorizontalAlignment"
+                                            Value="Center" />
+                                        <Setter
+                                            Property="VerticalAlignment"
+                                            Value="Center" />
+                                    </Style>
+                                </DataGridCheckBoxColumn.ElementStyle>
+                            </DataGridCheckBoxColumn>
+                            <DataGridTextColumn
+                                Header="Видимые регионы"
+                                Binding="{Binding region}"
+                                IsReadOnly="True"
+                                
+                                >
+                                
+                                
+                                
+                            </DataGridTextColumn>
+                            
+
+                        </DataGrid.Columns>
+                        
+                        
+                    </DataGrid>
+                    <Button Grid.Row="2" Margin="15" Width="190" Height="29" HorizontalAlignment="Left" IsEnabled="{Binding noEqualsFlag}"
+                        Command="{Binding changeList}">Сохранить изменения</Button>
+
+                    
+                </Grid>
+                
+                </TabItem>
+                <TabItem
+                x:Name="parametersType"
+                Header="Типы"
+                Width="100"
+                Height="40">
+                <ItemsControl>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition
+                                Height="5*"></RowDefinition>
+                            <RowDefinition
+                                Height="5*"></RowDefinition>
+                            <RowDefinition
+                                Height="85*"></RowDefinition>
+                            <RowDefinition
+                                Height="5*"
+                                ></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition
+                                Width="*"></ColumnDefinition>
+                            <ColumnDefinition
+                                Width="*"></ColumnDefinition>
+
+                        </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        HorizontalAlignment="Left"
+                        Width="200"
+                        Text="Типы:" />
+                    <ComboBox
+                        Grid.Row="1"
+                        x:Name="comboBoxType"
+                        ItemsSource="{Binding Path=typesName, Mode=TwoWay}"
+                        SelectedValuePath="Key"
+                        DisplayMemberPath="Value"
+                            
+                        HorizontalAlignment="Left"
+                        Width="200"
+                        
+                        Margin="0,5,0,0">
+                      
+                        
+                        
+                        
+                        
+                    </ComboBox>
+                        
+                        <DataGrid
+                            AllowDrop="True"
+                            Style="{StaticResource normalGrid}"
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            MaxHeight="300"
+                            x:Name="paramType"
+                            ItemsSource="{Binding listParameterType}"
+                            AutoGenerateColumns="False"
+                            SelectionMode="Single"
+                            CanUserDeleteRows="False"
+                            CanUserAddRows="False"
+                            CanUserReorderColumns="False"
+                            CanUserSortColumns="False"
+                            >
+                            <DataGrid.Columns>
+
+                                <DataGridTextColumn
+                                    Header="Параметры"
+                                    IsReadOnly="False"
+                                    FontWeight="Bold"
+                                    Binding="{Binding Path=paramModel.name}" />
+                                <DataGridTextColumn
+                                    Header="Номер позиции"
+                                    IsReadOnly="True"
+                                    Binding="{Binding order}" />
+                                <DataGridTextColumn
+                                    Header="Тип данных"
+                                    IsReadOnly="True"
+                                    Binding="{Binding Path=paramModel.format}" />
+
+
+
+
+                            </DataGrid.Columns>
+                            
+                        </DataGrid>
+                        <DataGrid
+                            VerticalAlignment="Top"
+                            MaxHeight="300"
+                            AllowDrop="True"
+                            Style="{StaticResource normalGrid}"
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            x:Name="parametersGrid"
+                            ItemsSource="{Binding listParameters}"
+                            AutoGenerateColumns="False"
+                            SelectionMode="Single"
+                            CanUserDeleteRows="False"
+                            CanUserAddRows="False"
+                            CanUserReorderColumns="False"
+                            CanUserSortColumns="False"
+                            Margin="0,0,0,0"
+                            MaxColumnWidth="90"
+                            ScrollViewer.CanContentScroll="True"
+                            ScrollViewer.VerticalScrollBarVisibility="Visible"
+                            >
+                            <DataGrid.Columns>
+
+                                <DataGridTextColumn
+                                    
+                                    Header="name"
+                                    IsReadOnly="False"
+                                    FontWeight="Bold"
+                                    Binding="{Binding name}" />
+                                <DataGridTextColumn
+                                    Header="format"
+                                    IsReadOnly="True"
+                                    Binding="{Binding paramModel}" />
+                                <DataGridTextColumn
+                                    Header="vtable"
+                                    IsReadOnly="True"
+                                    Binding="{Binding vtable}" />
+                                <DataGridTextColumn
+                                    Header="Единица измерения"
+                                    IsReadOnly="True"
+                                    Binding="{Binding unit}" />
+
+                                <DataGridTextColumn
+                                    Header="exact_format"
+                                    IsReadOnly="True"
+                                    Binding="{Binding exact_format}" />
+
+                            </DataGrid.Columns>
+
+                        </DataGrid>
+
+                        <Button
+                            Grid.Row="3"
+                            Margin="15"
+                            Width="190"
+                            Height="29"
+                            HorizontalAlignment="Left"
+                            IsEnabled="{Binding noEqualsFlag}"
+                            Command="{Binding changeType}">Сохранить изменения</Button>
+
+                    </Grid>
+
+
+                </ItemsControl>
+                    
+            </TabItem>
+        </TabControl>
+        <StatusBar
+            VerticalAlignment="Bottom"
+            Margin="0,10,0,0"
+            Grid.Row="3">
+            <StatusBarItem
+                Content="{Binding columnCount}" />
+
+            <StatusBarItem
+                Content="Столбцов: 180" />
+            
+        </StatusBar>
+
+        <!-- Drag and Drop Popup -->
+        <Popup
+            x:Name="popup1"
+            IsHitTestVisible="False"
+            Placement="RelativePoint"
+            PlacementTarget="{Binding ElementName=me}"
+            AllowsTransparency="True">
+            <Border
+                BorderBrush="LightSteelBlue"
+                BorderThickness="2"
+                Background="White"
+                Opacity="0.75">
+                <StackPanel
+                    Orientation="Horizontal"
+                    Margin="4,3,8,3">
+                    <Image
+                        Source="/DragInsert.png"
+                        Width="16"
+                        Height="16" />
+                    <TextBlock
+                        FontSize="14"
+                        FontWeight="Bold"
+                        VerticalAlignment="Center"
+                        Text="{Binding ElementName=me, Path=DraggedItem.paramName}"
+                        Margin="8,0,0,0" />
+                </StackPanel>
+            </Border>
+        </Popup>
+    </Grid>
+    
+</Window>

@@ -1,0 +1,80 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    mc:Ignorable="d"
+    x:Class="Kts.Gis.Views.AddBadgeView"
+    x:ClassModifier="internal"
+    FocusManager.FocusedElement="{Binding ElementName=textBox}"
+    Icon="/Icons/Main.ico"
+    ResizeMode="NoResize"
+    ShowInTaskbar="False"
+    SizeToContent="WidthAndHeight"
+    Title="Добавление значка"
+    UseLayoutRounding="True"
+    WindowStartupLocation="CenterScreen"
+    Style="{DynamicResource WindowStyle}"
+    >
+    <Grid
+        Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition
+                Height="Auto" />
+        </Grid.RowDefinitions>
+        <!-- Холст предпросмотра линии -->
+        <Grid
+            x:Name="grid"
+            Height="200"
+            Width="300">
+            <Canvas
+                x:Name="canvas"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Loaded="canvas_Loaded" />
+        </Grid>
+        <!-- Инструкция -->
+        <TextBlock
+            Style="{DynamicResource TextBlockStyleCommon}"
+            Grid.Row="1"
+            Margin="0,10,0,0"
+            Text="Введите расстояние в м., на которое должен быть отдален добавляемый значок от выделенного конца линии:"
+            TextWrapping="Wrap"
+            Width="300" />
+        <!-- Поле ввода расстояния -->
+        <TextBox
+            x:Name="textBox"
+            Grid.Row="2"
+            Margin="0,5,0,0"
+            Text="{Binding Path=Distance, UpdateSourceTrigger=PropertyChanged}"
+            GotFocus="textBox_GotFocus">
+            <TextBox.InputBindings>
+                <KeyBinding
+                    Command="{Binding CheckDistanceCommand}"
+                    Key="Return" />
+            </TextBox.InputBindings>
+        </TextBox>
+        <!-- Кнопки управления -->
+        <StackPanel
+            Grid.Row="3"
+            HorizontalAlignment="Right"
+            Margin="0,10,0,0"
+            Orientation="Horizontal">
+            <!-- Кнопка ввода -->
+            <Button
+                Command="{Binding CheckDistanceCommand}"
+                Padding="30,3">ОК</Button>
+            <!-- Кнопка отмены -->
+            <Button
+                IsCancel="True"
+                Margin="10,0,0,0"
+                Padding="30,3">Отмена</Button>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,177 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:views="clr-namespace:Kts.Gis.Views"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Конвертеры -->
+    <views:BoolToVisibilityConverter
+        x:Key="BoolToVisibilityConverter" />
+    <views:DoubleToVisibilityConverter
+        x:Key="DoubleToVisibilityConverter" />
+    <views:DoubleToVisibilityConverter
+        x:Key="InverseDoubleToVisibilityConverter"
+        IsInverse="True" />
+    <views:ObjectCountToVisibilityConverter
+        x:Key="ObjectCountToVisibilityConverter" />
+    <!-- Стиль автоматической легенды -->
+    <Style
+        TargetType="{x:Type views:AutoLegend}">
+        <Setter
+            Property="Focusable"
+            Value="False" />
+        <Setter
+            Property="Template">
+            <Setter.Value>
+                <ControlTemplate
+                    TargetType="{x:Type views:AutoLegend}">
+                    <StackPanel
+                        HorizontalAlignment="Right"
+                        IsHitTestVisible="False"
+                        Margin="25"
+                        VerticalAlignment="Bottom">
+                        <TextBlock
+                            FontSize="18"
+                            Margin="0,5"
+                            Text="Легенда:" />
+                        <TextBlock
+                            FontSize="18"
+                            FontStyle="Italic"
+                            Margin="0,0,0,5"
+                            Text="Отсутствуют объекты">
+                            <TextBlock.Style>
+                                <Style
+                                    TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition
+                                                    Binding="{Binding ElementName=legends, Path=ActualHeight}"
+                                                    Value="0" />
+                                                <Condition
+                                                    Binding="{Binding ElementName=planningLegends, Path=ActualHeight}"
+                                                    Value="0" />
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter
+                                                Property="Visibility"
+                                                Value="Visible" />
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                    <Setter
+                                        Property="Visibility"
+                                        Value="Collapsed" />
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <!-- Описания типов существующих объектов -->
+                        <TextBlock
+                            FontSize="18"
+                            FontStyle="Italic"
+                            Margin="0,0,0,5"
+                            Text="Существующие:"
+                            Visibility="{Binding ElementName=legends, Path=ActualHeight, Converter={StaticResource DoubleToVisibilityConverter}}" />
+                        <ItemsControl
+                            x:Name="legends"
+                            Focusable="False"
+                            ItemsSource="{Binding Layers}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel
+                                        Margin="0,0,0,5"
+                                        Orientation="Horizontal"
+                                        Visibility="{Binding Path=ObjectCount, Converter={StaticResource ObjectCountToVisibilityConverter}}">
+                                        <Rectangle
+                                            Fill="{Binding Brush}"
+                                            Stroke="Black"
+                                            StrokeThickness="3"
+                                            Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}" />
+                                        <TextBlock
+                                            FontSize="18"
+                                            Text=" - " />
+                                        <TextBlock
+                                            FontSize="18"
+                                            FontStyle="Italic"
+                                            Text="{Binding Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <!-- Описания типов планируемых объектов -->
+                        <TextBlock
+                            FontSize="18"
+                            FontStyle="Italic"
+                            Margin="0,0,0,5"
+                            Text="Планируемые:"
+                            Visibility="{Binding ElementName=planningLegends, Path=ActualHeight, Converter={StaticResource DoubleToVisibilityConverter}}" />
+                        <ItemsControl
+                            x:Name="planningLegends"
+                            Focusable="False"
+                            ItemsSource="{Binding PlanningLayers}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel
+                                        Margin="0,0,0,5"
+                                        Orientation="Horizontal"
+                                        Visibility="{Binding Path=ObjectCount, Converter={StaticResource ObjectCountToVisibilityConverter}}">
+                                        <Rectangle
+                                            Fill="{Binding Brush}"
+                                            Stroke="Black"
+                                            StrokeDashArray="1"
+                                            StrokeThickness="3"
+                                            Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}" />
+                                        <TextBlock
+                                            FontSize="18"
+                                            Text=" - " />
+                                        <TextBlock
+                                            FontSize="18"
+                                            FontStyle="Italic"
+                                            Text="{Binding Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <TextBlock
+                            FontSize="18"
+                            Foreground="Red"
+                            Margin="0,10,0,5"
+                            Text="{Binding ScaleText}"
+                            Visibility="{Binding Path=IsScaleChanged, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        <Path
+                            HorizontalAlignment="Center"
+                            Margin="0,10,0,0"
+                            Stroke="Black"
+                            StrokeThickness="1"
+                            UseLayoutRounding="True">
+                            <Path.Data>
+                                <GeometryGroup>
+                                    <LineGeometry
+                                        EndPoint="200,5"
+                                        StartPoint="0,5" />
+                                    <LineGeometry
+                                        EndPoint="0,10"
+                                        StartPoint="0,0" />
+                                    <LineGeometry
+                                        EndPoint="200,10"
+                                        StartPoint="200,0" />
+                                </GeometryGroup>
+                            </Path.Data>
+                        </Path>
+                        <TextBlock
+                            FontSize="12"
+                            Margin="0,1,0,0"
+                            Text="{Binding Path=ExampleLength, StringFormat='{}{0} м.'}"
+                            TextAlignment="Center" />
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

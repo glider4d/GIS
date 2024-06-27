@@ -1,0 +1,2323 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:pg="clr-namespace:Kts.ParameterGrid;assembly=Kts.ParameterGrid"
+    xmlns:views="clr-namespace:Kts.Gis.Views"
+    xmlns:wpfu="clr-namespace:Kts.WpfUtilities;assembly=Kts.WpfUtilities"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    mc:Ignorable="d"
+    x:Class="Kts.Gis.Views.MainView"
+    x:ClassModifier="internal"
+    x:Name="window"
+    Height="768"
+    Icon="/Icons/Main.ico"
+    Title="Инженерно-картографическая система"
+    UseLayoutRounding="True"
+    Width="1024"
+    AllowsTransparency="True"
+    WindowStartupLocation="CenterScreen"
+    WindowState="Maximized"
+    Closing="window_Closing"
+    Deactivated="window_Deactivated"
+    ResizeMode="NoResize"
+    
+    Loaded="window_Loaded"
+    Style="{DynamicResource VS2012WindowStyle}"
+    >
+    <!-- Шорткаты для команд -->
+    <Window.InputBindings>
+        <KeyBinding
+            Command="{Binding CopyCommand}"
+            Key="C"
+            Modifiers="Ctrl" />
+        <KeyBinding
+            Command="{Binding DeleteCommand}"
+            Key="Delete" />
+        <KeyBinding
+            Command="{Binding FindCommand}"
+            Key="F"
+            Modifiers="Ctrl" />
+        <KeyBinding
+            Command="{Binding PasteCommand}"
+            Key="V"
+            Modifiers="Ctrl" />
+        <KeyBinding
+            Command="{Binding HistoryService.RedoCommand}"
+            Key="Y"
+            Modifiers="Ctrl" />
+        <KeyBinding
+            Command="{Binding SaveCommand}"
+            Key="S"
+            Modifiers="Ctrl" />
+        <KeyBinding
+            Command="{Binding MapViewModel.ShowHideLegendCommand}"
+            Key="F7" />
+        <KeyBinding
+            Command="{Binding MapViewModel.ShowHidePrintAreaCommand}"
+            Key="F8" />
+        <KeyBinding
+            Command="{Binding MapViewModel.ShowHideSubstrateCommand}"
+            Key="F6" />
+        <KeyBinding
+            Command="{Binding TestCommand}"
+            Key="F12" />
+        <KeyBinding
+            Command="{Binding HistoryService.UndoCommand}"
+            Key="Z"
+            Modifiers="Ctrl" />
+    </Window.InputBindings>
+    <Window.Resources>
+        <CollectionViewSource
+            x:Key="CustomLayers"
+            Source="{Binding CustomLayersViewModel.Layers}" />
+        <!-- Конвертеры -->
+        <views:BoolToVisibilityConverter
+            x:Key="BoolToVisibilityConverter" />
+        <views:DoubleToGridLengthConverter
+            x:Key="DoubleToGridLengthConverter" />
+        <views:DoubleToVisibilityConverter
+            x:Key="DoubleToVisibilityConverter" />
+        <views:ObjectCountToVisibilityConverter
+            x:Key="ObjectCountToVisibilityConverter" />
+        <views:StringToNotEmptyConverter
+            x:Key="StringToNotEmptyConverter"
+            DefaultValue="Без названия" />
+        <views:ToolToIsCheckedConverter
+            x:Key="ToolToIsCheckedConverter" />
+        <views:ToolToMapActionConverter
+            x:Key="ToolToMapActionConverter" />
+        <!-- Стиль изображения отключенной кнопки на панели инструментов -->
+        <Style
+            x:Key="GrayableImage"
+            TargetType="{x:Type Image}">
+            <Style.Triggers>
+                <Trigger
+                    Property="IsEnabled"
+                    Value="False">
+                    <Setter
+                        Property="Opacity"
+                        Value="0.5" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <!-- Стиль элемента дерева отчетов -->
+        <Style
+            x:Key="ReportTreeItemStyle"
+            TargetType="{x:Type MenuItem}">
+            <Setter
+                Property="Command"
+                Value="{Binding GenerateCommand}" />
+        </Style>
+        <!-- Стиль элемента дерева, который отслеживает свой выбор -->
+        <Style
+            x:Key="SelectableTreeViewItemStyle"
+            TargetType="{x:Type TreeViewItem}">
+            <Style.Triggers>
+                <Trigger
+                    Property="IsSelected"
+                    Value="True">
+                    <Setter
+                        Property="FontWeight"
+                        Value="Bold" />
+                </Trigger>
+            </Style.Triggers>
+            <Setter
+                Property="FontWeight"
+                Value="Normal" />
+            <Setter
+                Property="IsSelected"
+                Value="{Binding Path=IsSelected, Mode=TwoWay}" />
+        </Style>
+        <!-- Стиль элемента дерева, который отслеживает свой выбор и состояние раскрытости -->
+        <Style
+            x:Key="SelectableExpandableTreeViewItemStyle"
+            BasedOn="{StaticResource SelectableTreeViewItemStyle}"
+            TargetType="{x:Type TreeViewItem}">
+            <Setter
+                Property="IsExpanded"
+                Value="{Binding Path=IsExpanded, Mode=TwoWay}" />
+        </Style>
+        <!-- Шаблон слоя объектов для задания его видимости и прозрачности -->
+        <DataTemplate
+            x:Key="LayerDataTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition
+                        Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <CheckBox
+                    IsChecked="{Binding Path=IsVisible, Mode=TwoWay}"
+                    VerticalAlignment="Center">
+                    <TextBlock
+                        Margin="5,0,0,0"
+                        Text="{Binding Name}" />
+                </CheckBox>
+                <Slider
+                    Grid.Column="1"
+                    Margin="5,0,0,0"
+                    Maximum="1"
+                    MinWidth="150"
+                    Value="{Binding Path=Opacity, Mode=TwoWay}" />
+            </Grid>
+        </DataTemplate>
+        <!-- Шаблон типа линии -->
+        <DataTemplate
+            x:Key="LineTypeDataTemplate">
+            <CheckBox
+                IsChecked="{Binding Path=IsSelected, Mode=TwoWay}"
+                VerticalAlignment="Center">
+                <TextBlock
+                    Margin="5,0,0,0"
+                    Text="{Binding Type.SingularName}" />
+            </CheckBox>
+        </DataTemplate>
+        <!-- Контекстное меню редактирования дочерних объектов -->
+        <ContextMenu
+            x:Key="ChildEditContextMenu"
+            Opened="ContextMenu_Opened">
+            <MenuItem
+                Header="Добавить"
+                ItemContainerStyle="{StaticResource AddChildMenuItemStyle}"
+                ItemsSource="{Binding AddChildViewModels}"
+                Visibility="{Binding Path=AddChildViewModels.Count, Converter={StaticResource ObjectCountToVisibilityConverter}}" />
+            <Separator
+                Visibility="{Binding Path=AddChildViewModels.Count, Converter={StaticResource ObjectCountToVisibilityConverter}}" />
+            <MenuItem
+                Command="{Binding CopyParametersCommand}"
+                Header="Копировать параметры" />
+            <MenuItem
+                Command="{Binding PasteParametersCommand}"
+                Header="Вставить параметры" />
+            <Separator />
+            <MenuItem
+                Command="{Binding DeactivateCommand}"
+                Header="{Binding DeactivateText}" />
+            <Separator />
+            <MenuItem
+                Command="{Binding DeleteCommand}"
+                Header="Удалить"
+                InputGestureText="Del" />
+            <MenuItem
+                Command="{Binding FullDeleteCommand}"
+                Header="Удалить безвозвратно"
+                Visibility="{Binding Path=CanBeDeleted, Converter={StaticResource BoolToVisibilityConverter}}" />
+        </ContextMenu>
+        <!-- Шаблон объекта -->
+        <DataTemplate
+            x:Key="ObjectDataTemplate">
+            <TextBlock
+                ContextMenu="{StaticResource ChildEditContextMenu}"
+                Text="{Binding Path=Name, Converter={StaticResource StringToNotEmptyConverter}}" />
+        </DataTemplate>
+        <!-- Шаблон слоя дочерних объектов дочернего объекта -->
+        <HierarchicalDataTemplate
+            x:Key="ChildChildrenHierarchicalDataTemplate"
+            ItemContainerStyle="{StaticResource SelectableTreeViewItemStyle}"
+            ItemsSource="{Binding Objects}"
+            ItemTemplate="{StaticResource ObjectDataTemplate}">
+            <TextBlock
+                FontStyle="Italic"
+                Text="{Binding FullName}" />
+        </HierarchicalDataTemplate>
+        <!-- Шаблон дочернего объекта, который может иметь дочерние объекты -->
+        <HierarchicalDataTemplate
+            x:Key="ChildObjectHierarchicalDataTemplate"
+            ItemContainerStyle="{StaticResource SelectableTreeViewItemStyle}"
+            ItemsSource="{Binding ChildrenLayers}"
+            ItemTemplate="{StaticResource ChildChildrenHierarchicalDataTemplate}">
+            <TextBlock
+                ContextMenu="{StaticResource ChildEditContextMenu}"
+                Text="{Binding Path=Name, Converter={StaticResource StringToNotEmptyConverter}}" />
+        </HierarchicalDataTemplate>
+        <!-- Шаблон слоя дочерних объектов объекта -->
+        <HierarchicalDataTemplate
+            x:Key="ObjectChildrenHierarchicalDataTemplate"
+            ItemContainerStyle="{StaticResource SelectableExpandableTreeViewItemStyle}"
+            ItemsSource="{Binding Objects}"
+            ItemTemplate="{StaticResource ChildObjectHierarchicalDataTemplate}">
+            <TextBlock
+                FontStyle="Italic"
+                Text="{Binding FullName}" />
+        </HierarchicalDataTemplate>
+        <!-- Шаблон объекта, который может иметь дочерние объекты -->
+        <HierarchicalDataTemplate
+            x:Key="ObjectHierarchicalDataTemplate"
+            ItemContainerStyle="{StaticResource SelectableTreeViewItemStyle}"
+            ItemsSource="{Binding ChildrenLayers}"
+            ItemTemplate="{StaticResource ObjectChildrenHierarchicalDataTemplate}">
+            <TextBlock
+                Text="{Binding Path=Name, Converter={StaticResource StringToNotEmptyConverter}}">
+                <TextBlock.Style>
+                    <Style
+                        TargetType="{x:Type TextBlock}">
+                        <Style.Setters>
+                            <EventSetter
+                                Event="ContextMenuOpening"
+                                Handler="TreeViewItem_ContextMenuOpening" />
+                        </Style.Setters>
+                        <Style.Triggers>
+                            <DataTrigger
+                                Binding="{Binding Type.ObjectKind}"
+                                Value="Figure">
+                                <Setter
+                                    Property="ContextMenu"
+                                    Value="{StaticResource FigureContextMenu}" />
+                            </DataTrigger>
+                            <DataTrigger
+                                Binding="{Binding Type.ObjectKind}"
+                                Value="Line">
+                                <Setter
+                                    Property="ContextMenu"
+                                    Value="{StaticResource LineContextMenu}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </HierarchicalDataTemplate>
+        <!-- Шаблон меню задания видимости и прозрачности слоев -->
+        <HierarchicalDataTemplate
+            x:Key="FilterHierarchicalDataTemplate"
+            ItemsSource="{Binding Layers}"
+            ItemTemplate="{StaticResource LayerDataTemplate}">
+            <HierarchicalDataTemplate.Triggers>
+                <DataTrigger
+                    Binding="{Binding IsOn}"
+                    Value="True">
+                    <Setter
+                        Property="TextBlock.Foreground"
+                        Value="Green" />
+                </DataTrigger>
+            </HierarchicalDataTemplate.Triggers>
+            <TextBlock
+                Text="{Binding Title}" />
+        </HierarchicalDataTemplate>
+        <!-- Шаблон слоя объектов -->
+        <HierarchicalDataTemplate
+            x:Key="LayerHierarchicalDataTemplate"
+            ItemContainerStyle="{StaticResource SelectableExpandableTreeViewItemStyle}"
+            ItemsSource="{Binding Objects}"
+            ItemTemplate="{StaticResource ObjectHierarchicalDataTemplate}">
+            <TextBlock
+                FontStyle="Italic"
+                Text="{Binding FullName}" />
+        </HierarchicalDataTemplate>
+        <!-- Шаблон группы слоев объектов -->
+        <HierarchicalDataTemplate
+            x:Key="GroupHierarchicalDataTemplate"
+            ItemsSource="{Binding Layers}"
+            ItemTemplate="{StaticResource LayerHierarchicalDataTemplate}">
+            <HierarchicalDataTemplate.ItemContainerStyle>
+                <Style
+                    BasedOn="{StaticResource SelectableTreeViewItemStyle}"
+                    TargetType="{x:Type TreeViewItem}">
+                    <Setter
+                        Property="Visibility"
+                        Value="{Binding Path=ObjectCount, Converter={StaticResource ObjectCountToVisibilityConverter}}" />
+                </Style>
+            </HierarchicalDataTemplate.ItemContainerStyle>
+            <TextBlock
+                FontStyle="Italic"
+                Text="{Binding FullName}" />
+        </HierarchicalDataTemplate>
+        <!-- Шаблон отчета -->
+        <HierarchicalDataTemplate
+            x:Key="ReportHierarchicalDataTemplate"
+            ItemsSource="{Binding Children}">
+            <TextBlock
+                Text="{Binding Name}" />
+        </HierarchicalDataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition
+                    Height="Auto" />
+                <RowDefinition />
+                <RowDefinition
+                    Height="Auto" />
+            </Grid.RowDefinitions>
+            <!-- Главное меню -->
+            <Menu
+                Background="{Binding ElementName=window, Path=Background}">
+                <MenuItem
+                    Header="Файл">
+                    <MenuItem
+                        Header="Сменить пользователя..."
+                        Click="MenuItemChangeUser_Click" />
+                    <Separator />
+                    <MenuItem
+                        Command="{Binding SaveCommand}"
+                        Header="Сохранить"
+                        InputGestureText="Ctrl+S" />
+                    <!-- Отключаем возможность импорта/экспорта данных, так как ими никто не пользуется, а меню они загромаждают -->
+                    <!--<Separator />
+                    <MenuItem
+                        Command="{Binding ImportCommand}"
+                        Header="Импортировать данные..." />
+                    <MenuItem
+                        Command="{Binding ExportCommand}"
+                        Header="Экспортировать данные..." />-->
+                    <Separator />
+                    <!-- Пока что возможность сохранения в изображение отключена, ибо в текущем виде она бесполезна -->
+                    <!--<MenuItem
+                        Command="{Binding SaveAsImageCommand}"
+                        Header="Сохранить как изображение..." />
+                    <Separator />-->
+                    <MenuItem
+                        Header="Печать"
+                        IsEnabled="{Binding MapViewModel.IsPrintAreaVisible}"
+                        Click="MenuItemPrint_Click" />
+                    <MenuItem
+                        Header="Печать через XPS-файл"
+                        IsEnabled="{Binding MapViewModel.IsPrintAreaVisible}"
+                        Click="MenuItemPrintXPS_Click" />
+                    <MenuItem
+                        Header="Печать в XPS-файл..."
+                        IsEnabled="{Binding MapViewModel.IsPrintAreaVisible}"
+                        Click="MenuItemPrintAsXPS_Click" />
+                    <MenuItem
+                        Header="Экспорт в PNG-изображение..."
+                        IsEnabled="{Binding MapViewModel.IsPrintAreaVisible}"
+                        Click="MenuItemExportToPng_Click" />
+                    <Separator />
+                    <MenuItem
+                        Command="{Binding CloseCommand}"
+                        Header="Выход" />
+                </MenuItem>
+                <MenuItem
+                    Header="Правка">
+                    <MenuItem
+                        Command="{Binding HistoryService.UndoCommand}"
+                        Header="{Binding HistoryService.UndoDescription}"
+                        InputGestureText="Ctrl+Z" />
+                    <MenuItem
+                        Command="{Binding HistoryService.RedoCommand}"
+                        Header="{Binding HistoryService.RedoDescription}"
+                        InputGestureText="Ctrl+Y" />
+                    <Separator />
+                    <MenuItem
+                        Command="{Binding CopyCommand}"
+                        Header="Копировать"
+                        InputGestureText="Ctrl+C" />
+                    <MenuItem
+                        Command="{Binding PasteCommand}"
+                        Header="Вставить"
+                        InputGestureText="Ctrl+V" />
+                    <Separator />
+                    <MenuItem
+                        Header="Вставить объект">
+                        <MenuItem
+                            Command="{Binding CustomLayersViewModel.PasteApprovedHeaderCommand}"
+                            Header="Заголовок утверждения" />
+                        <MenuItem
+                            Command="{Binding CustomLayersViewModel.PasteAgreedHeaderCommand}"
+                            Header="Заголовок согласования" />
+                        <MenuItem
+                            Command="{Binding CustomLayersViewModel.PasteLengthPerDiameterCommand}"
+                            Header="Свод труб по диаметрам" />
+                    </MenuItem>
+                    <Separator />
+                    <MenuItem
+                        Command="{Binding FindCommand}"
+                        Header="Найти..."
+                        InputGestureText="Ctrl+F" />
+                </MenuItem>
+                <MenuItem
+                    Header="Вид">
+                    <MenuItem
+                        Command="{Binding MapViewModel.ShowHideSubstrateCommand}"
+                        Header="Подложка"
+                        InputGestureText="F6"
+                        IsChecked="{Binding MapViewModel.IsSubstrateVisible}"
+                        StaysOpenOnClick="True" />
+                    <MenuItem
+                        Command="{Binding MapViewModel.ShowHideLegendCommand}"
+                        Header="Легенда"
+                        InputGestureText="F7"
+                        IsChecked="{Binding MapViewModel.IsLegendVisible}"
+                        StaysOpenOnClick="True" />
+                    <MenuItem
+                        Command="{Binding MapViewModel.ShowHidePrintAreaCommand}"
+                        Header="Область печати"
+                        InputGestureText="F8"
+                        IsChecked="{Binding MapViewModel.IsPrintAreaVisible}"
+                        StaysOpenOnClick="True" />
+                    <Separator />
+                    <MenuItem
+                        IsEnabled="{Binding MapViewModel.HasSubstrate}"
+                        StaysOpenOnClick="True">
+                        <MenuItem.Header>
+                            <StackPanel>
+                                <TextBlock
+                                    Text="Прозрачность подложки:" />
+                                <Slider
+                                    Margin="0,10,0,0"
+                                    Maximum="1"
+                                    MinWidth="150"
+                                    Value="{Binding Path=MapViewModel.SubstrateOpacity, Mode=TwoWay}" />
+                            </StackPanel>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem
+                        IsEnabled="{Binding IsDataLoaded}"
+                        StaysOpenOnClick="True">
+                        <MenuItem.Header>
+                            <StackPanel>
+                                <TextBlock
+                                    Text="Масштаб значков:" />
+                                <Slider
+                                    Margin="0,10,0,0"
+                                    Maximum="1"
+                                    Minimum="0.3"
+                                    MinWidth="150"
+                                    Value="{Binding Path=MapViewModel.BadgeScale, Mode=TwoWay}" />
+                            </StackPanel>
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <Separator />
+                    <MenuItem
+                        Header="Автоматически скрывать надписи"
+                        IsCheckable="True"
+                        IsChecked="{Binding Path=MapViewModel.AutoHideLabels, Mode=TwoWay}"
+                        IsEnabled="{Binding IsDataLoaded}"
+                        StaysOpenOnClick="True" />
+                    <MenuItem
+                        Header="Автоматически скрывать узлы"
+                        IsCheckable="True"
+                        IsChecked="{Binding Path=MapViewModel.AutoHideNodes, Mode=TwoWay}"
+                        IsEnabled="{Binding IsDataLoaded}"
+                        StaysOpenOnClick="True" />
+                    <Separator />
+                    <MenuItem
+                        Command="{Binding MapViewModel.ChangeMapSettingsCommand}"
+                        Header="Настройки вида населенного пункта..." />
+                    <MenuItem
+                        Command="{Binding MapViewModel.ChangeMapCaptionsCommand}"
+                        Header="Настройки надписей населенного пункта..." />
+                </MenuItem>
+                <MenuItem
+                    Header="Слои">
+                    <MenuItem
+                        Command="{Binding MapViewModel.ShowHideLayersCommand}"
+                        Header="Объекты"
+                        IsChecked="{Binding MapViewModel.IsLayersVisible}"
+                        StaysOpenOnClick="True" />
+                    <MenuItem
+                        Command="{Binding MapViewModel.ShowHideLabelsCommand}"
+                        Header="Надписи"
+                        IsChecked="{Binding MapViewModel.IsLabelsVisible}"
+                        StaysOpenOnClick="True" />
+                    <Separator />
+                    <MenuItem
+                        Header="Гидравлика">
+                        <MenuItem
+                            Command="{Binding MapViewModel.ShowHideHydraulicsCommand}"
+                            Header="Гидравлика"
+                            IsChecked="{Binding MapViewModel.IsHydraulicsVisible}"
+                            StaysOpenOnClick="True" />
+                        <MenuItem
+                            Command="{Binding MapViewModel.ShowHideHydraulicsErrorCommand}"
+                            Header="Трубы с ошибкой"
+                            IsChecked="{Binding MapViewModel.IsHydraulicsErrorVisible}"
+                            StaysOpenOnClick="True" />
+                    </MenuItem>
+                    <MenuItem
+                        Command="{Binding MapViewModel.ShowHideYearDiffCommand}"
+                        Header="Разделение по годам"
+                        IsChecked="{Binding MapViewModel.IsYearDiffVisible}"
+                        StaysOpenOnClick="True" />
+                    <MenuItem
+                        Command="{Binding MapViewModel.ShowHideRPCommand}"
+                        Header="Ремонтная программа"
+                        IsChecked="{Binding MapViewModel.IsRPVisible}"
+                        StaysOpenOnClick="True" />
+                    <MenuItem
+                        Command="{Binding MapViewModel.ShowHideUOCommand}"
+                        Header="Несопоставленные объекты"
+                        IsChecked="{Binding MapViewModel.IsUOVisible}"
+                        StaysOpenOnClick="True" />
+                    <MenuItem
+                        Command="{Binding MapViewModel.ShowHideIJSTCommand}"
+                        Header="ИЖС"
+                        IsChecked="{Binding MapViewModel.IsIJSVisibleT}"
+                        StaysOpenOnClick="True"
+                        />
+                    
+                    <MenuItem
+                        Command="{Binding MapViewModel.ShowHideIJSFCommand}"
+                        Header="МКД"
+                        IsChecked="{Binding MapViewModel.IsIJSVisibleF}"
+                        StaysOpenOnClick="True"
+                        />
+
+                    <MenuItem
+                        Command="{Binding MapViewModel.ShowHideDisableObjCommand}"
+                        Header="Показывать отключенные объекты"
+                        IsChecked="{Binding MapViewModel.IsDisabledVisible}"
+                        StaysOpenOnClick="True"
+                        />
+
+                    <Separator />
+                    <MenuItem
+                        Header="Пользовательские">
+                        <MenuItem.ItemContainerStyle>
+                            <Style
+                                TargetType="{x:Type MenuItem}">
+                                <Setter
+                                    Property="Header"
+                                    Value="{Binding Name}" />
+                                <Setter
+                                    Property="IsCheckable"
+                                    Value="True" />
+                                <Setter
+                                    Property="IsChecked"
+                                    Value="{Binding Path=IsVisible, Mode=TwoWay}" />
+                                <Setter
+                                    Property="StaysOpenOnClick"
+                                    Value="True" />
+                            </Style>
+                        </MenuItem.ItemContainerStyle>
+                        <MenuItem.ItemsSource>
+                            <CompositeCollection>
+                                <MenuItem
+                                    Command="{Binding CustomLayersViewModel.EditCommand}"
+                                    Header="Изменить..."
+                                    Style="{x:Null}" />
+                                <Separator
+                                    Visibility="{Binding Path=CustomLayersViewModel.HasLayers, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                <CollectionContainer
+                                    Collection="{Binding Source={StaticResource CustomLayers}}" />
+                            </CompositeCollection>
+                        </MenuItem.ItemsSource>
+                    </MenuItem>
+                    <Separator />
+                    <MenuItem
+                        Command="{Binding LayersSettingsCommand}"
+                        Header="Настройки слоев..." />
+                </MenuItem>
+                <MenuItem
+                    Header="Окна">
+                    <MenuItem
+                        Command="{Binding MapViewModel.ShowHideBoilerPopupCommand}"
+                        Header="Информация о котельной"
+                        IsChecked="{Binding MapViewModel.IsBoilerPopupVisible}"
+                        StaysOpenOnClick="True" />
+                    <MenuItem
+                        Command="{Binding MapViewModel.ShowHideStoragePopupCommand}"
+                        Header="Информация о топливном складе"
+                        IsChecked="{Binding MapViewModel.IsStoragePopupVisible}"
+                        StaysOpenOnClick="True" />
+                </MenuItem>
+                <MenuItem
+                    Header="Отчеты"
+                    ItemContainerStyle="{StaticResource ReportTreeItemStyle}"
+                    ItemsSource="{Binding Reports}"
+                    ItemTemplate="{StaticResource ReportHierarchicalDataTemplate}" />
+                <MenuItem
+                    Header="Сервис">
+                    <MenuItem
+                        Header="Проверить наличие ошибок">
+                        <MenuItem
+                            Command="{Binding CheckErrorsCommand}"
+                            Header="По внесенным изменениям" />
+                        <MenuItem
+                            Command="{Binding CheckSavedErrorsCommand}"
+                            Header="По сохраненным значениям параметров" />
+                    </MenuItem>
+                    <Separator />
+                    <MenuItem
+                        Command="{Binding FindBendNodesCommand}"
+                        Header="Найти узлы поворота" />
+                    <MenuItem
+                        Command="{Binding FindFreeNodesCommand}"
+                        Header="Найти неподключенные узлы" />
+                    <Separator />
+                    <MenuItem
+                        Header="Проверка интеграции">
+                        <MenuItem
+                            Command="{Binding CheckKvpCommand}"
+                            Header="Квартплата" />
+                        <MenuItem
+                            Command="{Binding CheckJurCommand}"
+                            Header="Расчеты с юридическими лицами" />
+                        <MenuItem
+                            Command="{Binding CheckFuelCommand}"
+                            Header="Учет потребления топлива" />
+                        <Separator />
+                        <MenuItem
+                            Header="Сопоставленные объекты">
+                            <MenuItem
+                                Command="{Binding CheckKvpCompletedCommand}"
+                                Header="Квартплата" />
+                            <MenuItem
+                                Command="{Binding CheckJurCompletedCommand}"
+                                Header="Расчеты с юридическими лицами" />
+                        </MenuItem>
+                        <MenuItem
+                            Header="Несопоставленные объекты">
+                            <MenuItem
+                                Command="{Binding CheckKvpLeftCommand}"
+                                Header="Квартплата" />
+                            <MenuItem
+                                Command="{Binding CheckJurLeftCommand}"
+                                Header="Расчеты с юридическими лицами" />
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem
+                            Header="Отчеты">
+                            <!--
+                            <MenuItem
+                                Command="{Binding GenerateIntegrationStatsCommand}"
+                                Header="О сопоставлении" />
+                            <MenuItem
+                                Command="{Binding GenerateIntegrationStats2Command}"
+                                Header="О сопоставлении (только по факту)" />
+                            <Separator />
+                            -->
+                            <MenuItem
+                                Command="{Binding GenerateDiffObjectsCommand}"
+                                Header="О несопоставленных объектах" />
+                            <!--<MenuItem
+                                Command="{Binding GenerateDiffObjects2Command}"
+                                Header="О несопоставленных объектах (только по факту)" />-->
+                        </MenuItem>
+                    </MenuItem>
+                    <Separator />
+                    <MenuItem
+                        Command="{Binding SelectBrokenLines}"
+                        Header="Выбрать трубы со сломанными узлами" />
+                    <Separator />
+                    <MenuItem
+                        Command="{Binding ReattachNodesCommand}"
+                        Header="Прикрепить неподключенные узлы к фигурам" />
+                    <Separator />
+
+                    <MenuItem
+                        Header="Измерительные приборы"
+                        Click="MenuItemBoilerMeter_Click"
+                        />
+                    <Separator/>
+                    <MenuItem
+                        Header="Смена пароля..."
+                        Click="MenuItemChangePassword_Click" />
+                    <Separator />
+                    <MenuItem
+                        Header="Изменить оформление"
+                        Click="MenuItemChangeTheme_Click" />
+                    <Separator />
+                    <MenuItem
+                        Command="{Binding ClearImageCacheCommand}"
+                        Header="Очистить кэш подложек" />
+                    <MenuItem
+                        Command="{Binding ClearSettingsCommand}"
+                        Header="Удалить сохраненные настройки" />
+                </MenuItem>
+                <MenuItem
+                    Header="Справка">
+                    <MenuItem
+                        Header="Руководство пользователя"
+                        Click="MenuItemManual_Click" />
+                    <Separator />
+                    <MenuItem
+                        Header="Об обновлении..."
+                        Click="MenuItemUpdateInfo_Click" />
+                    <MenuItem
+                        Header="О версии приложения..."
+                        Click="MenuItemVersion_Click" />
+                </MenuItem>
+                <MenuItem
+                    Header="Отладка"
+                    Visibility="{Binding Path=CanDebug, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <MenuItem
+                        Header="Гидравлический расчет">
+                        <MenuItem
+                            Command="{Binding HydraulicsToExcelCommand}"
+                            Header="Получить отчет" />
+                        <MenuItem
+                            Command="{Binding CalculateHydraulicsCommand}"
+                            Header="Рассчитать" />
+                    </MenuItem>
+                    <Separator />
+                    <MenuItem
+                        Command="{Binding AttachNodesCommand}"
+                        Header="Прикрепить узлы к границам фигур" />
+                    <Separator />
+                    <MenuItem
+                        Header="Об уровне отрисовки..."
+                        Click="MenuItemTier_Click" />
+                </MenuItem>
+            </Menu>
+            <!-- Панель загрузки данных по населенному пункту -->
+            <Grid
+                Grid.Row="1"
+                Margin="10,5,10,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                        Width="Auto" />
+                    <ColumnDefinition
+                        Width="Auto" />
+                    <ColumnDefinition
+                        Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <!-- Панель выбора региона -->
+                <StackPanel
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Style="{DynamicResource TextBlockStyle}"
+                        Text="Регион:"
+                        VerticalAlignment="Center" />
+                    <ComboBox
+                        DisplayMemberPath="Name"
+                        Height="32"
+                        ItemsSource="{Binding CitySelectionViewModel.Regions}"
+                        Margin="10,0,0,0"
+                        SelectedItem="{Binding Path=CitySelectionViewModel.SelectedRegion, Mode=TwoWay}"
+                        VerticalAlignment="Stretch"
+                        VerticalContentAlignment="Center"
+                        Width="175" />
+                </StackPanel>
+                <!-- Панель выбора населенного пункта -->
+                <StackPanel
+                    Grid.Column="1"
+                    Margin="10,0,0,0"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Text="Населенный пункт:"
+                        Style="{DynamicResource TextBlockStyle}"
+                        VerticalAlignment="Center" />
+                    <ComboBox
+                        DisplayMemberPath="Name"
+                        Height="32"
+                        ItemsSource="{Binding CitySelectionViewModel.Cities}"
+                        Margin="10,0,0,0"
+                        SelectedItem="{Binding Path=CitySelectionViewModel.SelectedCity, Mode=TwoWay}"
+                        VerticalAlignment="Stretch"
+                        VerticalContentAlignment="Center"
+                        Width="200" />
+                </StackPanel>
+                <!-- Кнопка загрузки данных -->
+                <Button
+                    Command="{Binding LoadCommand}"
+                    Grid.Column="2"
+                    Margin="10,0,0,0"
+                    Padding="30,3"
+                    VerticalAlignment="Center">Показать</Button>
+            </Grid>
+            <!-- Главные вкладки -->
+            <TabControl
+                Grid.Row="2"
+                Margin="5,5,5,0"
+                Padding="0"
+                Loaded="TabControl_Loaded">
+                <TabItem
+                    x:Name="tabItemMap"
+                    Header="Карта">
+                    <views:GlobalMapView
+                        x:Name="globalMapView" />
+                </TabItem>
+                <TabItem
+                    x:Name="tabItemLocalMap"
+                    Header="{Binding LoadedCityName}"
+                    Visibility="{Binding Path=IsDataLoaded, Converter={StaticResource BoolToVisibilityConverter}}"
+                    IsVisibleChanged="tabItemLocalMap_IsVisibleChanged">
+                    <!-- Две разделенные области -->
+                    <Grid
+                        x:Name="gridContent"
+                        Margin="4">   
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition
+                                MinWidth="250"
+                                Width="{Binding Path=SettingService.Settings[LeftSideColumnWidth], Mode=TwoWay, Converter={StaticResource DoubleToGridLengthConverter}}" />
+                            <ColumnDefinition
+                                Width="4" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <!-- Левая область -->
+                        <Grid
+                            x:Name="gridLeft">
+                            <Grid.RowDefinitions>
+                                <RowDefinition
+                                    Height="{Binding Path=SettingService.Settings[TopSideRowHeight], Mode=TwoWay, Converter={StaticResource DoubleToGridLengthConverter}}"
+                                    MinHeight="150" />
+                                <RowDefinition
+                                    Height="4" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <!-- Панель с деревьями объектов, неразмещенных объектов и пользовательских объектов -->
+                            <TabControl
+                                Padding="0">
+                                <TabItem
+                                    x:Name="tabItemAllObjects"
+                                    Header="Объекты">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition
+                                                Height="Auto" />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Grid
+                                            IsEnabled="{Binding FastSearch.IsEnabled}"
+                                            Margin="4,4,4,0"
+                                            Visibility="{Binding Path=FastSearch.IsEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition   
+                                                    Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox
+                                                x:Name="textBoxFastSearch"
+                                                Text="{Binding Path=FastSearch.SearchValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                GotFocus="TextBox_GotFocus" />
+                                            <Button
+                                                Command="{Binding FastSearch.ClearCommand}"
+                                                Grid.Column="1"
+                                                Margin="4,0,0,0"
+                                                Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                                                ToolTip="Очистить фильтр">
+                                                <Image
+                                                    Height="16"
+                                                    Source="/Images/Clear.png"
+                                                    Style="{StaticResource GrayableImage}"
+                                                    Width="16" />
+                                            </Button>
+                                        </Grid>
+                                        <!-- Дерево объектов -->
+                                        <TreeView
+                                            BorderBrush="{Binding ElementName=window, Path=Background}"
+                                            BorderThickness="1"
+                                            Grid.Row="1"
+                                            ItemsSource="{Binding Groups}"
+                                            ItemTemplate="{StaticResource GroupHierarchicalDataTemplate}"
+                                            Margin="0,4,0,0"
+                                            VirtualizingStackPanel.IsVirtualizing="True"
+                                            VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                            PreviewMouseLeftButtonUp="TreeView_PreviewMouseLeftButtonUp"
+                                            PreviewMouseRightButtonDown="TreeView_PreviewMouseRightButtonDown">
+                                            <TreeView.ItemContainerStyle>
+                                                <Style
+                                                    BasedOn="{StaticResource SelectableTreeViewItemStyle}"
+                                                    TargetType="{x:Type TreeViewItem}">
+                                                    <Setter
+                                                        Property="IsExpanded"
+                                                        Value="True" />
+                                                    <Setter
+                                                        Property="Visibility"
+                                                        Value="{Binding Path=ObjectCount, Converter={StaticResource ObjectCountToVisibilityConverter}}" />
+                                                </Style>
+                                            </TreeView.ItemContainerStyle>
+                                        </TreeView>
+                                        <ListBox
+                                            x:Name="listBoxSearchItems"
+                                            BorderBrush="{Binding ElementName=window, Path=Background}"
+                                            BorderThickness="1"
+                                            DisplayMemberPath="Item2"
+                                            Grid.Row="1"
+                                            IsEnabled="{Binding FastSearch.HasResult}"
+                                            ItemsSource="{Binding FastSearch.SearchResult}"
+                                            Margin="0,4,0,0"
+                                            Padding="4,0,0,0"
+                                            Visibility="{Binding Path=FastSearch.HasResult, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <ListBox.ItemContainerStyle>
+                                                <Style
+                                                    TargetType="{x:Type ListBoxItem}">
+                                                    <EventSetter
+                                                        Event="ListBoxItem.PreviewMouseLeftButtonUp"
+                                                        Handler="ListBoxSearchItem_PreviewMouseLeftButtonUp" />
+                                                </Style>
+                                            </ListBox.ItemContainerStyle>
+                                        </ListBox>
+                                        <!-- Сетка для затемнения контента во время подзагрузки данных -->
+                                        <Grid
+                                            Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                                            Grid.Row="1"
+                                            Margin="0,4,0,0"
+                                            Visibility="{Binding Path=FastSearch.IsSearching, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <wpfu:Spinner
+                                                Height="30"
+                                                Width="30" />
+                                        </Grid>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem
+                                    x:Name="tabItemNotPlacedObjects">
+                                    <TabItem.Header>
+                                        <TextBlock
+                                            Text="{Binding Path=NotPlacedObjectsGroup.ObjectCount, StringFormat='Неразмещенные ({0})'}" />
+                                    </TabItem.Header>
+                                    <!-- Дерево неразмещенных объектов -->
+                                    <TreeView
+                                        BorderBrush="{Binding ElementName=window, Path=Background}"
+                                        BorderThickness="1"
+                                        ItemsSource="{Binding NotPlacedObjectsGroup.Layers}"
+                                        ItemTemplate="{StaticResource LayerHierarchicalDataTemplate}"
+                                        Margin="0,2,0,0"
+                                        VirtualizingStackPanel.IsVirtualizing="True"
+                                        VirtualizingStackPanel.VirtualizationMode="Recycling">
+                                        <TreeView.ItemContainerStyle>
+                                            <Style
+                                                BasedOn="{StaticResource SelectableTreeViewItemStyle}"
+                                                TargetType="{x:Type TreeViewItem}">
+                                                <Setter
+                                                    Property="Visibility"
+                                                    Value="{Binding Path=ObjectCount, Converter={StaticResource ObjectCountToVisibilityConverter}}" />
+                                            </Style>
+                                        </TreeView.ItemContainerStyle>
+                                    </TreeView>
+                                </TabItem>
+                                <TabItem
+                                    Header="Другие">
+                                    <!-- Список пользовательских объектов -->
+                                    <ListBox
+                                        x:Name="listBoxCustomObjects"
+                                        BorderBrush="{Binding ElementName=window, Path=Background}"
+                                        BorderThickness="1"
+                                        DisplayMemberPath="Caption"
+                                        ItemsSource="{Binding CustomObjects}"
+                                        Margin="0,2,0,0"
+                                        Padding="4,0,0,0">
+                                        <ListBox.ItemContainerStyle>
+                                            <Style
+                                                TargetType="{x:Type ListBoxItem}">
+                                                <EventSetter
+                                                    Event="ListBoxItem.PreviewMouseLeftButtonUp"
+                                                    Handler="ListBoxItem_PreviewMouseLeftButtonUp" />
+                                            </Style>
+                                        </ListBox.ItemContainerStyle>
+                                    </ListBox>
+                                </TabItem>
+                            </TabControl>
+                            <!-- Разделитель верхней и нижней областей -->
+                            <GridSplitter
+                                x:Name="gridSplitter"
+                                Background="{Binding ElementName=window, Path=Background}"
+                                Grid.Row="1"
+                                HorizontalAlignment="Stretch" />
+                            <!-- Панель с сеткой редактируемых, общих и вычисляемых параметров и с историей изменений значения параметра -->
+                            <TabControl
+                                Grid.Row="2"
+                                Padding="0">
+                                <TabItem
+                                    x:Name="tabItemParameters"
+                                    Header="Параметры">
+                                    <Grid>
+                                        <pg:ParameterGrid
+                                            HeaderColumnWidth="{Binding Path=ParameterGridViewModel.HeaderColumnWidth, Mode=TwoWay}"
+                                            HideEmpty="{Binding Path=ParameterGridViewModel.HideEmptyParameters, Mode=TwoWay}"
+                                            Margin="4"
+                                            Parameters="{Binding ParameterGridViewModel.SelectedParameterValues.Parameters}"
+                                            Title="{Binding ParameterGridViewModel.SelectedParameterValuesTitle}"
+                                            ValueColumnWidth="{Binding Path=ParameterGridViewModel.ValueColumnWidth, Mode=TwoWay}"
+                                            Visibility="{Binding Path=ParameterGridViewModel.HasSelectedParameterValues, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                        <!-- Сетка для затемнения контента во время загрузки значений параметров -->
+                                        <Grid
+                                            Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                                            Visibility="{Binding Path=ParameterGridViewModel.IsParametersLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                                            <wpfu:Spinner
+                                                Height="30"
+                                                Width="30" />
+                                        </Grid>
+                                    </Grid>
+                                </TabItem>
+                                <TabItem
+                                    x:Name="tabItemCommonParameters"
+                                    Header="Общие"
+                                    Visibility="{Binding Path=ParameterGridViewModel.HasSelectedCommonParameterValues, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    IsVisibleChanged="tabItemCommonParameters_IsVisibleChanged">
+                                    <pg:ParameterGrid
+                                        HeaderColumnWidth="{Binding Path=ParameterGridViewModel.HeaderColumnWidth, Mode=TwoWay}"
+                                        HideEmpty="{Binding Path=ParameterGridViewModel.HideEmptyParameters, Mode=TwoWay}"
+                                        Margin="4"
+                                        Parameters="{Binding ParameterGridViewModel.SelectedCommonParameterValues.Parameters}"
+                                        Title="{Binding ParameterGridViewModel.SelectedParameterValuesTitle}"
+                                        ValueColumnWidth="{Binding Path=ParameterGridViewModel.ValueColumnWidth, Mode=TwoWay}" />
+                                </TabItem>
+                                <TabItem
+                                    x:Name="tabItemComputationalParameters"
+                                    Header="Вычисляемые"
+                                    Visibility="{Binding Path=ParameterGridViewModel.HasSelectedCalcParameterValues, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    IsVisibleChanged="tabItemComputationalParameters_IsVisibleChanged">
+                                    <pg:ParameterGrid
+                                        HeaderColumnWidth="{Binding Path=ParameterGridViewModel.HeaderColumnWidth, Mode=TwoWay}"
+                                        HideEmpty="{Binding Path=ParameterGridViewModel.HideEmptyParameters, Mode=TwoWay}"
+                                        Margin="4"
+                                        Parameters="{Binding ParameterGridViewModel.SelectedCalcParameterValues.Parameters}"
+                                        Title="{Binding ParameterGridViewModel.SelectedParameterValuesTitle}"
+                                        ValueColumnWidth="{Binding Path=ParameterGridViewModel.ValueColumnWidth, Mode=TwoWay}" />
+                                </TabItem>
+                                <TabItem
+                                    x:Name="tabItemParameterHistory"
+                                    Header="История изменений"
+                                    Visibility="{Binding Path=HasSelectedObject, Converter={StaticResource BoolToVisibilityConverter}}"
+                                    IsVisibleChanged="tabItemParameterHistory_IsVisibleChanged">
+                                    <views:ParameterHistoryView
+                                        DataContext="{Binding ParameterHistoryViewModel}"
+                                        Margin="4" />
+                                </TabItem>
+                            </TabControl>
+                        </Grid>
+                        <!-- Разделитель левой и правой областей -->
+                        <GridSplitter
+                            Background="{Binding ElementName=window, Path=Background}"
+                            Grid.Column="1"
+                            HorizontalAlignment="Stretch" />
+                        <!-- Правая область -->
+                        <Grid
+                            Grid.Column="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition
+                                    Height="Auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <!-- Панель с панелью инструментов и фильтрами объектов -->
+                            <Grid
+                                IsEnabled="{Binding IsDataLoaded}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition
+                                        Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <!-- Панель инструментов -->
+                                <ToolBarTray
+                                    Background="{Binding ElementName=window, Path=Background}"
+                                    IsEnabled="{Binding ToolBarViewModel.IsToolBarEnabled}"
+                                    Orientation="Horizontal">
+                                    <ToolBar
+                                        Background="{Binding ElementName=window, Path=Background}"
+                                        ToolBarTray.IsLocked="True">
+                                        <!-- Кнопки инструментов "Выбиралка" и "Изменялка" -->
+                                        <ToggleButton
+                                            Height="32"
+                                            IsChecked="{Binding Path=ToolBarViewModel.SelectedTool, Mode=TwoWay, Converter={StaticResource ToolToIsCheckedConverter}, ConverterParameter=7}"
+                                            ToolTip="Выбиралка"
+                                            Width="32">
+                                            <Image
+                                                Source="/Images/Selector.png"
+                                                Style="{StaticResource GrayableImage}" />
+                                        </ToggleButton>
+                                        <ToggleButton
+                                            Height="32"
+                                            IsChecked="{Binding Path=ToolBarViewModel.SelectedTool, Mode=TwoWay, Converter={StaticResource ToolToIsCheckedConverter}, ConverterParameter=0}"
+                                            IsEnabled="{Binding ToolBarViewModel.CanEdit}"
+                                            ToolTip="Изменялка"
+                                            Width="32">
+                                            <Image
+                                                Source="/Images/Editor.png"
+                                                Style="{StaticResource GrayableImage}" />
+                                        </ToggleButton>
+                                        <Separator />
+                                        <!-- Комбобокс выбора типа объекта, представляемого фигурой на карте -->
+                                        <ComboBox
+                                            DisplayMemberPath="SingularName"
+                                            IsEnabled="{Binding ToolBarViewModel.CanSelectFigureType}"
+                                            ItemsSource="{Binding ToolBarViewModel.FigureTypes}"
+                                            Margin="0,0,4,0"
+                                            SelectedItem="{Binding ToolBarViewModel.SelectedFigureType}"
+                                            Style="{DynamicResource {x:Type ComboBox}}"
+                                            VerticalAlignment="Stretch"
+                                            VerticalContentAlignment="Center"
+                                            Width="200" />
+                                        <!-- Кнопки инструментов рисования фигур -->
+                                        <ToggleButton
+                                            Height="32"
+                                            IsChecked="{Binding Path=ToolBarViewModel.SelectedTool, Mode=TwoWay, Converter={StaticResource ToolToIsCheckedConverter}, ConverterParameter=5}"
+                                            IsEnabled="{Binding ToolBarViewModel.CanDrawFigures}"
+                                            ToolTip="Прямоугольник"
+                                            Width="32">
+                                            <Image
+                                                Source="/Images/Rectangle.png"
+                                                Style="{StaticResource GrayableImage}" />
+                                        </ToggleButton>
+                                        <ToggleButton
+                                            Height="32"
+                                            IsChecked="{Binding Path=ToolBarViewModel.SelectedTool, Mode=TwoWay, Converter={StaticResource ToolToIsCheckedConverter}, ConverterParameter=4}"
+                                            IsEnabled="{Binding ToolBarViewModel.CanDrawFigures}"
+                                            ToolTip="Многоугольник"
+                                            Width="32">
+                                            <Image
+                                                Source="/Images/Polygon.png"
+                                                Style="{StaticResource GrayableImage}" />
+                                        </ToggleButton>
+                                        <ToggleButton
+                                            Height="32"
+                                            IsChecked="{Binding Path=ToolBarViewModel.SelectedTool, Mode=TwoWay, Converter={StaticResource ToolToIsCheckedConverter}, ConverterParameter=1}"
+                                            IsEnabled="{Binding ToolBarViewModel.CanDrawFigures}"
+                                            ToolTip="Эллипс"
+                                            Width="32">
+                                            <Image
+                                                Source="/Images/Ellipse.png"
+                                                Style="{StaticResource GrayableImage}" />
+                                        </ToggleButton>
+                                        <Separator />
+                                        <!-- Меню выбора типов объектов, представляемых линиями на карте -->
+                                        <Menu
+                                            Background="{Binding ElementName=window, Path=Background}"
+                                            IsEnabled="{Binding ToolBarViewModel.CanSelectLineTypes}"
+                                            Margin="0,0,4,0"
+                                            VerticalAlignment="Center">
+                                            <MenuItem
+                                                Header="Типы линий"
+                                                ItemsSource="{Binding ToolBarViewModel.LineTypes}"
+                                                ItemTemplate="{StaticResource LineTypeDataTemplate}" />
+                                        </Menu>
+                                        <!-- Кнопка инструмента рисования линий -->
+                                        <ToggleButton
+                                            Height="32"
+                                            IsChecked="{Binding Path=ToolBarViewModel.SelectedTool, Mode=TwoWay, Converter={StaticResource ToolToIsCheckedConverter}, ConverterParameter=2}"
+                                            IsEnabled="{Binding ToolBarViewModel.CanDrawLines}"
+                                            ToolTip="Линия(ии)"
+                                            Width="32">
+                                            <Image
+                                                Source="/Images/Line.png"
+                                                Style="{StaticResource GrayableImage}" />
+                                        </ToggleButton>
+                                        <Separator />
+                                        <!-- Кнопка инструмента добавления надписи на карту -->
+                                        <ToggleButton
+                                            Height="32"
+                                            IsChecked="{Binding Path=ToolBarViewModel.SelectedTool, Mode=TwoWay, Converter={StaticResource ToolToIsCheckedConverter}, ConverterParameter=8}"
+                                            IsEnabled="{Binding ToolBarViewModel.CanDrawFigures}"
+                                            ToolTip="Надпись"
+                                            Width="32">
+                                            <Image
+                                                Source="/Images/Label.png"
+                                                Style="{StaticResource GrayableImage}" />
+                                        </ToggleButton>
+                                        <Separator />
+                                        <!-- Инструмент редактирования группы объектов -->
+                                        <ToggleButton
+                                            Height="32"
+                                            IsChecked="{Binding Path=ToolBarViewModel.SelectedTool, Mode=TwoWay, Converter={StaticResource ToolToIsCheckedConverter}, ConverterParameter=9}"
+                                            IsEnabled="{Binding ToolBarViewModel.CanEdit}"
+                                            ToolTip="Редактирование группы объектов"
+                                            Width="32">
+                                            <Image
+                                                Source="/Images/GroupArea.png"
+                                                Style="{StaticResource GrayableImage}" />
+                                        </ToggleButton>
+                                        <Separator />
+                                        <!-- Кнопки уменьшения и увеличения размера шрифтов надписей -->
+                                        <RepeatButton
+                                            Command="{Binding ToolBarViewModel.DecreaseFontCommand}"
+                                            Delay="200"
+                                            Height="32"
+                                            IsEnabled="{Binding ToolBarViewModel.CanChangeFont}"
+                                            ToolTip="Уменьшить размер шрифта надписей"
+                                            Width="32">
+                                            <Image
+                                                Source="/Images/FontDown.png"
+                                                Style="{StaticResource GrayableImage}" />
+                                        </RepeatButton>
+                                        <RepeatButton
+                                            Command="{Binding ToolBarViewModel.IncreaseFontCommand}"
+                                            Delay="200"
+                                            Height="32"
+                                            IsEnabled="{Binding ToolBarViewModel.CanChangeFont}"
+                                            Margin="4,0,0,0"
+                                            ToolTip="Увеличить размер шрифта надписей"
+                                            Width="32">
+                                            <Image
+                                                Source="/Images/FontUp.png"
+                                                Style="{StaticResource GrayableImage}" />
+                                        </RepeatButton>
+                                        <!-- Кнопка сброса настроек надписей -->
+                                        <Button
+                                            Command="{Binding ToolBarViewModel.ResetLabelsCommand}"
+                                            Height="32"
+                                            IsEnabled="{Binding ToolBarViewModel.CanDrawFigures}"
+                                            Margin="4,0,0,0"
+                                            ToolTip="Сбросить настройки надписей"
+                                            Width="32">
+                                            <Image
+                                                Source="/Images/ResetLabels.png"
+                                                Style="{StaticResource GrayableImage}" />
+                                        </Button>
+                                        <Separator />
+                                        <!-- Кнопки группировки и разгруппировки линий -->
+                                        <Button
+                                            Command="{Binding ToolBarViewModel.GroupLinesCommand}"
+                                            Height="32"
+                                            IsEnabled="{Binding ToolBarViewModel.CanGroupLines}"
+                                            ToolTip="Сгруппировать линии"
+                                            Width="32">
+                                            <Image
+                                                Source="/Images/Group.png"
+                                                Style="{StaticResource GrayableImage}" />
+                                        </Button>
+                                        <Button
+                                            Command="{Binding ToolBarViewModel.UngroupLinesCommand}"
+                                            Height="32"
+                                            IsEnabled="{Binding ToolBarViewModel.CanGroupLines}"
+                                            ToolTip="Разгруппировать линии"
+                                            Width="32">
+                                            <Image
+                                                Source="/Images/Ungroup.png"
+                                                Style="{StaticResource GrayableImage}" />
+                                        </Button>
+                                        <Separator />
+                                        <!-- Кнопка инструмента "Линейка" -->
+                                        <ToggleButton
+                                            Height="32"
+                                            IsChecked="{Binding Path=ToolBarViewModel.SelectedTool, Mode=TwoWay, Converter={StaticResource ToolToIsCheckedConverter}, ConverterParameter=6}"
+                                            IsEnabled="{Binding ToolBarViewModel.CanUseRuler}"
+                                            ToolTip="Линейка"
+                                            Width="32">
+                                            <Image
+                                                Source="/Images/Ruler.png"
+                                                Style="{StaticResource GrayableImage}" />
+                                        </ToggleButton>
+                                        <!-- Кнопка инструмента "Измерялка" -->
+                                        <ToggleButton
+                                            Height="32"
+                                            IsChecked="{Binding Path=ToolBarViewModel.SelectedTool, Mode=TwoWay, Converter={StaticResource ToolToIsCheckedConverter}, ConverterParameter=10}"
+                                            ToolTip="Измерялка"
+                                            Width="32">
+                                            <Image
+                                                Source="/Images/NewRuler.png"
+                                                Style="{StaticResource GrayableImage}" />
+                                        </ToggleButton>
+                                        <Separator />
+                                        <!-- Кнопка инструмента "Область печати" -->
+                                        <ToggleButton
+                                            Height="32"
+                                            IsChecked="{Binding Path=ToolBarViewModel.SelectedTool, Mode=TwoWay, Converter={StaticResource ToolToIsCheckedConverter}, ConverterParameter=11}"
+                                            ToolTip="Область печати"
+                                            Width="32">
+                                            <Image
+                                                Source="/Images/PrintArea.png"
+                                                Style="{StaticResource GrayableImage}" />
+                                        </ToggleButton>
+                                    </ToolBar>
+                                </ToolBarTray>
+                                <!-- Фильтры объектов -->
+                                <Menu
+                                    Background="{Binding ElementName=window, Path=Background}"
+                                    Grid.Column="1"
+                                    ItemsSource="{Binding Filters}"
+                                    ItemTemplate="{StaticResource FilterHierarchicalDataTemplate}"
+                                    VerticalAlignment="Center" />
+                            </Grid>
+                            <Grid
+                                x:Name="gridLocalMap"
+                                Grid.Row="1"
+                                Margin="0,2,0,0">
+                                <!-- Карта -->
+                                <views:Map
+                                    x:Name="map"
+                                    GroupAreaOriginPoint="{Binding Path=GroupAreaOriginPoint, Mode=TwoWay}"
+                                    GroupAreaPosition="{Binding Path=GroupAreaPosition, Mode=TwoWay}"
+                                    GroupAreaSize="{Binding Path=GroupAreaSize, Mode=TwoWay}"
+                                    IsDataLoaded="{Binding MapViewModel.IsReady}"
+                                    IsLegendVisible="{Binding MapViewModel.IsLegendVisible}"
+                                    IsPrintAreaVisible="{Binding MapViewModel.IsPrintAreaVisible}"
+                                    IsSubstrateVisible="{Binding MapViewModel.IsSubstrateVisible}"
+                                    LayerIds="{Binding MapViewModel.Types}"
+                                    MapAction="{Binding Path=ToolBarViewModel.SelectedTool, Converter={StaticResource ToolToMapActionConverter}}"
+                                    SelectedPrinter="{Binding MapViewModel.SelectedPrinter}"
+                                    SubstrateDimension="{Binding MapViewModel.SubstrateDimension}"
+                                    SubstrateOpacity="{Binding MapViewModel.SubstrateOpacity}"
+                                    SubstrateSize="{Binding MapViewModel.SubstrateSize}"
+                                    SubstrateTiles="{Binding MapViewModel.SubstrateTiles}"
+                                    ThumbnailPath="{Binding MapViewModel.ThumbnailPath}" />
+                                <!-- Всплывающее окно с протяженностью рисуемой линии -->
+                                <Popup
+                                    DataContext="{Binding LineInfo}"
+                                    HorizontalAlignment="Left"
+                                    HorizontalOffset="{Binding Left}"
+                                    IsOpen="{Binding IsVisible}"
+                                    Placement="Relative"
+                                    PlacementTarget="{Binding ElementName=gridLocalMap}"
+                                    PopupAnimation="Scroll"
+                                    VerticalAlignment="Top"
+                                    VerticalOffset="{Binding Top}">
+                                    <Border
+                                        Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                                        BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}"
+                                        BorderThickness="1">
+                                        <Grid
+                                            Margin="4">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition
+                                                    Width="Auto" />
+                                                <ColumnDefinition
+                                                    Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition
+                                                    Height="Auto" />
+                                                <RowDefinition
+                                                    Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock
+                                                Text="Т: " />
+                                            <TextBlock
+                                                Grid.Row="1"
+                                                Margin="0,2,0,0"
+                                                Text="И: " />
+                                            <TextBlock
+                                                Grid.Column="1"
+                                                Margin="2,0,0,0"
+                                                Text="{Binding SegmentLength}" />
+                                            <TextBlock
+                                                Grid.Column="1"
+                                                Grid.Row="1"
+                                                Margin="2,2,0,0"
+                                                Text="{Binding Length}" />
+                                        </Grid>
+                                    </Border>
+                                </Popup>
+                                <!-- Всплывающее окно для котельных -->
+                                <Popup
+                                    DataContext="{Binding BuildingInfo}"
+                                    IsOpen="{Binding Path=IsBuildingInfoVisible, Mode=TwoWay}"
+                                    Placement="Mouse"
+                                    PopupAnimation="Scroll"
+                                    Opened="Popup_Opened">
+                                    <Border
+                                        Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                                        BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}"
+                                        BorderThickness="1">
+
+
+                                        <TabControl
+                                            BorderThickness="0"
+                                            Padding="0">
+                                            <TabControl.Resources>
+                                                <Style
+                                                    TargetType="{x:Type TabItem}">
+                                                    <Setter
+                                                        Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate
+                                                                TargetType="TabItem">
+                                                                <Grid
+                                                                    Margin="0,0,0,2"
+                                                                    Name="Panel">
+                                                                    <ContentPresenter
+                                                                        ContentSource="Header"
+                                                                        HorizontalAlignment="Center"
+                                                                        Margin="10,2"
+                                                                        VerticalAlignment="Center" />
+                                                                </Grid>
+                                                                <ControlTemplate.Triggers>
+                                                                    <Trigger
+                                                                        Property="IsSelected"
+                                                                        Value="True">
+                                                                        <Setter
+                                                                            Property="Background"
+                                                                            TargetName="Panel"
+                                                                            Value="LightSkyBlue" />
+                                                                    </Trigger>
+                                                                    <Trigger
+                                                                        Property="IsSelected"
+                                                                        Value="False">
+                                                                        <Setter
+                                                                            Property="Background"
+                                                                            TargetName="Panel"
+                                                                            Value="Transparent" />
+                                                                    </Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </TabControl.Resources>
+
+                                            <TabItem
+                                                x:Name="tabItemBuildingInfo"
+                                                Header="Параметры">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition
+                                                            Height="Auto" />
+                                                        <RowDefinition
+                                                            Height="Auto" />
+                                                    </Grid.RowDefinitions>
+                                                    
+                                                    <DataGrid
+                                                        Style="{DynamicResource modernGrid}"
+                                                        AlternatingRowBackground="#FFDCE6F1"
+                                                        AlternationCount="2"
+                                                        AutoGenerateColumns="False"
+                                                        BorderBrush="Transparent"
+                                                        CanUserReorderColumns="False"
+                                                        CanUserResizeColumns="False"
+                                                        CanUserResizeRows="False"
+                                                        Grid.Row="1"
+                                                        GridLinesVisibility="None"
+                                                        IsReadOnly="True"
+                                                        ItemsSource="{Binding builderInfo}"
+                                                        MaxHeight="300"
+                                                        RowBackground="#FFB8CCE4"
+                                                        RowHeaderWidth="0"
+                                                        SelectionMode="Single"
+                                                        Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}, Path=ActualWidth}">
+                                                        <DataGrid.CellStyle>
+                                                            <Style
+                                                                TargetType="{x:Type DataGridCell}">
+                                                                <Setter
+                                                                    Property="BorderThickness"
+                                                                    Value="0" />
+                                                                <Setter
+                                                                    Property="FocusVisualStyle"
+                                                                    Value="{x:Null}" />
+                                                            </Style>
+                                                        </DataGrid.CellStyle>
+                                                        <DataGrid.Columns>
+                                                            <DataGridTextColumn
+                                                                Binding="{Binding QpotAll}"
+                                                                Header="Диаметр"
+                                                                Width="Auto" />
+                                                            <DataGridTextColumn
+                                                                Binding="{Binding Qpotpr}"
+                                                                Header="Протяженность"
+                                                                Width="*" />
+                                                        </DataGrid.Columns>
+                                                        <DataGrid.RowStyle>
+                                                            <Style
+                                                                TargetType="{x:Type DataGridRow}">
+                                                                <Style.Resources>
+                                                                    <SolidColorBrush
+                                                                        x:Key="{x:Static SystemColors.ControlBrushKey}"
+                                                                        Color="Transparent" />
+                                                                </Style.Resources>
+                                                            </Style>
+                                                        </DataGrid.RowStyle>
+                                                    </DataGrid>
+                                                    <TextBlock
+                                                        FontWeight="Bold"
+                                                        Grid.Row="2"
+                                                        Margin="4"
+                                                        Text="{Binding Path=TotalLengthByDiameter, StringFormat='Итого: {0}'}" />
+                                                    <!-- Сетка для затемнения контента во время подзагрузки данных -->
+                                                    <!--
+                                                    <Grid
+                                                        Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                                                        Grid.Row="1"
+                                                        Grid.RowSpan="2"
+                                                        Visibility="{Binding Path=IsSubLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <wpfu:Spinner
+                                                            Height="30"
+                                                            Width="30" />
+                                                    </Grid>-->
+                                                    <!-- Сетка для затемнения контента во время загрузки данных -->
+                                                    <Grid
+                                                        Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                                                        Grid.RowSpan="3"
+                                                        Visibility="{Binding Path=IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <wpfu:Spinner
+                                                            Height="30"
+                                                            Width="30" />
+                                                    </Grid>
+                                                </Grid>
+                                            </TabItem>
+                                        </TabControl>
+
+                                    </Border>
+                                </Popup>
+                                <Popup
+                                    DataContext="{Binding BoilerInfo}"
+                                    IsOpen="{Binding Path=IsBoilerInfoVisible, Mode=TwoWay}"
+                                    Placement="Mouse"
+                                    PopupAnimation="Scroll"
+                                    Opened="Popup_Opened">
+                                    <Border
+                                        Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                                        BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}"
+                                        BorderThickness="1">
+                                        <TabControl
+                                            BorderThickness="0"
+                                            Padding="0">
+                                            <TabControl.Resources>
+                                                <Style
+                                                    TargetType="{x:Type TabItem}">
+                                                    <Setter
+                                                        Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate
+                                                                TargetType="TabItem">
+                                                                <Grid
+                                                                    Margin="0,0,0,2"
+                                                                    Name="Panel">
+                                                                    <ContentPresenter
+                                                                        ContentSource="Header"
+                                                                        HorizontalAlignment="Center"
+                                                                        Margin="10,2"
+                                                                        VerticalAlignment="Center" />
+                                                                </Grid>
+                                                                <ControlTemplate.Triggers>
+                                                                    <Trigger
+                                                                        Property="IsSelected"
+                                                                        Value="True">
+                                                                        <Setter
+                                                                            Property="Background"
+                                                                            TargetName="Panel"
+                                                                            Value="LightSkyBlue" />
+                                                                    </Trigger>
+                                                                    <Trigger
+                                                                        Property="IsSelected"
+                                                                        Value="False">
+                                                                        <Setter
+                                                                            Property="Background"
+                                                                            TargetName="Panel"
+                                                                            Value="Transparent" />
+                                                                    </Trigger>
+                                                                </ControlTemplate.Triggers>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Style>
+                                            </TabControl.Resources>
+                                            <TabItem
+                                                x:Name="tabItemDiameters"
+                                                Header="Диаметры">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition
+                                                            Height="Auto" />
+                                                        <RowDefinition
+                                                            Height="Auto" />
+                                                        <RowDefinition
+                                                            Height="Auto" />
+                                                    </Grid.RowDefinitions>
+                                                    <ComboBox
+                                                        DisplayMemberPath="Name"
+                                                        ItemsSource="{Binding PipeTypes}"
+                                                        Margin="4"
+                                                        SelectedItem="{Binding Path=SelectedPipeType, Mode=TwoWay}"
+                                                        VerticalContentAlignment="Center" />
+                                                    <DataGrid
+                                                        Style="{DynamicResource modernGrid}"
+                                                        AlternatingRowBackground="#FFDCE6F1"
+                                                        AlternationCount="2"
+                                                        AutoGenerateColumns="False"
+                                                        BorderBrush="Transparent"
+                                                        CanUserReorderColumns="False"
+                                                        CanUserResizeColumns="False"
+                                                        CanUserResizeRows="False"
+                                                        Grid.Row="1"
+                                                        GridLinesVisibility="None"
+                                                        IsReadOnly="True"
+                                                        ItemsSource="{Binding Lengths}"
+                                                        MaxHeight="300"
+                                                        RowBackground="#FFB8CCE4"
+                                                        RowHeaderWidth="0"
+                                                        SelectionMode="Single"
+                                                        Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}, Path=ActualWidth}">
+                                                        <DataGrid.CellStyle>
+                                                            <Style
+                                                                TargetType="{x:Type DataGridCell}">
+                                                                <Setter
+                                                                    Property="BorderThickness"
+                                                                    Value="0" />
+                                                                <Setter
+                                                                    Property="FocusVisualStyle"
+                                                                    Value="{x:Null}" />
+                                                            </Style>
+                                                        </DataGrid.CellStyle>
+                                                        <DataGrid.Columns>
+                                                            <DataGridTextColumn
+                                                                Binding="{Binding Item1}"
+                                                                Header="Диаметр"
+                                                                Width="Auto" />
+                                                            <DataGridTextColumn
+                                                                Binding="{Binding Item2}"
+                                                                Header="Протяженность"
+                                                                Width="*" />
+                                                        </DataGrid.Columns>
+                                                        <DataGrid.RowStyle>
+                                                            <Style
+                                                                TargetType="{x:Type DataGridRow}">
+                                                                <Style.Resources>
+                                                                    <SolidColorBrush
+                                                                        x:Key="{x:Static SystemColors.ControlBrushKey}"
+                                                                        Color="Transparent" />
+                                                                </Style.Resources>
+                                                            </Style>
+                                                        </DataGrid.RowStyle>
+                                                    </DataGrid>
+                                                    <TextBlock
+                                                        FontWeight="Bold"
+                                                        Grid.Row="2"
+                                                        Margin="4"
+                                                        Text="{Binding Path=TotalLengthByDiameter, StringFormat='Итого: {0}'}" />
+                                                    <!-- Сетка для затемнения контента во время подзагрузки данных -->
+                                                    <Grid
+                                                        Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                                                        Grid.Row="1"
+                                                        Grid.RowSpan="2"
+                                                        Visibility="{Binding Path=IsSubLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <wpfu:Spinner
+                                                            Height="30"
+                                                            Width="30" />
+                                                    </Grid>
+                                                    <!-- Сетка для затемнения контента во время загрузки данных -->
+                                                    <Grid
+                                                        Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                                                        Grid.RowSpan="3"
+                                                        Visibility="{Binding Path=IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <wpfu:Spinner
+                                                            Height="30"
+                                                            Width="30" />
+                                                    </Grid>
+                                                </Grid>
+                                            </TabItem>
+                                            <TabItem
+                                                Header="Даты ввода">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition
+                                                            Height="Auto" />
+                                                        <RowDefinition
+                                                            Height="Auto" />
+                                                        <RowDefinition
+                                                            Height="Auto" />
+                                                    </Grid.RowDefinitions>
+                                                    <ComboBox
+                                                        DisplayMemberPath="Name"
+                                                        ItemsSource="{Binding PipeTypes}"
+                                                        Margin="4"
+                                                        SelectedItem="{Binding Path=SelectedPipeType, Mode=TwoWay}"
+                                                        VerticalContentAlignment="Center" />
+                                                    <DataGrid
+                                                        Style="{DynamicResource modernGrid}"
+                                                        AlternatingRowBackground="#FFDCE6F1"
+                                                        AlternationCount="2"
+                                                        AutoGenerateColumns="False"
+                                                        BorderBrush="Transparent"
+                                                        CanUserReorderColumns="False"
+                                                        CanUserResizeColumns="False"
+                                                        CanUserResizeRows="False"
+                                                        Grid.Row="1"
+                                                        GridLinesVisibility="None"
+                                                        IsReadOnly="True"
+                                                        ItemsSource="{Binding Dates}"
+                                                        MaxHeight="300"
+                                                        RowBackground="#FFB8CCE4"
+                                                        RowHeaderWidth="0"
+                                                        SelectionMode="Single"
+                                                        Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}, Path=ActualWidth}">
+                                                        <DataGrid.CellStyle>
+                                                            <Style
+                                                                TargetType="{x:Type DataGridCell}">
+                                                                <Setter
+                                                                    Property="BorderThickness"
+                                                                    Value="0" />
+                                                                <Setter
+                                                                    Property="FocusVisualStyle"
+                                                                    Value="{x:Null}" />
+                                                            </Style>
+                                                        </DataGrid.CellStyle>
+                                                        <DataGrid.Columns>
+                                                            <DataGridTextColumn
+                                                                Binding="{Binding Item1}"
+                                                                Header="Дата ввода"
+                                                                Width="Auto" />
+                                                            <DataGridTextColumn
+                                                                Binding="{Binding Item2}"
+                                                                Header="Протяженность"
+                                                                Width="*" />
+                                                        </DataGrid.Columns>
+                                                        <DataGrid.RowStyle>
+                                                            <Style
+                                                                TargetType="{x:Type DataGridRow}">
+                                                                <Style.Resources>
+                                                                    <SolidColorBrush
+                                                                        x:Key="{x:Static SystemColors.ControlBrushKey}"
+                                                                        Color="Transparent" />
+                                                                </Style.Resources>
+                                                            </Style>
+                                                        </DataGrid.RowStyle>
+                                                    </DataGrid>
+                                                    <TextBlock
+                                                        FontWeight="Bold"
+                                                        Grid.Row="2"
+                                                        Margin="4"
+                                                        Text="{Binding Path=TotalLengthByDate, StringFormat='Итого: {0}'}" />
+                                                    <!-- Сетка для затемнения контента во время подзагрузки данных -->
+                                                    <Grid
+                                                        Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                                                        Grid.Row="1"
+                                                        Grid.RowSpan="2"
+                                                        Visibility="{Binding Path=IsSubLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <wpfu:Spinner
+                                                            Height="30"
+                                                            Width="30" />
+                                                    </Grid>
+                                                    <!-- Сетка для затемнения контента во время загрузки данных -->
+                                                    <Grid
+                                                        Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                                                        Grid.RowSpan="3"
+                                                        Visibility="{Binding Path=IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <wpfu:Spinner
+                                                            Height="30"
+                                                            Width="30" />
+                                                    </Grid>
+                                                </Grid>
+                                            </TabItem>
+                                            <TabItem
+                                                DataContext="{Binding FuelInfo}"
+                                                Header="Топливо">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition
+                                                            Height="Auto" />
+                                                        <RowDefinition
+                                                            Height="Auto" />
+                                                        <RowDefinition
+                                                            Height="Auto" />
+                                                    </Grid.RowDefinitions>
+                                                    <StackPanel
+                                                        Orientation="Horizontal"
+                                                        Margin="4,4,4,0"
+                                                        VerticalAlignment="Center">
+                                                        <TextBlock
+                                                            Text="Период:"
+                                                            VerticalAlignment="Center" />
+                                                        <DatePicker
+                                                            Margin="4,0,0,0"
+                                                            SelectedDate="{Binding Path=FromDate, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                            Width="100" />
+                                                        <TextBlock
+                                                            Margin="4,0,0,0"
+                                                            Text="-"
+                                                            VerticalAlignment="Center" />
+                                                        <DatePicker
+                                                            Margin="4,0,0,0"
+                                                            SelectedDate="{Binding Path=ToDate, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                            Width="100" />
+                                                    </StackPanel>
+                                                    <Grid
+                                                        Grid.Row="1"
+                                                        Margin="0,4,0,0"
+                                                        Visibility="{Binding Path=HasFuelTypes, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition
+                                                                Height="Auto" />
+                                                            <RowDefinition
+                                                                Height="Auto" />
+                                                        </Grid.RowDefinitions>
+                                                        <ComboBox
+                                                            DisplayMemberPath="Name"
+                                                            ItemsSource="{Binding FuelTypes}"
+                                                            Margin="4,0"
+                                                            SelectedItem="{Binding Path=SelectedFuelType, Mode=TwoWay}"
+                                                            VerticalContentAlignment="Center" />
+                                                        <Grid
+                                                            Grid.Row="1"
+                                                            Margin="4,4,4,0">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition
+                                                                    Width="Auto" />
+                                                                <ColumnDefinition />
+                                                            </Grid.ColumnDefinitions>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition
+                                                                    Height="Auto" />
+                                                                <RowDefinition
+                                                                    Height="Auto" />
+                                                                <RowDefinition
+                                                                    Height="Auto" />
+                                                                <RowDefinition
+                                                                    Height="Auto" />
+                                                                <RowDefinition
+                                                                    Height="Auto" />
+                                                                <RowDefinition
+                                                                    Height="Auto" />
+                                                                <RowDefinition
+                                                                    Height="Auto" />
+                                                                <RowDefinition
+                                                                    Height="Auto" />
+                                                                <RowDefinition
+                                                                    Height="Auto" />
+                                                            </Grid.RowDefinitions>
+                                                            <!-- Первый столбец -->
+                                                            <TextBlock
+                                                                Text="Наличие на начало месяца:" />
+                                                            <TextBlock
+                                                                Grid.Row="1"
+                                                                Margin="0,4,0,0"
+                                                                Text="Лимит (в месяц):" />
+                                                            <TextBlock
+                                                                Grid.Row="2"
+                                                                Margin="0,4,0,0"
+                                                                Text="Лимит (в сутки):" />
+                                                            <TextBlock
+                                                                Grid.Row="3"
+                                                                Margin="0,4,0,0"
+                                                                Text="Приход:" />
+                                                            <TextBlock
+                                                                Grid.Row="4"
+                                                                Margin="0,4,0,0"
+                                                                Text="Расход:" />
+                                                            <TextBlock
+                                                                Grid.Row="5"
+                                                                Margin="0,4,0,0"
+                                                                Text="Перемещение:" />
+                                                            <TextBlock
+                                                                Grid.Row="6"
+                                                                Margin="0,4,0,0"
+                                                                Text="Остаток на конец периода:" />
+                                                            <TextBlock
+                                                                Grid.Row="7"
+                                                                Margin="0,4,0,0"
+                                                                Text="Остаток дней:"
+                                                                Visibility="{Binding Path=HasDayBalance, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                            <TextBlock
+                                                                Grid.Row="8"
+                                                                Margin="0,4,0,0"
+                                                                Text="Обеспеченность:"
+                                                                Visibility="{Binding Path=HasProvision, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                            <!-- Второй столбец -->
+                                                            <TextBlock
+                                                                Grid.Column="1"
+                                                                Margin="4,0,0,0"
+                                                                Text="{Binding AvailableCount}" />
+                                                            <TextBlock
+                                                                Grid.Column="1"
+                                                                Grid.Row="1"
+                                                                Margin="4,4,0,0"
+                                                                Text="{Binding MonthLimit}" />
+                                                            <TextBlock
+                                                                Grid.Column="1"
+                                                                Grid.Row="2"
+                                                                Margin="4,4,0,0"
+                                                                Text="{Binding DayLimit}" />
+                                                            <TextBlock
+                                                                Grid.Column="1"
+                                                                Grid.Row="3"
+                                                                Margin="4,4,0,0"
+                                                                Text="{Binding Incoming}" />
+                                                            <TextBlock
+                                                                Grid.Column="1"
+                                                                Grid.Row="4"
+                                                                Margin="4,4,0,0"
+                                                                Text="{Binding Consumption}" />
+                                                            <TextBlock
+                                                                Grid.Column="1"
+                                                                Grid.Row="5"
+                                                                Margin="4,4,0,0"
+                                                                Text="{Binding Moving}" />
+                                                            <TextBlock
+                                                                Grid.Column="1"
+                                                                Grid.Row="6"
+                                                                Margin="4,4,0,0"
+                                                                Text="{Binding EndBalance}" />
+                                                            <TextBlock
+                                                                Grid.Column="1"
+                                                                Grid.Row="7"
+                                                                Margin="4,4,0,0"
+                                                                Text="{Binding DayBalance}"
+                                                                Visibility="{Binding Path=HasDayBalance, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                            <TextBlock
+                                                                Grid.Column="1"
+                                                                Grid.Row="8"
+                                                                Margin="4,4,0,0"
+                                                                Text="{Binding Provision}"
+                                                                Visibility="{Binding Path=HasProvision, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                        </Grid>
+                                                    </Grid>
+                                                    <Grid
+                                                        Grid.Row="2"
+                                                        Margin="0,4"
+                                                        Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}, Path=ActualWidth}">
+                                                        <Expander
+                                                            Header="Склады"
+                                                            Margin="2,0,0,0">
+                                                            <DataGrid
+                                                                Style="{DynamicResource modernGrid}"
+                                                                AlternatingRowBackground="#FFDCE6F1"
+                                                                AlternationCount="2"
+                                                                AutoGenerateColumns="False"
+                                                                BorderBrush="Transparent"
+                                                                CanUserReorderColumns="False"
+                                                                CanUserResizeColumns="False"
+                                                                CanUserResizeRows="False"
+                                                                GridLinesVisibility="None"
+                                                                IsReadOnly="True"
+                                                                ItemsSource="{Binding Storages}"
+                                                                Margin="-2,4,0,0"
+                                                                MaxHeight="200"
+                                                                RowBackground="#FFB8CCE4"
+                                                                RowHeaderWidth="0"
+                                                                SelectionMode="Single">
+                                                                <DataGrid.CellStyle>
+                                                                    <Style
+                                                                        TargetType="{x:Type DataGridCell}">
+                                                                        <Setter
+                                                                            Property="BorderThickness"
+                                                                            Value="0" />
+                                                                        <Setter
+                                                                            Property="FocusVisualStyle"
+                                                                            Value="{x:Null}" />
+                                                                    </Style>
+                                                                </DataGrid.CellStyle>
+                                                                <DataGrid.Columns>
+                                                                    <DataGridTextColumn
+                                                                        Binding="{Binding Name}"
+                                                                        Header="Наименование"
+                                                                        Width="*" />
+                                                                    <DataGridTextColumn
+                                                                        Binding="{Binding Balance}"
+                                                                        Header="Остаток на конец периода"
+                                                                        Width="Auto" />
+                                                                </DataGrid.Columns>
+                                                                <DataGrid.RowStyle>
+                                                                    <Style
+                                                                        TargetType="{x:Type DataGridRow}">
+                                                                        <Style.Resources>
+                                                                            <SolidColorBrush
+                                                                                x:Key="{x:Static SystemColors.ControlBrushKey}"
+                                                                                Color="Transparent" />
+                                                                        </Style.Resources>
+                                                                    </Style>
+                                                                </DataGrid.RowStyle>
+                                                            </DataGrid>
+                                                        </Expander>
+                                                    </Grid>
+                                                    <!-- Сетка для затемнения контента во время подзагрузки данных -->
+                                                    <Grid
+                                                        Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                                                        Grid.Row="1"
+                                                        Grid.RowSpan="2"
+                                                        Visibility="{Binding Path=IsSubLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <wpfu:Spinner
+                                                            Height="30"
+                                                            Width="30" />
+                                                    </Grid>
+                                                    <!-- Сетка для затемнения контента во время загрузки данных -->
+                                                    <Grid
+                                                        Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                                                        Grid.RowSpan="3"
+                                                        Visibility="{Binding Path=IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <wpfu:Spinner
+                                                            Height="30"
+                                                            Width="30" />
+                                                    </Grid>
+                                                </Grid>
+                                            </TabItem>
+                                            <TabItem
+                                                
+                                                
+                                                Header="Счетчики">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition
+                                                            Height="Auto" />
+                                                        <RowDefinition
+                                                            Height="Auto" />
+                                                        <RowDefinition
+                                                            Height="Auto" />
+                                                    </Grid.RowDefinitions>
+                                                    <ComboBox
+                                                         
+                                                        ItemsSource="{Binding Path=paramNames, Mode=TwoWay}" Text="Тип параметра..."
+                                                        Margin="4"
+                                                        SelectedItem="{Binding paramSelected}"
+                                                        VerticalContentAlignment="Center" />
+                                                    <DataGrid
+                                                        Style="{DynamicResource modernGrid}"
+                                                        AlternatingRowBackground="#FFDCE6F1"
+                                                        AlternationCount="2"
+                                                        AutoGenerateColumns="False"
+                                                        BorderBrush="Transparent"
+                                                        CanUserReorderColumns="False"
+                                                        CanUserResizeColumns="False"
+                                                        CanUserResizeRows="False"
+                                                        Grid.Row="1"
+                                                        GridLinesVisibility="None"
+                                                        IsReadOnly="True"
+                                                        ItemsSource="{Binding MeterInfoModels}"
+                                                        MaxHeight="300"
+                                                        RowBackground="#FFB8CCE4"
+                                                        RowHeaderWidth="0"
+                                                        SelectionMode="Single"
+                                                        Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Grid}}, Path=ActualWidth}">
+                                                        <DataGrid.CellStyle>
+                                                            <Style
+                                                                TargetType="{x:Type DataGridCell}">
+                                                                <Setter
+                                                                    Property="BorderThickness"
+                                                                    Value="0" />
+                                                                <Setter
+                                                                    Property="FocusVisualStyle"
+                                                                    Value="{x:Null}" />
+                                                            </Style>
+                                                        </DataGrid.CellStyle>
+                                                        <DataGrid.Columns>
+                                                            <DataGridTextColumn
+                                                                Binding="{Binding dateTime, StringFormat=dd/MM/yy}"
+                                                                Header="Дата"
+                                                                Width="*" />
+                                                            <DataGridTextColumn
+                                                                Binding="{Binding Param1, StringFormat={}{0:n2}}"
+                                                                Header="Подача"
+                                                                Width="Auto" />
+                                                            <DataGridTextColumn
+                                                                Binding="{Binding Param2, StringFormat={}{0:n2}}"
+                                                                Header="Обрат."
+                                                                Width="*" />
+                                                            <DataGridTextColumn 
+                                                                Binding="{Binding DeltaParam, StringFormat={}{0:n2}}"
+                                                                Header="Δ"
+                                                                Width="*"
+                                                                />
+                                                            
+                                                        </DataGrid.Columns>
+                                                        <DataGrid.RowStyle>
+                                                            <Style
+                                                                TargetType="{x:Type DataGridRow}">
+                                                                <Style.Resources>
+                                                                    <SolidColorBrush
+                                                                        x:Key="{x:Static SystemColors.ControlBrushKey}"
+                                                                        Color="Transparent" />
+                                                                </Style.Resources>
+                                                            </Style>
+                                                        </DataGrid.RowStyle>
+                                                    </DataGrid>
+                                                  
+                                                    <!-- Сетка для затемнения контента во время подзагрузки данных -->
+                                                    <Grid
+                                                        Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                                                        Grid.Row="1"
+                                                        Grid.RowSpan="2"
+                                                        Visibility="{Binding Path=IsSubLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <wpfu:Spinner
+                                                            Height="30"
+                                                            Width="30" />
+                                                    </Grid>
+                                                    <!-- Сетка для затемнения контента во время загрузки данных -->
+                                                    <Grid
+                                                        Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                                                        Grid.RowSpan="3"
+                                                        Visibility="{Binding Path=IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                        <wpfu:Spinner
+                                                            Height="30"
+                                                            Width="30" />
+                                                    </Grid>
+                                                </Grid>
+                                                
+                                            </TabItem>
+                                        </TabControl>
+                                    </Border>
+                                </Popup>
+                                <!-- Всплывающее окно для складов -->
+                                <Popup
+                                    DataContext="{Binding StorageInfo}"
+                                    IsOpen="{Binding Path=IsStorageInfoVisible, Mode=TwoWay}"
+                                    Placement="Mouse"
+                                    PopupAnimation="Scroll">
+                                    <Border
+                                        Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                                        BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}"
+                                        BorderThickness="1">
+                                        <Grid
+                                            DataContext="{Binding FuelInfo}">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition
+                                                    Height="Auto" />
+                                                <RowDefinition
+                                                    Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <StackPanel
+                                                Orientation="Horizontal"
+                                                Margin="4"
+                                                VerticalAlignment="Center">
+                                                <TextBlock
+                                                    Text="Период:"
+                                                    VerticalAlignment="Center" />
+                                                <DatePicker
+                                                    Margin="4,0,0,0"
+                                                    SelectedDate="{Binding Path=FromDate, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                    Width="100" />
+                                                <TextBlock
+                                                    Margin="4,0,0,0"
+                                                    Text="-"
+                                                    VerticalAlignment="Center" />
+                                                <DatePicker
+                                                    Margin="4,0,0,0"
+                                                    SelectedDate="{Binding Path=ToDate, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                                    Width="100" />
+                                            </StackPanel>
+                                            <Grid
+                                                Grid.Row="1"
+                                                Margin="0,0,0,4"
+                                                Visibility="{Binding Path=HasFuelTypes, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition
+                                                        Height="Auto" />
+                                                    <RowDefinition
+                                                        Height="Auto" />
+                                                </Grid.RowDefinitions>
+                                                <ComboBox
+                                                    DisplayMemberPath="Name"
+                                                    ItemsSource="{Binding FuelTypes}"
+                                                    Margin="4,0"
+                                                    SelectedItem="{Binding Path=SelectedFuelType, Mode=TwoWay}"
+                                                    VerticalContentAlignment="Center" />
+                                                <Grid
+                                                    Grid.Row="1"
+                                                    Margin="4,4,4,0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition
+                                                            Width="Auto" />
+                                                        <ColumnDefinition />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition
+                                                            Height="Auto" />
+                                                        <RowDefinition
+                                                            Height="Auto" />
+                                                        <RowDefinition
+                                                            Height="Auto" />
+                                                        <RowDefinition
+                                                            Height="Auto" />
+                                                        <RowDefinition
+                                                            Height="Auto" />
+                                                        <RowDefinition
+                                                            Height="Auto" />
+                                                        <RowDefinition
+                                                            Height="Auto" />
+                                                    </Grid.RowDefinitions>
+                                                    <!-- Первый столбец -->
+                                                    <TextBlock
+                                                        Text="Наличие на начало месяца:" />
+                                                    <TextBlock
+                                                        Grid.Row="1"
+                                                        Margin="0,4,0,0"
+                                                        Text="Приход:" />
+                                                    <TextBlock
+                                                        Grid.Row="2"
+                                                        Margin="0,4,0,0"
+                                                        Text="Расход:" />
+                                                    <TextBlock
+                                                        Grid.Row="3"
+                                                        Margin="0,4,0,0"
+                                                        Text="Перемещение:" />
+                                                    <TextBlock
+                                                        Grid.Row="4"
+                                                        Margin="0,4,0,0"
+                                                        Text="Остаток на конец периода:" />
+                                                    <TextBlock
+                                                        Grid.Row="5"
+                                                        Margin="0,4,0,0"
+                                                        Text="Остаток дней:"
+                                                        Visibility="{Binding Path=HasDayBalance, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                    <TextBlock
+                                                        Grid.Row="6"
+                                                        Margin="0,4,0,0"
+                                                        Text="Обеспеченность:"
+                                                        Visibility="{Binding Path=HasProvision, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                    <!-- Второй столбец -->
+                                                    <TextBlock
+                                                        Grid.Column="1"
+                                                        Margin="4,0,0,0"
+                                                        Text="{Binding AvailableCount}" />
+                                                    <TextBlock
+                                                        Grid.Column="1"
+                                                        Grid.Row="1"
+                                                        Margin="4,4,0,0"
+                                                        Text="{Binding Incoming}" />
+                                                    <TextBlock
+                                                        Grid.Column="1"
+                                                        Grid.Row="2"
+                                                        Margin="4,4,0,0"
+                                                        Text="{Binding Consumption}" />
+                                                    <TextBlock
+                                                        Grid.Column="1"
+                                                        Grid.Row="3"
+                                                        Margin="4,4,0,0"
+                                                        Text="{Binding Moving}" />
+                                                    <TextBlock
+                                                        Grid.Column="1"
+                                                        Grid.Row="4"
+                                                        Margin="4,4,0,0"
+                                                        Text="{Binding EndBalance}" />
+                                                    <TextBlock
+                                                        Grid.Column="1"
+                                                        Grid.Row="5"
+                                                        Margin="4,4,0,0"
+                                                        Text="{Binding DayBalance}"
+                                                        Visibility="{Binding Path=HasDayBalance, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                    <TextBlock
+                                                        Grid.Column="1"
+                                                        Grid.Row="6"
+                                                        Margin="4,4,0,0"
+                                                        Text="{Binding Provision}"
+                                                        Visibility="{Binding Path=HasProvision, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                </Grid>
+                                            </Grid>
+                                            <!-- Сетка для затемнения контента во время подзагрузки данных -->
+                                            <Grid
+                                                Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                                                Grid.Row="1"
+                                                Visibility="{Binding Path=IsSubLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <wpfu:Spinner
+                                                    Height="30"
+                                                    Width="30" />
+                                            </Grid>
+                                            <!-- Сетка для затемнения контента во время загрузки данных -->
+                                            <Grid
+                                                Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+                                                Grid.RowSpan="2"
+                                                Visibility="{Binding Path=IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <wpfu:Spinner
+                                                    Height="30"
+                                                    Width="30" />
+                                            </Grid>
+                                        </Grid>
+                                    </Border>
+                                </Popup>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+                <TabItem
+                    x:Name="tabItemSearch"
+                    Header="Поиск">
+                    <!-- Раздел поиска объектов -->
+                    <views:SearchView
+                        x:Name="searchView" />
+                </TabItem>
+            </TabControl>
+            <!-- Строка статуса -->
+            <StatusBar
+                Background="{Binding ElementName=window, Path=Background}"
+                Grid.Row="3">
+                <!-- Название сервера -->
+                <StatusBarItem>
+                    <TextBlock
+                        Text="{Binding Path=ServerName, StringFormat=Сервер: {0}}" />
+                </StatusBarItem>
+                <!-- Название логина -->
+                <StatusBarItem>
+                    <TextBlock
+                        Text="{Binding Path=LoginName, StringFormat=Логин: {0}}" />
+                </StatusBarItem>
+                <!-- Название пользовательской роли -->
+                <StatusBarItem>
+                    <TextBlock
+                        Text="{Binding Path=RoleName, StringFormat=Роль: {0}}" />
+                </StatusBarItem>
+                <!-- Время загрузки данных -->
+                <StatusBarItem
+                    HorizontalAlignment="Right"
+                    Visibility="{Binding Path=LoadTime, Converter={StaticResource DoubleToVisibilityConverter}}">
+                    <TextBlock
+                        Text="{Binding Path=LoadTime, StringFormat='Время загрузки: {0} с.'}"/>
+                </StatusBarItem>
+            </StatusBar>
+        </Grid>
+        <!-- Сетка для затемнения задних элементов -->
+        <Grid
+            x:Name="frozenGrid"
+            Background="#7F000000"
+            Visibility="Hidden"
+            PreviewKeyDown="frozenGrid_PreviewKeyDown"
+            PreviewMouseDown="frozenGrid_PreviewMouseDown" />
+    </Grid>
+</Window>

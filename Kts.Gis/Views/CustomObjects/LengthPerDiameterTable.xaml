@@ -1,0 +1,85 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:views="clr-namespace:Kts.Gis.Views"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Стиль таблицы о протяженностях труб, разбитых по диаметрам -->
+    <Style
+        TargetType="{x:Type views:LengthPerDiameterTable}">
+        <Setter
+            Property="Template">
+            <Setter.Value>
+                <ControlTemplate
+                    TargetType="{x:Type views:LengthPerDiameterTable}">
+                    <StackPanel>
+                        <TextBlock
+                            x:Name="title"
+                            FontSize="{Binding FontSize}"
+                            Margin="0,0,0,10"
+                            Text="{Binding Title}" />
+                        <TextBlock
+                            FontSize="{Binding FontSize}"
+                            FontStyle="Italic"
+                            Margin="0,0,0,5"
+                            Text="Данные отсутствуют">
+                            <TextBlock.Style>
+                                <Style
+                                    TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding ElementName=lengths, Path=ActualHeight}"
+                                            Value="0">
+                                            <Setter
+                                                Property="Visibility"
+                                                Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                    <Setter
+                                        Property="Visibility"
+                                        Value="Collapsed" />
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <TextBlock
+                            x:Name="textBlockWidth"
+                            Visibility="Collapsed"
+                            Width="{Binding ColumnWidth}" />
+                        <ItemsControl
+                            x:Name="lengths"
+                            ItemsSource="{Binding Lengths}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid
+                                        HorizontalAlignment="Stretch"
+                                        Margin="0,0,0,5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition
+                                                Width="{Binding ElementName=textBlockWidth, Path=Width}" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock
+                                            FontSize="{Binding ElementName=title, Path=FontSize}"
+                                            Text="{Binding Item1}" />
+                                        <TextBlock
+                                            FontSize="{Binding ElementName=title, Path=FontSize}"
+                                            Grid.Column="1"
+                                            Margin="10,0,0,0"
+                                            Text="{Binding Item2}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <TextBlock
+                            FontSize="{Binding FontSize}"
+                            Margin="0,5,0,0"
+                            Text="{Binding Path=TotalLength, StringFormat='Общая протяженность: {0} м.'}" />
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

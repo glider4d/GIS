@@ -1,0 +1,117 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    mc:Ignorable="d"
+    x:Class="WpfCustomMessageBox.Windows.WpfCustomMessageBoxWindow"
+    x:ClassModifier="internal"
+    MaxWidth="470"
+    MinHeight="155"
+    MinWidth="154"
+    ResizeMode="NoResize"
+    ShowInTaskbar="False"
+    SizeToContent="WidthAndHeight"
+    UseLayoutRounding="True"
+    WindowStartupLocation="CenterScreen"
+    WindowStyle="SingleBorderWindow">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition
+                Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid
+            Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
+            MinHeight="69">
+            <DockPanel>
+                <Image
+                    DockPanel.Dock="Left"
+                    Height="32"
+                    HorizontalAlignment="Left"
+                    Margin="30,0,0,0"
+                    Name="imageMessageBox"
+                    Visibility="Collapsed"
+                    Width="32" />
+                <TextBlock
+                    Margin="12,20,41,15"
+                    MaxWidth="500"
+                    Name="textBlockMessage"
+                    TextWrapping="Wrap"
+                    VerticalAlignment="Center"
+                    Width="Auto" />
+            </DockPanel>
+        </Grid>
+        <Grid
+            Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+            Grid.Row="1"
+            MinHeight="49">
+            <DockPanel
+                Margin="5,0">
+                <!-- Кнопка "Отмена" -->
+                <Button
+                    DockPanel.Dock="Right"
+                    Height="26"
+                    HorizontalAlignment="Right"
+                    IsCancel="True"
+                    Margin="5,0"
+                    MaxWidth="160"
+                    MinWidth="88"
+                    Name="buttonCancel"
+                    Visibility="Collapsed"
+                    Click="buttonCancel_Click">
+                    <Label
+                        Margin="10,0"
+                        Name="labelCancel"
+                        Padding="0">_Отмена</Label>
+                </Button>
+                <!-- Кнопка "Нет" -->
+                <Button
+                    DockPanel.Dock="Right"
+                    Height="26"
+                    HorizontalAlignment="Right"
+                    Margin="5,0"
+                    MaxWidth="160"
+                    MinWidth="88"
+                    Name="buttonNo"
+                    Visibility="Collapsed"
+                    Click="buttonNo_Click">
+                    <Label
+                        Margin="10,0"
+                        Name="labelNo"
+                        Padding="0">_Нет</Label>
+                </Button>
+                <!-- Кнопка "Да" -->
+                <Button
+                    DockPanel.Dock="Right"
+                    Height="26"
+                    HorizontalAlignment="Right"
+                    Margin="35,0,5,0"
+                    MaxWidth="160"
+                    MinWidth="88"
+                    Name="buttonYes"
+                    Visibility="Collapsed"
+                    Click="buttonYes_Click">
+                    <Label
+                        Margin="10,0"
+                        Name="labelYes"
+                        Padding="0">_Да</Label>
+                </Button>
+                <!-- Кнопка "ОК" -->
+                <Button
+                    Height="26"
+                    HorizontalAlignment="Right"
+                    Margin="35,0,5,0"
+                    MaxWidth="160"
+                    MinWidth="88"
+                    Name="buttonOK"
+                    Click="buttonOK_Click">
+                    <Label
+                        Margin="10,0"
+                        Name="labelOK"
+                        Padding="0">_ОК</Label>
+                </Button>
+            </DockPanel>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,52 @@
+﻿<Window x:Class="Kts.Gis.Views.MetersView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Kts.Gis.Views"
+        mc:Ignorable="d"
+        Title="Измерительные приборы" Height="450" Width="800">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <!--
+        <TextBlock
+            Text="{Binding TitleName}"
+            TextWrapping="Wrap" />-->
+        <DataGrid
+            Style="{DynamicResource modernGrid}"
+            AutoGenerateColumns="False"
+            CanUserReorderColumns="False"
+            CanUserResizeRows="False"
+            Grid.Row="1"
+            GridLinesVisibility="None"
+            IsReadOnly="True"
+            ItemsSource="{Binding boilerMeterReportModels}"
+            Margin="0,10,0,0"
+            RowHeaderWidth="0"
+            SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}"
+            SelectionMode="Single">
+            <DataGrid.Columns>
+                
+                <DataGridTextColumn
+                    Binding="{Binding cityName}"
+                    Width="200*"
+                    Header="Район"
+                    />
+                <DataGridTextColumn
+                    Binding="{Binding boilerName}"
+                    Header="Котельная"
+                    Width="250" />
+                <DataGridTextColumn
+                    Binding="{Binding meterCaption }"
+                    Header="Счетчик"
+                    Width="250" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <CheckBox Grid.Row="0" x:Name="notNull" Content="Скрывать несопоставленные" IsChecked="{Binding notNull}"/>
+    </Grid>
+</Window>
